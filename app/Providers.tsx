@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import posthog from "posthog-js";
 import { PostHogProvider } from "posthog-js/react";
 import { MainCtxProvider } from "./_context/Main";
+import dynamic from "next/dynamic";
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
   if (typeof window !== "undefined") {
@@ -30,4 +31,8 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default Providers;
+const P = dynamic(() => Promise.resolve(Providers), {
+  ssr: false,
+});
+
+export default P;
