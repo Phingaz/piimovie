@@ -46,3 +46,15 @@ export const searchMovieRq = async (query: string | null, page: number) => {
   );
   return data;
 };
+
+export const downloadMovieRq = async (
+  searchInput: string | null,
+  site = "piratebay",
+  limit = 20,
+  page = 1
+) => {
+  const { data } = await axios(
+    `https://torrent-api-py-nx0x.onrender.com/api/v1/search?site=${site}&query=${searchInput}&limit=${limit}&page=${page}`
+  );
+  return data;
+};

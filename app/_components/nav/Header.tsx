@@ -5,6 +5,7 @@ import React from "react";
 import Main from "@/app/_context/Main";
 import { cn } from "@/lib/utils";
 import { movieList } from "@/app/constants";
+import { Heart, Search, Video } from "lucide-react";
 
 const Header = ({
   className,
@@ -56,7 +57,7 @@ const Header = ({
       )}
     >
       <Link href="/" className="text-2xl font-bold">
-        Logo
+        <Video size={50} strokeWidth={1} className="text-accent-brighter" />
       </Link>
 
       <motion.nav
@@ -78,10 +79,10 @@ const Header = ({
             </li>
           ))}
           <Link className="text-sm font-[500]" href={`/favorites`}>
-            Favorites
+            <Heart size={20} strokeWidth={3} />
           </Link>
           <Link className="text-sm font-[500]" href={`/search`}>
-            Search
+            <Search size={20} strokeWidth={3} />
           </Link>
         </ul>
       </motion.nav>

@@ -4,16 +4,10 @@ import React from "react";
 import ImageComponent from "../utils/ImageComponent";
 import { isFav } from "@/lib/utils";
 import Favorite from "../utils/Favorite";
+import Main from "@/app/_context/Main";
 
-const LandingCard = ({
-  movie,
-  favMovies,
-  manageFav,
-}: {
-  movie: Movie;
-  favMovies: Movie[];
-  manageFav: (movie: Movie) => void;
-}) => {
+const LandingCard = ({ movie }: { movie: Movie }) => {
+  const { favMovies, manageFav } = React.useContext(Main);
   const isFavorite = isFav(favMovies, movie);
 
   return (
@@ -27,7 +21,11 @@ const LandingCard = ({
       </div>
       <Link href={`/movie/${movie.id}`} className="w-full h-full relative">
         <ImageComponent
-          string={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
+          string={
+            movie.poster_path
+              ? `https://image.tmdb.org/t/p/original/${movie.poster_path}`
+              : "/placeholder.png"
+          }
           title={movie.title}
         />
       </Link>

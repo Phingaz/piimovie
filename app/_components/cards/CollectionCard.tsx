@@ -20,7 +20,7 @@ const CollectionCard = ({
   return (
     <div
       key={movie.id}
-      className="w-full h-full cursor-pointer rounded-lg relative overflow-clip hover:shadow-xl transition-all ease-in-out duration-200 hover:rounded-lg hover:scale-105"
+      className="w-full h-full cursor-pointer rounded-lg relative overflow-clip hover:shadow-xl transition-all ease-in-out duration-150 hover:rounded-lg hover:scale-105"
     >
       <div className="absolute top-0 right-0 p-2 cursor-pointer z-50">
         <Favorite
@@ -32,7 +32,11 @@ const CollectionCard = ({
       <Link href={`/movie/${movie.id}`}>
         <div className="w-full h-full relative overflow-clip rounded-lg aspect-[3/4]">
           <ImageComponent
-            string={`https://image.tmdb.org/t/p/w500/${movie.backdrop_path}`}
+            string={
+              movie.backdrop_path
+                ? `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`
+                : "/placeholder.png"
+            }
             title={movie.title}
           />
         </div>

@@ -4,7 +4,7 @@ import React from "react";
 const Loader = () => {
   return (
     <div className="w-full h-full grid place-content-center">
-      <Loader2 className="animate-spin" />
+      <Loader2 className="animate-spin text-white" />
     </div>
   );
 };

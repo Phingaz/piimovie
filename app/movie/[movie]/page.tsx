@@ -38,7 +38,7 @@ const MovieDetail = () => {
           <div className="flex justify-between items-center mb-8">
             <div className="flex gap-7 items-center">
               <Link
-                href={`/download/movie?title=${movieDetail?.title}`}
+                href={`/download?search=${movieDetail?.title}`}
                 className="text-3xl md:text-5xl font-bold text-gray-200"
               >
                 {movieDetail?.title}

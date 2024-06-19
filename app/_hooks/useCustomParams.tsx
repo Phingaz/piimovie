@@ -4,6 +4,9 @@ const useCustomParams = () => {
   const page = useSearchParams().get("page") || "1";
   const search = useSearchParams().get("search");
   const list = useSearchParams().get("list");
+  const site = useSearchParams().get("site") || "piratebay";
+  const limit = useSearchParams().get("limit") || "20";
+
   const movieId = usePathname().split("/")[2];
   const path = usePathname();
 
@@ -13,6 +16,8 @@ const useCustomParams = () => {
     movieId,
     list,
     path,
+    site,
+    limit,
   };
 };
 

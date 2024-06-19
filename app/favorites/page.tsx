@@ -1,6 +1,4 @@
 "use client";
-import CollectionCard from "@/app/_components/cards/CollectionCard";
-import { moveiGenreId } from "@/app/constants";
 import React from "react";
 import Main from "../_context/Main";
 import LandingCard from "../_components/cards/LandingCard";
@@ -13,14 +11,7 @@ const Favorties = () => {
         <h1 className="mb-8 text-4xl font-bold">Favorites</h1>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:gap-x-8 md:gap-y-10 gap-3">
           {favMovies?.map((movie) => {
-            return (
-              <LandingCard
-                key={movie.id}
-                movie={movie}
-                manageFav={manageFav}
-                favMovies={favMovies}
-              />
-            );
+            return <LandingCard key={movie.id} movie={movie} />;
           })}
         </div>
       </div>

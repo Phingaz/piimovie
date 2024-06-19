@@ -2,7 +2,7 @@ import useCustomParams from "@/app/_hooks/useCustomParams";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-const Pagination = ({ totalPage }: { totalPage: number | undefined }) => {
+const Pagination = ({ totalPage }: { totalPage?: number }) => {
   const router = useRouter();
   const { path, page, list, search } = useCustomParams();
 
@@ -63,9 +63,11 @@ const Pagination = ({ totalPage }: { totalPage: number | undefined }) => {
         >
           Prev
         </button>
-        <p className="text-center text-sm">
-          Page {page} of {totalPage}
-        </p>
+        {totalPage && (
+          <p className="text-center text-sm">
+            Page {page} of {totalPage}
+          </p>
+        )}
         <button
           onClick={nextPage}
           className="bg-accent-brighter hover:bg-accent-brighter/50 transition font-[500] text-white px-4 py-2 rounded-lg"

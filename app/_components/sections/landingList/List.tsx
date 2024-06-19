@@ -11,14 +11,10 @@ const List = ({
   movieCtx,
   title,
   category,
-  favMovies,
-  manageFav,
 }: {
   movieCtx: UseQueryResult<MovieResponse, Error>;
   title: string;
   category: string;
-  favMovies: Movie[];
-  manageFav: (movie: Movie) => void;
 }) => {
   const { data, isLoading, isError } = movieCtx;
 
@@ -50,12 +46,7 @@ const List = ({
             <ErrorSection />
           ) : (
             movies.map((movie, index) => (
-              <LandingCard
-                key={index}
-                movie={movie}
-                favMovies={favMovies}
-                manageFav={manageFav}
-              />
+              <LandingCard key={index} movie={movie} />
             ))
           )}
         </div>

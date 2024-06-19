@@ -2,7 +2,13 @@
 import { useRouter } from "next/navigation";
 import React from "react";
 
-const Search = ({ initialValue }: { initialValue?: string }) => {
+const Search = ({
+  initialValue,
+  download,
+}: {
+  initialValue?: string;
+  download?: boolean;
+}) => {
   const router = useRouter();
   const [search, setSearch] = React.useState(initialValue || "");
   const [error, setError] = React.useState(false);
@@ -13,8 +19,9 @@ const Search = ({ initialValue }: { initialValue?: string }) => {
       setError(true);
       return;
     }
-
-    router.push(`/search?search=${search}&page=1`);
+    download
+      ? router.push(`/download?search=${search}&page=1`)
+      : router.push(`/search?search=${search}&page=1`);
   };
 
   return (

@@ -2,6 +2,7 @@ import { UseQueryResult, useQuery } from "@tanstack/react-query";
 import React, { createContext } from "react";
 
 import {
+  downloadMovieRq,
   getMovieDetailRq,
   getMovieImagesRq,
   getMovieRecommendationsRq,
@@ -21,6 +22,7 @@ export type TQueriesCtx = {
   upcomingMovies: UseQueryResult<MovieResponse, Error>;
   collection: UseQueryResult<MovieResponse, Error>;
   searchMovies: UseQueryResult<MovieResponse, Error>;
+  torrent: UseQueryResult<any, Error>;
   //movie detail
   movie: UseQueryResult<any, Error>;
   movieImg: UseQueryResult<MovieImagesResponse, Error>;
@@ -36,6 +38,7 @@ const Queries = createContext<TQueriesCtx>({
   upcomingMovies: {} as UseQueryResult<MovieResponse, Error>,
   collection: {} as UseQueryResult<MovieResponse, Error>,
   searchMovies: {} as UseQueryResult<MovieResponse, Error>,
+  torrent: {} as UseQueryResult<any, Error>,
   //movie detail
   movie: {} as UseQueryResult<any, Error>,
   movieImg: {} as UseQueryResult<MovieImagesResponse, Error>,
@@ -45,7 +48,7 @@ const Queries = createContext<TQueriesCtx>({
 });
 
 export function QueriesCtxProvider({ children }: React.PropsWithChildren<{}>) {
-  const { page, path, list, movieId, search } = useCustomParams();
+  const { page, path, list, movieId, search, site, limit } = useCustomParams();
 
   const getLandingMovies = useQuery({
     queryKey: ["getLandingMovies"],
@@ -81,6 +84,12 @@ export function QueriesCtxProvider({ children }: React.PropsWithChildren<{}>) {
     queryKey: ["searchMovies", search, page],
     queryFn: () => searchMovieRq(search, Number(page) || 1),
     enabled: !!search,
+  });
+
+  const torrent = useQuery({
+    queryKey: ["torrent", search, page, site, limit],
+    queryFn: () => downloadMovieRq(search, site, Number(limit), Number(page)),
+    enabled: !!search && path === "/download",
   });
 
   //movie detail
@@ -121,6 +130,7 @@ export function QueriesCtxProvider({ children }: React.PropsWithChildren<{}>) {
     upcomingMovies,
     collection,
     searchMovies,
+    torrent,
     //movie detail
     movie,
     movieImg,
