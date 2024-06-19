@@ -40,9 +40,6 @@ const Images = () => {
                   }
                   content={
                     <ImageComponent
-                      unoptimized
-                      width={0}
-                      height={0}
                       title={image.file_path}
                       string={`https://image.tmdb.org/t/p/original/${image.file_path}`}
                       className="w-full h-full object-cover object-center rounded-lg"
