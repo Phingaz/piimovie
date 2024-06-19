@@ -52,7 +52,7 @@ const Images = () => {
               </div>
             ))
           ) : (
-            <p className="text-white">No similar movies found</p>
+            <p className="text-white">No images found</p>
           )}
         </div>
       </div>
