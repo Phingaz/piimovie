@@ -1,15 +1,17 @@
-'use client';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import React from 'react';
+"use client";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import React from "react";
+import Main from "@/app/_context/Main";
+import { cn } from "@/lib/utils";
 
-import { LogoLink } from '../utils/Logo';
-import ScrollLink from '../utils/ScrollToLink';
-import { links } from '@/app/_constants/header';
-import Main from '@/app/_context/Main';
-import { cn } from '@/lib/utils';
-
-const Header = ({ className, isExternal }: { className?: string; isExternal?: boolean }) => {
+const Header = ({
+  className,
+  isExternal,
+}: {
+  className?: string;
+  isExternal?: boolean;
+}) => {
   const { isMobile, mobileNav, toggleMobileNav } = React.useContext(Main);
   const [active, setActive] = React.useState(false);
   const [width, setWidth] = React.useState(0);
@@ -18,9 +20,9 @@ const Header = ({ className, isExternal }: { className?: string; isExternal?: bo
     const handleScroll = () => {
       setActive(window.scrollY > 500);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -29,12 +31,12 @@ const Header = ({ className, isExternal }: { className?: string; isExternal?: bo
       setWidth(window.innerWidth);
     };
 
-    window.addEventListener('resize', handleWindowResize);
+    window.addEventListener("resize", handleWindowResize);
 
     width > 1023 && mobileNav && toggleMobileNav();
 
     return () => {
-      window.removeEventListener('resize', handleWindowResize);
+      window.removeEventListener("resize", handleWindowResize);
     };
   }, [mobileNav, toggleMobileNav, width]);
 
@@ -45,19 +47,23 @@ const Header = ({ className, isExternal }: { className?: string; isExternal?: bo
       transition={{ duration: 0.3 }}
       className={cn(
         `transition text-white ${
-          active ? 'bg-black/80 backdrop-blur-sm' : 'bg-transparent backdrop-blur-sm'
+          active
+            ? "bg-black/80 backdrop-blur-sm"
+            : "bg-transparent backdrop-blur-sm"
         } fixed top-0 left-0 h-[80px] w-full z-[99] flex justify-between items-center px-6 xl:px-20 overflow-x-clip`,
-        className,
+        className
       )}
     >
       {/* logo */}
-      <LogoLink size={60} />
+      {/* <LogoLink size={60} /> */}
 
       {/* nav */}
       <motion.nav
         initial={{ opacity: 0, width: 0 }}
-        whileInView={{ opacity: 1, width: mobileNav ? '250px' : 'auto' }}
-        className={`lg:block ${mobileNav ? ' fixed top-0 right-0 bg-black h-[100vh] ' : 'hidden'}`}
+        whileInView={{ opacity: 1, width: mobileNav ? "250px" : "auto" }}
+        className={`lg:block ${
+          mobileNav ? " fixed top-0 right-0 bg-black h-[100vh] " : "hidden"
+        }`}
       >
         <ul className="flex gap-10 font-bold flex-col lg:flex-row pt-20 lg:pt-0 items-center w-full h-full uppercase">
           {isExternal ? (
@@ -71,13 +77,19 @@ const Header = ({ className, isExternal }: { className?: string; isExternal?: bo
             </>
           ) : (
             <>
-              {links.map((link) => (
-                <li key={link.href} onClick={() => isMobile && toggleMobileNav()}>
-                  <ScrollLink className="text-sm font-[500]" href={`#${link.href}`}>
+              {/* {links.map((link) => (
+                <li
+                  key={link.href}
+                  onClick={() => isMobile && toggleMobileNav()}
+                >
+                  <ScrollLink
+                    className="text-sm font-[500]"
+                    href={`#${link.href}`}
+                  >
                     {link.label}
                   </ScrollLink>
                 </li>
-              ))}
+              ))} */}
             </>
           )}
         </ul>
@@ -86,7 +98,7 @@ const Header = ({ className, isExternal }: { className?: string; isExternal?: bo
       {/* mobileToggle */}
       <div className="relative z-10 content lg:hidden">
         <motion.button
-          animate={mobileNav ? 'open' : 'closed'}
+          animate={mobileNav ? "open" : "closed"}
           className="flex flex-col justify-center items-center rounded-lg p-2 py-3 gap-[7px]"
           onClick={() => toggleMobileNav()}
         >
