@@ -49,7 +49,7 @@ const MovieDetail = () => {
               <SimilarMovies />
               <RecommendedMovies />
             </div>
-            <div className="flex-1 flex flex-col gap-3">
+            <div className="flex-1 flex flex-col gap-3 md:w-[40%]">
               <Infos movieDetail={movieDetail} />
               <Images />
             </div>

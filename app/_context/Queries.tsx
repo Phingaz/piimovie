@@ -66,26 +66,31 @@ export function QueriesCtxProvider({ children }: React.PropsWithChildren<{}>) {
   const movie = useQuery({
     queryKey: ["movieDetail", movieId],
     queryFn: () => getMovieDetailRq(movieId),
+    enabled: !!movieId,
   });
 
   const movieImg = useQuery({
     queryKey: ["movieImages", movieId],
     queryFn: () => getMovieImagesRq(Number(movieId)),
+    enabled: !!movieId,
   });
 
   const video = useQuery({
     queryKey: ["video", movieId],
     queryFn: () => getVideoRq(Number(movieId)),
+    enabled: !!movieId,
   });
 
   const recommendations = useQuery({
     queryKey: ["recommendations", movieId],
     queryFn: () => getMovieRecommendationsRq(Number(movieId)),
+    enabled: !!movieId,
   });
 
   const similar = useQuery({
     queryKey: ["similar", movieId],
     queryFn: () => getMovieSimilarRq(Number(movieId)),
+    enabled: !!movieId,
   });
 
   const contextValue = {

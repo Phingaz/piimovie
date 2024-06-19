@@ -5,6 +5,7 @@ import { SectionLoader } from "../../utils/Loader";
 
 import useEmblaCarousel from "embla-carousel-react";
 import ImageComponent from "../../utils/ImageComponent";
+import Modal from "../../utils/Modal";
 
 const Images = () => {
   const { movieImg } = React.useContext(Queries);
@@ -17,7 +18,7 @@ const Images = () => {
   const images = data?.backdrops || [];
 
   return (
-    <div className="my-5 max-w-[500px]">
+    <div className="my-5 w-full">
       <h2 className="text-lg md:text-2xl font-[600] mb-5">Posters & images</h2>
       <div className="carousel-ref" ref={emblaRef}>
         <div className="carousel-wrapper-no-ml">
@@ -28,12 +29,26 @@ const Images = () => {
           ) : images.length > 0 ? (
             images.map((image) => (
               <div key={image.file_path} className="carousel-item">
-                <ImageComponent
-                  width={500}
-                  height={500}
-                  title={image.file_path}
-                  string={image.file_path}
-                />
+                <Modal
+                  trigger={
+                    <ImageComponent
+                      width={500}
+                      height={500}
+                      title={image.file_path}
+                      string={`https://image.tmdb.org/t/p/w500/${image.file_path}`}
+                    />
+                  }
+                  content={
+                    <ImageComponent
+                      unoptimized
+                      width={0}
+                      height={0}
+                      title={image.file_path}
+                      string={`https://image.tmdb.org/t/p/original/${image.file_path}`}
+                      className="w-full h-full object-cover object-center rounded-lg"
+                    />
+                  }
+                ></Modal>
               </div>
             ))
           ) : (
