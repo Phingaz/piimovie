@@ -22,7 +22,7 @@ const Download = () => {
 
   if (isError || torrents?.length === 0)
     return (
-      <div>
+      <div className="w-full min-h-[97.4svh] bg-bg flex justify-center items-center">
         <p className="text-3xl font-bold text-center">
           No torrents found, please refine your search
         </p>
