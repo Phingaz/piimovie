@@ -2,10 +2,12 @@
 import React from "react";
 import List from "./List";
 import Queries from "@/app/_context/Queries";
+import Main from "@/app/_context/Main";
 
 const LandingList = () => {
   const { getLandingMovies, popularMovies, topRatedMovies, upcomingMovies } =
     React.useContext(Queries);
+  const { manageFav, favMovies } = React.useContext(Main);
 
   const movieCategoryEnums = [
     { title: "Now Playing", category: "now_playing", ctx: getLandingMovies },
@@ -20,6 +22,8 @@ const LandingList = () => {
         {movieCategoryEnums.map((category, index) => (
           <List
             key={index}
+            favMovies={favMovies}
+            manageFav={manageFav}
             title={category.title}
             category={category.category}
             movieCtx={category.ctx}

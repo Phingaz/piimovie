@@ -1,6 +1,6 @@
 import React from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import { MovieResponse } from "@/app/types";
+import { Movie, MovieResponse } from "@/app/types";
 import { UseQueryResult } from "@tanstack/react-query";
 import { SectionLoader } from "../../utils/Loader";
 import Link from "next/link";
@@ -11,10 +11,14 @@ const List = ({
   movieCtx,
   title,
   category,
+  favMovies,
+  manageFav,
 }: {
   movieCtx: UseQueryResult<MovieResponse, Error>;
   title: string;
   category: string;
+  favMovies: Movie[];
+  manageFav: (movie: Movie) => void;
 }) => {
   const { data, isLoading, isError } = movieCtx;
 
@@ -46,7 +50,12 @@ const List = ({
             <ErrorSection />
           ) : (
             movies.map((movie, index) => (
-              <LandingCard key={index} movie={movie} />
+              <LandingCard
+                key={index}
+                movie={movie}
+                favMovies={favMovies}
+                manageFav={manageFav}
+              />
             ))
           )}
         </div>

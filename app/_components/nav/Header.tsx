@@ -4,6 +4,7 @@ import Link from "next/link";
 import React from "react";
 import Main from "@/app/_context/Main";
 import { cn } from "@/lib/utils";
+import { movieList } from "@/app/constants";
 
 const Header = ({
   className,
@@ -50,14 +51,14 @@ const Header = ({
           active
             ? "bg-black/80 backdrop-blur-sm"
             : "bg-transparent backdrop-blur-sm"
-        } fixed top-0 left-0 h-[80px] w-full z-[99] flex justify-between items-center px-6 xl:px-20 overflow-x-clip`,
+        } fixed top-0 left-0 h-[80px] w-full z-[99] flex justify-between items-center px-3 md:px-8 overflow-x-clip`,
         className
       )}
     >
-      {/* logo */}
-      {/* <LogoLink size={60} /> */}
+      <Link href="/" className="text-2xl font-bold">
+        Logo
+      </Link>
 
-      {/* nav */}
       <motion.nav
         initial={{ opacity: 0, width: 0 }}
         whileInView={{ opacity: 1, width: mobileNav ? "250px" : "auto" }}
@@ -66,32 +67,22 @@ const Header = ({
         }`}
       >
         <ul className="flex gap-10 font-bold flex-col lg:flex-row pt-20 lg:pt-0 items-center w-full h-full uppercase">
-          {isExternal ? (
-            <>
-              <Link className="text-sm font-[500]" href="/">
-                Pagina Inicial
+          {movieList.map((link, i) => (
+            <li key={i} onClick={() => isMobile && toggleMobileNav()}>
+              <Link
+                className="text-sm font-[500]"
+                href={`/moviecollection?list=${link.id}`}
+              >
+                {link.name}
               </Link>
-              <Link className="text-sm font-[500]" href="/collection">
-                Coleções
-              </Link>
-            </>
-          ) : (
-            <>
-              {/* {links.map((link) => (
-                <li
-                  key={link.href}
-                  onClick={() => isMobile && toggleMobileNav()}
-                >
-                  <ScrollLink
-                    className="text-sm font-[500]"
-                    href={`#${link.href}`}
-                  >
-                    {link.label}
-                  </ScrollLink>
-                </li>
-              ))} */}
-            </>
-          )}
+            </li>
+          ))}
+          <Link className="text-sm font-[500]" href={`/favorites`}>
+            Favorites
+          </Link>
+          <Link className="text-sm font-[500]" href={`/search`}>
+            Search
+          </Link>
         </ul>
       </motion.nav>
 

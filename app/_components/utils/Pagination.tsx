@@ -1,34 +1,47 @@
+import useCustomParams from "@/app/_hooks/useCustomParams";
+import { useRouter } from "next/navigation";
 import React from "react";
 
-const Pagination = ({
-  page,
-  totalPage,
-  list,
-}: {
-  page: string | null;
-  totalPage: number | undefined;
-  list: string | null;
-}) => {
+const Pagination = ({ totalPage }: { totalPage: number | undefined }) => {
+  const router = useRouter();
+  const { path, page, list, search } = useCustomParams();
+
   const [input, setInput] = React.useState("");
 
   const nextPage = () => {
     if (Number(page) >= Number(totalPage)) return;
 
-    const params = new URLSearchParams();
-    list && params.append("list", list);
-    params.append("page", (Number(page) + 1).toString());
+    const queryParams = new URLSearchParams();
 
-    window.location.search = params.toString();
+    if (list) {
+      queryParams.set("list", list);
+    }
+
+    if (search) {
+      queryParams.set("search", search);
+    }
+
+    queryParams.set("page", page ? String(Number(page) + 1) : "2");
+
+    router.push(`${path}?${queryParams.toString()}`);
   };
 
   const prevPage = () => {
     if (Number(page) <= 1) return;
 
-    const params = new URLSearchParams();
-    list && params.append("list", list);
-    params.append("page", (Number(page) - 1).toString());
+    const queryParams = new URLSearchParams();
 
-    window.location.search = params.toString();
+    if (list) {
+      queryParams.set("list", list);
+    }
+
+    if (search) {
+      queryParams.set("search", search);
+    }
+
+    queryParams.set("page", page ? String(Number(page) - 1) : "1");
+
+    router.push(`${path}?${queryParams.toString()}`);
   };
 
   const submit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -68,6 +81,8 @@ const Pagination = ({
         Jump to page
         <input
           type="number"
+          min={1}
+          minLength={1}
           max={totalPage}
           maxLength={3}
           value={input}

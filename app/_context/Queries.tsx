@@ -8,15 +8,19 @@ import {
   getMovieSimilarRq,
   getMoviesRq,
   getVideoRq,
+  searchMovieRq,
 } from "@/lib/qry";
 import { MovieImagesResponse, MovieResponse, VideoResponse } from "../types";
 import { usePathname, useSearchParams } from "next/navigation";
+import useCustomParams from "../_hooks/useCustomParams";
 
 export type TQueriesCtx = {
   getLandingMovies: UseQueryResult<MovieResponse, Error>;
   popularMovies: UseQueryResult<MovieResponse, Error>;
   topRatedMovies: UseQueryResult<MovieResponse, Error>;
   upcomingMovies: UseQueryResult<MovieResponse, Error>;
+  collection: UseQueryResult<MovieResponse, Error>;
+  searchMovies: UseQueryResult<MovieResponse, Error>;
   //movie detail
   movie: UseQueryResult<any, Error>;
   movieImg: UseQueryResult<MovieImagesResponse, Error>;
@@ -30,6 +34,8 @@ const Queries = createContext<TQueriesCtx>({
   popularMovies: {} as UseQueryResult<MovieResponse, Error>,
   topRatedMovies: {} as UseQueryResult<MovieResponse, Error>,
   upcomingMovies: {} as UseQueryResult<MovieResponse, Error>,
+  collection: {} as UseQueryResult<MovieResponse, Error>,
+  searchMovies: {} as UseQueryResult<MovieResponse, Error>,
   //movie detail
   movie: {} as UseQueryResult<any, Error>,
   movieImg: {} as UseQueryResult<MovieImagesResponse, Error>,
@@ -39,27 +45,42 @@ const Queries = createContext<TQueriesCtx>({
 });
 
 export function QueriesCtxProvider({ children }: React.PropsWithChildren<{}>) {
-  const page = useSearchParams().get("page");
-  const movieId = usePathname().split("/")[2];
+  const { page, path, list, movieId, search } = useCustomParams();
 
   const getLandingMovies = useQuery({
     queryKey: ["getLandingMovies"],
-    queryFn: () => getMoviesRq("now_playing", Number(page) || 1),
+    queryFn: () => getMoviesRq("now_playing", Number(page)),
+    enabled: path === "/",
   });
 
   const popularMovies = useQuery({
     queryKey: ["popularMovies"],
-    queryFn: () => getMoviesRq("popular", 1),
+    queryFn: () => getMoviesRq("popular", Number(page)),
+    enabled: path === "/",
   });
 
   const topRatedMovies = useQuery({
     queryKey: ["topRatedMovies"],
-    queryFn: () => getMoviesRq("top_rated", 1),
+    queryFn: () => getMoviesRq("top_rated", Number(page)),
+    enabled: path === "/",
   });
 
   const upcomingMovies = useQuery({
     queryKey: ["upcomingMovies"],
-    queryFn: () => getMoviesRq("upcoming", 1),
+    queryFn: () => getMoviesRq("upcoming", Number(page)),
+    enabled: path === "/",
+  });
+
+  const collection = useQuery({
+    queryKey: ["collection", list, page],
+    queryFn: () => getMoviesRq(list, Number(page)),
+    enabled: path === "/moviecollection",
+  });
+
+  const searchMovies = useQuery({
+    queryKey: ["searchMovies", search, page],
+    queryFn: () => searchMovieRq(search, Number(page) || 1),
+    enabled: !!search,
   });
 
   //movie detail
@@ -98,6 +119,8 @@ export function QueriesCtxProvider({ children }: React.PropsWithChildren<{}>) {
     popularMovies,
     topRatedMovies,
     upcomingMovies,
+    collection,
+    searchMovies,
     //movie detail
     movie,
     movieImg,

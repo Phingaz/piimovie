@@ -11,11 +11,11 @@ export const Video = () => {
   const [page, setPage] = React.useState(0);
 
   return (
-    <div className="w-full h-[450px]">
+    <div className="w-full h-[450px] flex justify-center items-center">
       {isPending ? (
         <Loader />
       ) : isError ? (
-        <p className="text-black text-center">
+        <p className="text-center">
           Unable to load video trailer for this movie
         </p>
       ) : (

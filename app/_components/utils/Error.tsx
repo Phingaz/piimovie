@@ -8,5 +8,14 @@ const ErrorSection = () => {
     </p>
   );
 };
+const InvalidMovieId = () => {
+  return (
+    <div className="min-h-[97.4svh] bg-bg grid place-content-center text-center text-white">
+      <p>
+        Invalid Movie ID. <br /> Please check the URL and try again
+      </p>
+    </div>
+  );
+};
 
-export { ErrorSection };
+export { ErrorSection, InvalidMovieId };

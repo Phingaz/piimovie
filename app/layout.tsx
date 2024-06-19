@@ -3,6 +3,8 @@ import { Montserrat, Lato } from "next/font/google";
 import "./globals.css";
 import Providers from "./Providers";
 import LayoutWrapper from "./_components/layout/MainWrapper";
+import Header from "./_components/nav/Header";
+import Footer from "./_components/sections/Footer";
 
 const header = Lato({
   subsets: ["latin"],
@@ -33,7 +35,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={header.variable + " " + body.variable}>
         <Providers>
-          <LayoutWrapper>{children}</LayoutWrapper>
+          <LayoutWrapper>
+            <Header />
+            {children}
+            <Footer />
+          </LayoutWrapper>
         </Providers>
       </body>
     </html>

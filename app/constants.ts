@@ -26,3 +26,22 @@ export const movieList = [
   { id: "top_rated", name: "Top Rated" },
   { id: "upcoming", name: "Upcoming" },
 ];
+
+export const supportedSites = [
+  "1337x",
+  "piratebay",
+  "magnetdl",
+  // "bitsearch",
+  "limetorrent",
+  // "torlock",
+  // "zooqle",
+  // "tgx",
+  // "nyaasi",
+  // "kickass",
+  // "libgen",
+  // "yts",
+  // "torrentfunk",
+  // "glodls",
+  // "torrentproject",
+  // "ybt",
+];

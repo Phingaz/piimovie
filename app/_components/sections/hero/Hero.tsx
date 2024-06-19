@@ -7,7 +7,7 @@ import HeroMovieInfo from "./HeroMovieInfo";
 import HeroMovieImg from "./HeroMovieImg";
 import Queries from "@/app/_context/Queries";
 
-const time = 25;
+const time = 20;
 const intervalTime = 500;
 
 const Hero = () => {

@@ -1,4 +1,4 @@
-import { MovieResponse } from "@/app/types";
+import { Movie, MovieResponse } from "@/app/types";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -36,4 +36,8 @@ export const formatCurrency = (value: number) => {
     style: "currency",
     currency: "USD",
   }).format(value);
+};
+
+export const isFav = (favMovies: Movie[], movie: Movie) => {
+  return favMovies?.some((favMovie) => favMovie.id === movie.id);
 };
