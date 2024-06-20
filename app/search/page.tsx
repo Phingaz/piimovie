@@ -44,8 +44,6 @@ const SearchComponent = () => {
                       key={movie.id}
                       movie={movie}
                       genres={genres}
-                      manageFav={manageFav}
-                      favMovies={favMovies}
                     />
                   );
                 })}
