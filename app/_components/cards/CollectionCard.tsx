@@ -4,18 +4,18 @@ import Link from "next/link";
 import React from "react";
 import ImageComponent from "../utils/ImageComponent";
 import Favorite from "../utils/Favorite";
+import Main from "@/app/_context/Main";
 
 const CollectionCard = ({
   movie,
   genres,
-  manageFav,
-  favMovies,
+  showMore,
 }: {
   movie: Movie;
   genres: string;
-  manageFav: (movie: Movie) => void;
-  favMovies: Movie[];
+  showMore?: boolean;
 }) => {
+  const { favMovies, manageFav } = React.useContext(Main);
   const isFavorite = isFav(favMovies, movie);
   return (
     <div
@@ -32,6 +32,8 @@ const CollectionCard = ({
       <Link href={`/movie/${movie.id}`}>
         <div className="w-full h-full relative overflow-clip rounded-lg aspect-[3/4]">
           <ImageComponent
+            placeholder="blur"
+            blurDataURL="/placeholder.png"
             string={
               movie.backdrop_path
                 ? `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`
@@ -41,14 +43,18 @@ const CollectionCard = ({
           />
         </div>
         <div className="p-3 absolute bottom-0 left-0 w-full bg-black/80 rounded-lg rounded-tr-none rounded-tl-none">
-          <h3 className="text-white md:text-lg font-bold leading-tight mb-3">
+          <h3 className="text-white text-sm sm:text-base md:text-lg font-bold leading-tight mb-3">
             {movie.title}
           </h3>
 
-          <p className="font-[500] text-[10px] md:text-xs mb-1">{genres}</p>
-          <p className="font-[500] text-[10px] md:text-xs ">
-            Release Date: {cleanDate(movie.release_date)}
-          </p>
+          {showMore && (
+            <>
+              <p className="font-[500] text-[10px] md:text-xs mb-1">{genres}</p>
+              <p className="font-[500] text-[10px] md:text-xs ">
+                Release Date: {cleanDate(movie.release_date)}
+              </p>
+            </>
+          )}
         </div>
       </Link>
     </div>

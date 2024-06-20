@@ -17,7 +17,7 @@ const Favorite = ({
       fill={isFavourite ? "red" : "#0000"}
       className={`${
         isFavourite ? "text-red-500" : ""
-      } cursor-pointer transition`}
+      } cursor-pointer transition min-w-[30px] min-h-[25px]`}
     />
   );
 };

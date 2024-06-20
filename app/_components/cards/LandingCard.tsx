@@ -21,6 +21,8 @@ const LandingCard = ({ movie }: { movie: Movie }) => {
       </div>
       <Link href={`/movie/${movie.id}`} className="w-full h-full relative">
         <ImageComponent
+          placeholder="blur"
+          blurDataURL="/placeholder.png"
           string={
             movie.poster_path
               ? `https://image.tmdb.org/t/p/original/${movie.poster_path}`

@@ -14,8 +14,6 @@ import { Movie, MovieDetail as TMD } from "@/app/types";
 import { isFav } from "@/lib/utils";
 import Link from "next/link";
 import React from "react";
-import { CircularProgressbar } from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
 
 const MovieDetail = () => {
   const { movie } = React.useContext(Queries);
@@ -27,7 +25,6 @@ const MovieDetail = () => {
   if (isLoading) return <PageLoader />;
   if (!movieDetail) return <InvalidMovieId />;
 
-  const percentage = Math.round(movieDetail.vote_average * 100 * 0.1);
   const isFavourite = isFav(favMovies, movieDetail as unknown as Movie);
 
   return (
@@ -35,28 +32,18 @@ const MovieDetail = () => {
       <div className="container py-10 md:py-20 text-white">
         <Video />
         <div className="mt-7">
-          <div className="flex justify-between items-center mb-8">
-            <div className="flex gap-7 items-center">
-              <Link
-                href={`/download?search=${movieDetail?.title}`}
-                className="text-3xl md:text-5xl font-bold text-gray-200"
-              >
-                {movieDetail?.title}
-              </Link>
-              <Favorite
-                manageFav={manageFav}
-                movieDetail={movieDetail as unknown as Movie}
-                isFavourite={isFavourite}
-              />
-            </div>
-            <div className="size-14">
-              <CircularProgressbar
-                strokeWidth={15}
-                value={percentage}
-                text={`${percentage}%`}
-                className="font-[500]"
-              />
-            </div>
+          <div className="flex mb-8 gap-3 items-center flex-wrap">
+            <Link
+              href={`/download?search=${movieDetail?.title}`}
+              className="text-3xl md:text-5xl font-bold text-gray-200"
+            >
+              {movieDetail?.title}
+            </Link>
+            <Favorite
+              manageFav={manageFav}
+              movieDetail={movieDetail as unknown as Movie}
+              isFavourite={isFavourite}
+            />
           </div>
           <div className="flex justify-between flex-col md:flex-row gap-8">
             <div className="flex-[2] flex flex-col gap-5">

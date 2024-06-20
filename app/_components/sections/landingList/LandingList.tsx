@@ -16,7 +16,7 @@ const LandingList = () => {
   ];
 
   return (
-    <section className="min-h-[100svh] bg-bg">
+    <section className="min-h-[100svh] bg-bg bg-gradient">
       <div className="container mx-auto py-10 md:py-20 flex flex-col gap-10 md:gap-16">
         {movieCategoryEnums.map((category, index) => (
           <List
