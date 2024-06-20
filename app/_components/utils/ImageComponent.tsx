@@ -9,6 +9,8 @@ type ImageComponentProps = Omit<ImageProps, "src" | "alt"> & {
 const ImageComponent = ({ string, title, ...props }: ImageComponentProps) => {
   return (
     <Image
+      placeholder="blur"
+      blurDataURL="/placeholder.png"
       unoptimized
       src={string ? string : "/placeholder.png"}
       alt={title}

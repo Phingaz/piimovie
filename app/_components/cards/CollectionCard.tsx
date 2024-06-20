@@ -32,8 +32,6 @@ const CollectionCard = ({
       <Link href={`/movie/${movie.id}`}>
         <div className="w-full h-full relative overflow-clip rounded-lg aspect-[3/4]">
           <ImageComponent
-            placeholder="blur"
-            blurDataURL="/placeholder.png"
             string={
               movie.backdrop_path
                 ? `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`
