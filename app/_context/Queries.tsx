@@ -10,9 +10,8 @@ import {
   getMoviesRq,
   getVideoRq,
   searchMovieRq,
-} from "@/lib/qry";
+} from "@/lib/qry.client";
 import { MovieImagesResponse, MovieResponse, VideoResponse } from "../types";
-import { usePathname, useSearchParams } from "next/navigation";
 import useCustomParams from "../_hooks/useCustomParams";
 
 export type TQueriesCtx = {

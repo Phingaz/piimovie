@@ -13,7 +13,7 @@ const intervalTime = 500;
 const Hero = () => {
   const { getLandingMovies } = React.useContext(Queries);
   const { data } = getLandingMovies;
-
+console.log("data", data);
   const randomMovie = getRandomMovie(data);
 
   const [movie, setMovie] = React.useState<Movie | null>(randomMovie);

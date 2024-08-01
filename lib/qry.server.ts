@@ -1,3 +1,4 @@
+import "server-only";
 import axios from "@/lib/axios";
 
 export const getMoviesRq = async (type: string | null, page: number) => {
@@ -58,3 +59,4 @@ export const downloadMovieRq = async (
   );
   return data;
 };
+
