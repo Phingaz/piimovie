@@ -4,8 +4,6 @@ import { ErrorSection } from "../../utils/Error";
 import useEmblaCarousel from "embla-carousel-react";
 import Queries from "@/app/_context/Queries";
 import LandingCard from "../../cards/LandingCard";
-import CollectionCard from "../../cards/CollectionCard";
-import { movieGenreId } from "@/app/constants";
 
 const Recommended = () => {
   const { recommendations } = React.useContext(Queries);
@@ -29,15 +27,10 @@ const Recommended = () => {
           ) : isError ? (
             <ErrorSection />
           ) : movies.length > 0 ? (
-            movies.map((movie, index) => {
-              const genres = movieGenreId
-                .filter((genre) => movie.genre_ids.includes(genre.id))
-                .map((genre) => genre.name)
-                .join(", ");
-
+            movies.map((movie) => {
               return (
                 <div key={movie.id} className={`carousel-item relative`}>
-                  <CollectionCard movie={movie} genres={genres} />
+                  <LandingCard movie={movie} />
                 </div>
               );
             })

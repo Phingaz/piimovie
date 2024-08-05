@@ -19,11 +19,11 @@ const LandingCard = ({ movie }: { movie: Movie }) => {
           movieDetail={movie}
         />
       </div>
-      <Link href={`/movie/${movie.id}`} className="w-full h-full relative">
+      <Link href={`/movie/${movie.id}`} className="w-full max-w-[100px] h-full relative">
         <ImageComponent
           string={
             movie.poster_path
-              ? `https://image.tmdb.org/t/p/original/${movie.poster_path}`
+              ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
               : "/placeholder.png"
           }
           title={movie.title}

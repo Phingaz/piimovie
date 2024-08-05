@@ -41,8 +41,8 @@ const MovieDetail = () => {
             </Link>
             <Favorite
               manageFav={manageFav}
-              movieDetail={movieDetail as unknown as Movie}
               isFavourite={isFavourite}
+              movieDetail={movieDetail as unknown as Movie}
             />
           </div>
           <div className="flex justify-between flex-col md:flex-row gap-8">

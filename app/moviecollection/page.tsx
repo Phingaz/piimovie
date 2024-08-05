@@ -2,7 +2,6 @@
 import CollectionCard from "@/app/_components/cards/CollectionCard";
 import Pagination from "@/app/_components/utils/Pagination";
 import Search from "@/app/_components/utils/Search";
-import Main from "@/app/_context/Main";
 import Queries from "@/app/_context/Queries";
 import { movieGenreId, movieList } from "@/app/constants";
 import React from "react";
@@ -12,7 +11,6 @@ const MovieCollection = () => {
   const { list } = useCustomParams();
 
   const { collection } = React.useContext(Queries);
-  const { manageFav, favMovies } = React.useContext(Main);
 
   const { data } = collection;
 

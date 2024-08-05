@@ -12,9 +12,7 @@ const Modal = ({
   return (
     <Dialog>
       <DialogTrigger className={"w-full h-full"}>{trigger}</DialogTrigger>
-      <DialogContent
-        className={"p-0 min-w-[60vw] aspect-video rounded-lg bg-transparent"}
-      >
+      <DialogContent className={"p-0 w-[min(90vw,900px)] max-w-[90vw] aspect-video rounded-lg bg-transparent"}>
         {content}
       </DialogContent>
     </Dialog>

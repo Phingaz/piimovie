@@ -20,7 +20,7 @@ const CollectionCard = ({
   return (
     <div
       key={movie.id}
-      className="w-full h-full cursor-pointer rounded-lg relative overflow-clip hover:shadow-xl transition-all ease-in-out duration-150 hover:rounded-lg hover:scale-105"
+      className="w-full h-full cursor-pointer rounded-lg relative overflow-clip transition-all ease-in-out duration-150"
     >
       <div className="absolute top-0 right-0 p-2 cursor-pointer z-50">
         <Favorite
@@ -30,7 +30,7 @@ const CollectionCard = ({
         />
       </div>
       <Link href={`/movie/${movie.id}`}>
-        <div className="w-full h-full relative overflow-clip rounded-lg aspect-[3/4]">
+        <div className="w-full h-full relative overflow-clip rounded-lg aspect-[3/5]">
           <ImageComponent
             string={
               movie.backdrop_path
@@ -40,8 +40,8 @@ const CollectionCard = ({
             title={movie.title}
           />
         </div>
-        <div className="p-3 absolute bottom-0 left-0 w-full bg-black/80 rounded-lg rounded-tr-none rounded-tl-none">
-          <h3 className="text-white text-sm sm:text-base md:text-lg font-bold leading-tight mb-3">
+        <div className="p-3 absolute bottom-0 left-0 w-full bg-black/80 rounded-lg rounded-tr-none rounded-tl-none text-gray-300">
+          <h3 className="text-sm sm:text-base md:text-lg font-bold leading-tight mb-3 text-gray-200">
             {movie.title}
           </h3>
 
