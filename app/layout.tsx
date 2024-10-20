@@ -33,6 +33,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="robots" content="noindex" />
+      </head>
       <body className={header.variable + " " + body.variable}>
         <Providers>
           <LayoutWrapper>
