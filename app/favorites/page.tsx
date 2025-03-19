@@ -8,7 +8,7 @@ import { SearchXIcon } from 'lucide-react';
 const Page = () => {
   const { favMovies: movies } = useFavoriteCtx();
   const [filteredResults, setFilteredResults] = React.useState(typeof window !== 'undefined' ? movies : []);
-  console.log(filteredResults);
+
   return (
     <div className="container mx-auto py-10 px-3 md:px-[2rem]">
       <div className="flex md:justify-between md:items-center mb-10 md:flex-row flex-col gap-3 md:gap-0">
