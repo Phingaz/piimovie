@@ -1,96 +1,74 @@
-"use client";
-import { Download, Link2 } from "lucide-react";
+import ErrorPageComponent from "@/components/helpers/Error";
+import { searchMoviesForDownload } from "@/lib/queries";
 import React from "react";
-import Queries from "../_context/Queries";
-import useCustomParams from "../_hooks/useCustomParams";
-import { Loader } from "../_components/utils/Loader";
-import Pagination from "../_components/utils/Pagination";
-import Search from "../_components/utils/Search";
+import { MovieTypeEnum } from "../types";
+import SearchBar from "@/components/utils/SearchComponent";
+import TorrentItem from "@/components/utils/TorrentCard";
+import SimplePagination from "@/components/utils/buttons/SimplePagination";
+import { DownloadIcon } from "lucide-react";
+import { Metadata } from "next";
 
-const DownloadComponent = () => {
-  const { search } = useCustomParams();
-  const { torrent } = React.useContext(Queries);
-  const { data, isLoading, isError } = torrent;
-  const torrents = data?.data;
+export function generateMetadata(): Metadata {
+  return {
+    title: `Movie Box | Download | Torrent`,
+    description: "Find and torrent anything.",
+  };
+}
 
-  if (isLoading)
+const Page = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ page: string; q: string }>;
+}) => {
+  const { page, q } = (await searchParams) as {
+    page: string;
+    q: keyof typeof MovieTypeEnum;
+  };
+
+  try {
+    const result = await searchMoviesForDownload({
+      page: Number(page) || 1,
+      query: q,
+    });
+
+    if (!result.data) throw new Error(result.message);
+
+    const list = result.data?.data;
+
     return (
-      <div className="w-full min-h-[97.4svh] bg-bg flex justify-center items-center">
-        <Loader />
+      <div className="text-white md:pt-10">
+        <div className="container mx-auto py-10 md:py-20 px-3 md:px-[2rem]">
+          <div className="flex md:justify-between md:items-center mb-10 md:flex-row flex-col gap-3 md:gap-0">
+            <h1 className="text-4xl font-bold">Download</h1>
+            <SearchBar path="download" />
+          </div>
+          {q ? (
+            <>
+              <div className="grid md:gap-y-5 gap-3 mb-10">
+                {list?.map((el) => {
+                  return <TorrentItem key={el.hash} torrent={el} />;
+                })}
+              </div>
+              <SimplePagination currentPage={Number(page) || 1} />
+            </>
+          ) : (
+            <div className="flex justify-center items-center flex-col border border-dashed py-20 rounded-md bg-gray-900">
+              <DownloadIcon size={50} className=" text-gray-400" />
+              <h3 className="text-lg font-medium text-white mb-2">
+                No download results
+              </h3>
+              <p className="text-gray-400 max-w-md text-center">
+                Try searching for movies, actors, directors, or genres to find
+                what you&apos;re looking for.
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     );
-
-  return (
-    <div className="bg-bg min-h-[100svh] text-white pt-10">
-      <div className="container mx-auto py-10 md:py-20 px-3 md:px-[2rem]">
-        <div className="flex md:justify-between md:items-center mb-8 md:flex-row flex-col gap-3 md:gap-0">
-          <h1 className="text-4xl font-bold">{search ?? "Download"}</h1>
-          <Search download />
-        </div>
-        {isError ? (
-          <p className="text-xl font-bold text-center text-white">
-            No torrents found, please refine your search
-          </p>
-        ) : (
-          search && (
-            <>
-              <div className="grid grid-cols-1 gap-5 mb-5">
-                {torrents?.map((el: any, i: number) => (
-                  <div key={i} className="w-full bg-bg-light rounded-lg">
-                    <div
-                      key={i}
-                      className="flex md:flex-row flex-col md:justify-between md:items-start md:gap-2 gap-1 transition p-2 md:p-3 rounded-lg bg-accent-brighter bg-opacity-20 hover:scale-[1.02] ease-in-out"
-                    >
-                      <TorrentInfo info={el?.name} />
-                      <div className="flex mt-5md:mt-0 gap-0 md:gap-5">
-                        <div className="flex-1 flex flex-col gap-2">
-                          <div className="grid grid-cols-2 gap-3 items-center">
-                            <TorrentInfo title="Seeders" info={el?.seeders} />
-                            <TorrentInfo title="Leechers" info={el?.leechers} />
-                          </div>
-                          <div className="grid grid-cols-2 gap-3 items-center">
-                            <TorrentInfo title="Size" info={el?.size} />
-                            <TorrentInfo title="Date" info={el?.date} />
-                          </div>
-                        </div>
-                        <div className="flex flex-col justify-start items-start">
-                          <a
-                            className="flex justify-center gap-3 items-center rounded-md text-accent-brighter/50 transition hover:text-accent-brighter cursor-pointer"
-                            href={el?.url}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            <Link2 />
-                          </a>
-                          <a
-                            className="flex justify-center gap-3 items-center cursor-pointer transition text-accent-brighter/50 hover:text-accent-brighter"
-                            href={el?.magnet}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            <Download />
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <Pagination />
-            </>
-          )
-        )}
-      </div>
-    </div>
-  );
+  } catch (error) {
+    return <ErrorPageComponent error={error} />;
+  }
 };
 
-export default DownloadComponent;
-
-const TorrentInfo = ({ title, info }: { title?: string; info: string }) => {
-  return (
-    <p className="text-sm break-all font-[500]">
-      {title ? `${title}: ${info}` : info}
-    </p>
-  );
-};
+export default Page;

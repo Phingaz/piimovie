@@ -1,13 +1,27 @@
-import dynamic from "next/dynamic";
-import LandingList from "./_components/sections/landingList/LandingList";
+import ErrorPageComponent from "@/components/helpers/Error";
+import Hero from "@/components/landing/Hero";
+import LadingListingWrapper from "@/components/landing/LadingListingWrapper";
+import { getMovies } from "@/lib/queries";
+import { getRandomNumber, getRandomType } from "@/lib/utils";
 
-const Hero = dynamic(() => import("./_components/sections/hero/Hero"));
+export default async function Home() {
+  try {
+    const result = await getMovies({
+      page: getRandomNumber(10),
+      type: getRandomType(),
+    });
 
-export default function Home() {
-  return (
-    <main>
-      <Hero />
-      <LandingList />
-    </main>
-  );
+    if (!result.success) throw new Error(result.message);
+
+    const movies = result.data?.results;
+
+    return (
+      <main className="relative">
+        <Hero movies={movies} />
+        <LadingListingWrapper />
+      </main>
+    );
+  } catch (error) {
+    return <ErrorPageComponent error={error} />;
+  }
 }

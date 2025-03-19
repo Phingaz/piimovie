@@ -1,9 +1,7 @@
 "use client";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import posthog from "posthog-js";
 import { PostHogProvider } from "posthog-js/react";
 import { MainCtxProvider } from "./_context/Main";
-import dynamic from "next/dynamic";
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
   if (typeof window !== "undefined") {
@@ -13,26 +11,12 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
       capture_pageview: false,
     });
   }
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        refetchOnWindowFocus: false,
-        retry: 0,
-      },
-    },
-  });
 
   return (
     <PostHogProvider client={posthog}>
-      <QueryClientProvider client={queryClient}>
-        <MainCtxProvider>{children}</MainCtxProvider>
-      </QueryClientProvider>
+      <MainCtxProvider>{children}</MainCtxProvider>
     </PostHogProvider>
   );
 };
 
-const P = dynamic(() => Promise.resolve(Providers), {
-  ssr: false,
-});
-
-export default P;
+export default Providers;

@@ -1,45 +1,74 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-@layer components {
-  .bg-gradient {
-    background: rgb(37,65,79);
-    background: radial-gradient(circle, rgba(37,65,79,1) 0%, rgba(27,51,63,1) 28%, rgba(11,29,38,1) 100%);
-  }
+.bg-gradient {
+  background: rgb(37, 65, 79);
+  background: radial-gradient(
+    circle,
+    rgba(37, 65, 79, 1) 0%,
+    rgba(27, 51, 63, 1) 28%,
+    rgba(11, 29, 38, 1) 100%
+  );
+}
 
-  .carousel-styles {
-    margin-left: calc(2rem * -1);
-    backface-visibility: hidden;
-  }
+.container {
+  @apply p-8 max-w-[1500px];
+}
 
-  .carousel-styles-no-ml {
-    margin-left: calc(0 * -1);
-    backface-visibility: hidden;
-  }
+.carousel-styles {
+  margin-left: calc(2rem * -1);
+  backface-visibility: hidden;
+}
 
-  .transition {
-    @apply transition-all duration-300 ease-in-out;
-  }
+.carousel-styles-no-ml {
+  margin-left: calc(0 * -1);
+  backface-visibility: hidden;
+}
 
-  .carousel-ref {
-    @apply overflow-hidden relative cursor-grab select-none;
-  }
+.transition {
+  @apply transition-all duration-300 ease-in-out;
+}
 
-  .carousel-wrapper {
-    @apply touch-pinch-zoom touch-pan-y carousel-styles-no-ml flex gap-5;
-  }
+.carousel-ref {
+  @apply overflow-hidden relative cursor-grab select-none;
+}
 
-  .carousel-wrapper-no-ml {
-    @apply touch-pinch-zoom touch-pan-y carousel-styles-no-ml flex gap-5;
-  }
+.carousel-wrapper {
+  @apply touch-pinch-zoom touch-pan-y flex gap-5;
+}
 
-  .carousel-item {
-    @apply min-w-0 grow-0 shrink-0 basis-[55%] sm:basis-[47%] aspect-[2.2/3] md:basis-[28%] lg:basis-[20%] relative overflow-clip rounded-lg hover:rounded-lg;
-  }
+.carousel-wrapper-no-ml {
+  @apply touch-pinch-zoom touch-pan-y flex gap-5;
+}
+
+.carousel-item {
+  @apply min-w-0 grow-0 shrink-0 basis-[55%] sm:basis-[47%] aspect-[2.2/3] md:basis-[28%] lg:basis-[20%] relative overflow-clip rounded-lg hover:rounded-lg;
+}
+
+:root {
+  --background: #03000f;
+  --foreground: #ccc;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --font-heading: var(--font-heading);
+  --font-body: var(--font-body);
+  --color-jaguar-950: #03000f;
+  --breakpoint-3xl: 120rem;
+  --slide-height: 19rem;
+  --slide-spacing: 1rem;
+  --slide-spacing-sm: 10px;
+  --color-red-main: #981111;
+  --color-red-accent: #c51821;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
+  background: var(--background);
+  color: var(--foreground);
   font-family: var(--font-body), sans-serif;
 }
 
@@ -49,35 +78,52 @@ h3,
 h4,
 h5,
 h6 {
-  font-weight: 700;
-  font-family: var(--font-header), sans-serif;
+  font-family: var(--font-heading), sans-serif;
 }
 
-:root {
-  --slide-height: 19rem;
-  --slide-spacing: 1rem;
-  --slide-spacing-sm: 10px;
+.hidden-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
-::-webkit-scrollbar {
+.tiny-scrollbar::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
+::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+
 ::-webkit-scrollbar-thumb {
-  border-radius: 5px;
-  background: #cacaca;
+  border-radius: 2px;
+  background: light-dark(#5d5d5d, #0000);
 }
 ::-webkit-scrollbar-track {
-  background: #ffffff;
-  border-radius: 5px;
+  background: light-dark(#0000, #5d5d5d);
+  border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #cacaca;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #ffffff00 inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .loader {
@@ -99,23 +145,4 @@ html {
   100% {
     background-position: 100% 0, 100% 100%, 0 100%, 0 0, center;
   }
-}
-
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-textarea:-webkit-autofill,
-textarea:-webkit-autofill:hover,
-textarea:-webkit-autofill:focus,
-select:-webkit-autofill,
-select:-webkit-autofill:hover,
-select:-webkit-autofill:focus {
-  -webkit-box-shadow: 0 0 0px 1000px #fff inset;
-  transition: background-color 5000s ease-in-out 0s;
-}
-
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
 }

@@ -1,29 +1,28 @@
+import { ReactScan } from "@/components/utils/ReactScan";
 import type { Metadata } from "next";
-import { Montserrat, Lato } from "next/font/google";
+import { Poppins, Inter } from "next/font/google";
 import "./globals.css";
 import Providers from "./Providers";
-import LayoutWrapper from "./_components/layout/MainWrapper";
-import Header from "./_components/nav/Header";
-import Footer from "./_components/sections/Footer";
+import Header from "@/components/nav/Header";
 
-const header = Lato({
+const heading = Poppins({
   subsets: ["latin"],
-  weight: ["300", "400", "700", "900"],
+  weight: ["400", "500", "600", "700", "800"],
   display: "swap",
-  variable: "--font-header",
+  variable: "--font-heading",
 });
 
-const body = Montserrat({
+const body = Inter({
   subsets: ["latin"],
   display: "swap",
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  weight: ["400", "500", "700", "800"],
   variable: "--font-body",
 });
 
 export const metadata: Metadata = {
   title: "Movie Box",
   description:
-    "A movie database app built with Next.js and TypeScript. Browse, search, and view tv-series and movie details.",
+    "Discover, search, and download your favorite movies with ease. Our app lets you find the latest releases, timeless classics, and hidden gems—all in one place. With powerful search, seamless torrenting, and a personalized favorites list, your movie collection is just a tap away.",
 };
 
 export default function RootLayout({
@@ -33,16 +32,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <meta name="robots" content="noindex" />
-      </head>
-      <body className={header.variable + " " + body.variable}>
+      <ReactScan />
+      <body className={`${heading.variable} ${body.variable} antialiased`}>
         <Providers>
-          <LayoutWrapper>
-            <Header />
-            {children}
-            <Footer />
-          </LayoutWrapper>
+          <Header />
+          {children}
         </Providers>
       </body>
     </html>

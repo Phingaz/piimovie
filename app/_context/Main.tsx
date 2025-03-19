@@ -1,63 +1,28 @@
-import { useCycle } from "framer-motion";
 import React, { createContext } from "react";
-import { QueriesCtxProvider } from "./Queries";
-import useWindowDimensions from "../_hooks/useMediaQuery";
-import useLocalStorage from "../_hooks/useLocalStorage";
-import { Movie } from "../types";
+import { NavigationCtxProvider } from "./Navigation";
+import { FavoriteCtxProvider } from "./Favorite";
 
-export type TMainCtx = {
-  isMobile: boolean;
-  mobileNav: boolean;
-  toggleMobileNav: () => void;
-  // fav
-  favMovies: Movie[];
-  manageFav: (movie: Movie) => void;
-};
+export type TMainCtx = object;
 
-const Main = createContext<TMainCtx>({
-  isMobile: false,
-  mobileNav: false,
-  toggleMobileNav: () => {},
-  // fav
-  favMovies: [],
-  manageFav: () => {},
-});
+const MainCtx = createContext<TMainCtx | undefined>(undefined);
 
-export function MainCtxProvider({ children }: React.PropsWithChildren<{}>) {
-  const [mobileNav, toggleMobileNav] = useCycle(false, true);
-  const { currentWindowWidth } = useWindowDimensions();
-  const isMobile = currentWindowWidth < 768;
-
-  const [favMovies, setFavMovies] = useLocalStorage(
-    "@favMovies",
-    [] as Movie[]
-  );
-  const manageFav = (movie: Movie) => {
-    const isFav = favMovies.find((favMovie) => favMovie.id === movie.id);
-
-    if (isFav) {
-      setFavMovies((prevFavMovies) =>
-        prevFavMovies.filter((favMovie) => favMovie.id !== movie.id)
-      );
-    } else {
-      setFavMovies((prevFavMovies) => [...prevFavMovies, movie]);
-    }
-  };
-
-  const contextValue = {
-    isMobile,
-    mobileNav,
-    toggleMobileNav,
-    // fav
-    favMovies,
-    manageFav,
-  };
+export function MainCtxProvider({ children }: React.PropsWithChildren<object>) {
+  const contextValue = {};
 
   return (
-    <Main.Provider value={contextValue}>
-      <QueriesCtxProvider>{children}</QueriesCtxProvider>
-    </Main.Provider>
+    <MainCtx.Provider value={contextValue}>
+      <NavigationCtxProvider>
+        <FavoriteCtxProvider>{children}</FavoriteCtxProvider>
+      </NavigationCtxProvider>
+    </MainCtx.Provider>
   );
 }
 
-export default Main;
+export const useMainCtx = () => {
+  const context = React.useContext(MainCtx);
+  if (!context)
+    throw new Error("useMainCtx must be used within a MainCtxProvider");
+  return context;
+};
+
+export default MainCtx;

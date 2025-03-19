@@ -1,0 +1,54 @@
+import React, { Suspense } from "react";
+import { MovieDetail } from "@/app/types";
+import Details from "./Details";
+import Background from "./Background";
+import { VideoPlayer } from "./VideoPlayer";
+import Credits from "./Credits";
+import { CarouselCardsLoader } from "../helpers/Loaders";
+import Images from "./Images";
+import MovieKeywords from "./Keywords";
+import Similar from "./Similar";
+import Recommended from "./Recommended";
+import MoreInfo from "./MoreInfo";
+import Reviews from "./Reviews";
+
+const MovieComponent = ({ movie }: { movie: MovieDetail }) => {
+  return (
+    <section className="w-full h-full relative">
+      <div className="relative h-[75svh] w-full mb-[50px] 3xl:mb-[100px]">
+        <Background movie={movie} />
+        <Details movie={movie} />
+      </div>
+      <div className="flex justify-center w-full">
+        <div className="container flex md:flex-row flex-col md:grid grid-cols-3 gap-3 md:gap-8">
+          <div className="flex-[7] flex flex-col md:gap-12 gap-6 col-span-2">
+            <MoreInfo movie={movie} />
+            <Suspense fallback={<CarouselCardsLoader title="Cast & Crew" />}>
+              <Credits id={movie.id} />
+            </Suspense>
+            <Suspense fallback={<CarouselCardsLoader title="Similar Movies" />}>
+              <Similar id={movie.id} />
+            </Suspense>
+            <Suspense
+              fallback={<CarouselCardsLoader title="Recommended Movies" />}
+            >
+              <Recommended id={movie.id} />
+            </Suspense>
+          </div>
+          <div className="flex-[3] flex flex-col gap-8">
+            <VideoPlayer id={movie.id} />
+            <Suspense fallback={<CarouselCardsLoader title="Images" />}>
+              <Images id={movie.id} />
+            </Suspense>
+            <MovieKeywords id={movie.id} />
+            <Suspense fallback={<CarouselCardsLoader title="Reviews" />}>
+              <Reviews id={movie.id} />
+            </Suspense>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default MovieComponent;

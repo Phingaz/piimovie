@@ -1,68 +1,43 @@
-"use client";
-import Genres from "@/app/_components/sections/movieDetails/Genres";
-import Images from "@/app/_components/sections/movieDetails/Images";
-import Infos from "@/app/_components/sections/movieDetails/Infos";
-import RecommendedMovies from "@/app/_components/sections/movieDetails/Recomended";
-import SimilarMovies from "@/app/_components/sections/movieDetails/Similar";
-import { InvalidMovieId } from "@/app/_components/utils/Error";
-import Favorite from "@/app/_components/utils/Favorite";
-import { PageLoader } from "@/app/_components/utils/Loader";
-import { Video } from "@/app/_components/utils/Video";
-import Main from "@/app/_context/Main";
-import Queries from "@/app/_context/Queries";
-import { Movie, MovieDetail as TMD } from "@/app/types";
-import { isFav } from "@/lib/utils";
-import Link from "next/link";
+import ErrorPageComponent from "@/components/helpers/Error";
+import MovieComponent from "@/components/movie/MovieComponent";
+import { getMovieInfo } from "@/lib/queries";
+import { Metadata } from "next";
 import React from "react";
 
-const MovieDetail = () => {
-  const { movie } = React.useContext(Queries);
-  const { manageFav, favMovies } = React.useContext(Main);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ movie: string }>;
+}): Promise<Metadata> {
+  try {
+    const id = (await params).movie;
+    const response = await getMovieInfo({ id });
 
-  const { data, isLoading } = movie;
-  const movieDetail = data as TMD;
+    if (!response.data) throw new Error(response.message);
 
-  if (isLoading) return <PageLoader />;
-  if (!movieDetail) return <InvalidMovieId />;
+    return {
+      title: `${response.data.title} | Movie Info`,
+      description: response.data.overview || "Find out more about this movie.",
+    };
+  } catch {
+    return {
+      title: "Error | Movie Not Found",
+      description: "Something went wrong while fetching the movie details.",
+    };
+  }
+}
 
-  const isFavourite = isFav(favMovies, movieDetail as unknown as Movie);
+const Page = async ({ params }: { params: Promise<{ movie: string }> }) => {
+  try {
+    const id = (await params).movie;
+    const response = await getMovieInfo({ id });
 
-  return (
-    <div className="bg-bg min-h-[100svh] pt-10">
-      <div className="container py-10 md:py-20 text-white">
-        <Video />
-        <div className="mt-7">
-          <div className="flex mb-8 gap-3 items-center flex-wrap">
-            <Link
-              href={`/download?search=${movieDetail?.title}`}
-              className="text-3xl md:text-5xl font-bold text-gray-200"
-            >
-              {movieDetail?.title}
-            </Link>
-            <Favorite
-              manageFav={manageFav}
-              isFavourite={isFavourite}
-              movieDetail={movieDetail as unknown as Movie}
-            />
-          </div>
-          <div className="flex justify-between flex-col md:flex-row gap-8">
-            <div className="flex-[2] flex flex-col gap-5">
-              <p className="text-sm font-[500] text-gray-300">
-                {movieDetail?.overview}
-              </p>
-              <Genres genres={movieDetail?.genres} />
-              <SimilarMovies />
-              <RecommendedMovies />
-            </div>
-            <div className="flex-1 flex flex-col gap-3 md:w-[40%]">
-              <Infos movieDetail={movieDetail} />
-              <Images />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+    if (!response.data) throw new Error(response.message);
+
+    return <MovieComponent movie={response.data} />;
+  } catch (error) {
+    return <ErrorPageComponent error={error} />;
+  }
 };
 
-export default MovieDetail;
+export default Page;
