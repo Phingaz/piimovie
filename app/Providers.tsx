@@ -2,6 +2,7 @@
 import posthog from 'posthog-js';
 import { PostHogProvider } from 'posthog-js/react';
 import { MainCtxProvider } from './_context/Main';
+// import GlobalLoader from '@/components/helpers/GlobalLoader';
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
   if (typeof window !== 'undefined' && process.env.NODE_ENV === 'production') {
@@ -9,12 +10,16 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
       api_host: '/ingest',
       ui_host: 'https://us.i.posthog.com',
       capture_pageview: false,
+      person_profiles: 'identified_only',
     });
   }
 
   return (
     <PostHogProvider client={posthog}>
-      <MainCtxProvider>{children}</MainCtxProvider>
+      <MainCtxProvider>
+        {/* <GlobalLoader /> */}
+        {children}
+      </MainCtxProvider>
     </PostHogProvider>
   );
 };

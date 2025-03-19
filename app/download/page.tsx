@@ -1,25 +1,21 @@
-import ErrorPageComponent from "@/components/helpers/Error";
-import { searchMoviesForDownload } from "@/lib/queries";
-import React from "react";
-import { MovieTypeEnum } from "../types";
-import SearchBar from "@/components/utils/SearchComponent";
-import TorrentItem from "@/components/utils/TorrentCard";
-import SimplePagination from "@/components/utils/buttons/SimplePagination";
-import { DownloadIcon } from "lucide-react";
-import { Metadata } from "next";
+import ErrorPageComponent from '@/components/helpers/Error';
+import { searchMoviesForDownload } from '@/lib/queries';
+import React from 'react';
+import { MovieTypeEnum } from '../types';
+import SearchBar from '@/components/utils/SearchComponent';
+import TorrentItem from '@/components/utils/TorrentCard';
+import SimplePagination from '@/components/utils/buttons/SimplePagination';
+import { DownloadIcon } from 'lucide-react';
+import { Metadata } from 'next';
 
 export function generateMetadata(): Metadata {
   return {
     title: `Movie Box | Download | Torrent`,
-    description: "Find and torrent anything.",
+    description: 'Find and torrent anything.',
   };
 }
 
-const Page = async ({
-  searchParams,
-}: {
-  searchParams: Promise<{ page: string; q: string }>;
-}) => {
+const Page = async ({ searchParams }: { searchParams: Promise<{ page: string; q: string }> }) => {
   const { page, q } = (await searchParams) as {
     page: string;
     q: keyof typeof MovieTypeEnum;
@@ -36,34 +32,29 @@ const Page = async ({
     const list = result.data?.data;
 
     return (
-      <div className="text-white md:pt-10">
-        <div className="container mx-auto py-10 md:py-20 px-3 md:px-[2rem]">
-          <div className="flex md:justify-between md:items-center mb-10 md:flex-row flex-col gap-3 md:gap-0">
-            <h1 className="text-4xl font-bold">Download</h1>
-            <SearchBar path="download" />
-          </div>
-          {q ? (
-            <>
-              <div className="grid md:gap-y-5 gap-3 mb-10">
-                {list?.map((el) => {
-                  return <TorrentItem key={el.hash} torrent={el} />;
-                })}
-              </div>
-              <SimplePagination currentPage={Number(page) || 1} />
-            </>
-          ) : (
-            <div className="flex justify-center items-center flex-col border border-dashed py-20 rounded-md bg-gray-900">
-              <DownloadIcon size={50} className=" text-gray-400" />
-              <h3 className="text-lg font-medium text-white mb-2">
-                No download results
-              </h3>
-              <p className="text-gray-400 max-w-md text-center">
-                Try searching for movies, actors, directors, or genres to find
-                what you&apos;re looking for.
-              </p>
-            </div>
-          )}
+      <div className="container mx-auto py-10 px-3 md:px-[2rem]">
+        <div className="flex md:justify-between md:items-center mb-10 md:flex-row flex-col gap-3 md:gap-0">
+          <h1 className="text-4xl font-bold">Download</h1>
+          <SearchBar path="download" />
         </div>
+        {q ? (
+          <>
+            <div className="grid md:gap-y-5 gap-3 mb-10">
+              {list?.map((el) => {
+                return <TorrentItem key={el.hash} torrent={el} />;
+              })}
+            </div>
+            <SimplePagination currentPage={Number(page) || 1} />
+          </>
+        ) : (
+          <div className="flex justify-center items-center flex-col border border-dashed py-20 rounded-md bg-gray-900">
+            <DownloadIcon size={50} className=" text-gray-400" />
+            <h3 className="text-lg font-medium text-white mb-2">No download results</h3>
+            <p className="text-gray-400 max-w-md text-center">
+              Try searching for movies, actors, directors, or genres to find what you&apos;re looking for.
+            </p>
+          </div>
+        )}
       </div>
     );
   } catch (error) {

@@ -1,9 +1,9 @@
-"use client";
-import Image from "next/image";
-import React from "react";
-import { motion, useCycle } from "framer-motion";
-import Link from "next/link";
-import { DownloadIcon, Heart, Search } from "lucide-react";
+'use client';
+import Image from 'next/image';
+import React from 'react';
+import { motion, useCycle } from 'framer-motion';
+import Link from 'next/link';
+import { DownloadIcon, Heart, Search } from 'lucide-react';
 
 const Header = () => {
   const [active, setActive] = React.useState(false);
@@ -15,9 +15,9 @@ const Header = () => {
     const handleScroll = () => {
       setActive(window.scrollY > 200);
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
@@ -26,87 +26,65 @@ const Header = () => {
       setWidth(window.innerWidth);
     };
 
-    window.addEventListener("resize", handleWindowResize);
+    window.addEventListener('resize', handleWindowResize);
 
     if (width > 1023 && mobileNav) {
       toggleMobileNav();
     }
 
     return () => {
-      window.removeEventListener("resize", handleWindowResize);
+      window.removeEventListener('resize', handleWindowResize);
     };
   }, [mobileNav, toggleMobileNav, width]);
 
   const links = [
     {
-      label: "Movies",
-      href: "/movies?list=now_playing",
+      label: 'Movies',
+      href: '/movies?list=now_playing',
     },
     {
-      label: "Tv Shows",
-      href: "/tv-shows",
+      label: 'Tv Shows',
+      href: '/tv-shows',
     },
   ];
 
   return (
     <header
       className={`${
-        active
-          ? "bg-black/50 backdrop-blur-sm bg-opacity-10"
-          : "backdrop-blur-[5px]"
+        active ? 'bg-black/50 backdrop-blur-sm bg-opacity-10' : 'backdrop-blur-[5px]'
       } sticky top-0 left-0 h-[80px] z-[99999] flex justify-between items-center overflow-x-clip text-gray-100`}
     >
       <div className="w-[1350px] 3xl:w-[1750px] px-8 mx-auto">
         <div className="w-full mx-auto flex justify-between items-center">
           <Link href="/">
             <Image
+              priority
               src="/logo.png"
-              width={70}
-              unoptimized
-              height={0}
+              width={60}
+              height={60}
               alt="logo"
+              unoptimized
+              className="object-contain size-[60px]"
             />
           </Link>
 
           {/* nav */}
-          <nav
-            className={`lg:block ${
-              mobileNav
-                ? " fixed top-0 right-0 bg-black h-[100vh] w-[250px]"
-                : "hidden"
-            }`}
-          >
+          <nav className={`lg:block ${mobileNav ? ' fixed top-0 right-0 bg-black h-[100vh] w-[250px]' : 'hidden'}`}>
             <ul className="flex gap-5 font-[300] flex-col lg:flex-row pt-20 lg:pt-0 items-center w-full h-full">
               {links.map((link) => (
-                <li
-                  key={link.href}
-                  onClick={() => mobileNav && toggleMobileNav()}
-                  className="min-w-fit"
-                >
+                <li key={link.href} onClick={() => mobileNav && toggleMobileNav()} className="min-w-fit">
                   <Link href={link.href}>{link.label}</Link>
                 </li>
               ))}
               <div className="flex gap-3 items-center">
-                <Link
-                  href="/search"
-                  className="text-gray-300 bg-gray-700/50 p-[6px] rounded-md w-fit group"
-                >
+                <Link href="/search" className="text-gray-300 bg-gray-700/50 p-[6px] rounded-md w-fit group">
                   <Search size={25} className="group-hover:animate-bounce" />
                 </Link>
-                <Link
-                  href="/favorites"
-                  className="text-gray-300 bg-gray-700/50 p-[6px] rounded-md w-fit group"
-                >
+                <Link href="/favorites" className="text-gray-300 bg-gray-700/50 p-[6px] rounded-md w-fit group">
                   <Heart size={25} className="group-hover:animate-bounce" />
                 </Link>
-                <Link
-                  href="/download"
-                  className="text-gray-300 bg-gray-700/50 p-[6px] rounded-md w-fit group"
-                >
-                  <DownloadIcon
-                    size={25}
-                    className="group-hover:animate-bounce"
-                  />
+                <Link href="/download" className="text-gray-300 bg-gray-700/50 p-[6px] rounded-md w-fit group">
+                  <DownloadIcon size={25} className="group-hover:animate-bounce" />
                 </Link>
               </div>
             </ul>
@@ -115,7 +93,7 @@ const Header = () => {
           {/* mobileToggle */}
           <div className="relative z-10 content lg:hidden">
             <motion.button
-              animate={mobileNav ? "open" : "closed"}
+              animate={mobileNav ? 'open' : 'closed'}
               className="flex flex-col justify-center items-center rounded-lg p-2 py-3 gap-[7px] cursor-pointer"
               onClick={() => toggleMobileNav()}
             >

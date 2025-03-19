@@ -1,10 +1,10 @@
-import { MovieType, MovieTypeEnum } from "@/app/types";
-import { getMovies } from "@/lib/queries";
-import Link from "next/link";
-import React from "react";
-import { ErrorSectionComponent } from "../helpers/Error";
-import CarouselWrapper from "../carousel/CarouselWrapper";
-import LandingCard from "./LandingMovieCard";
+import { MovieType, MovieTypeEnum } from '@/app/types';
+import { getMovies } from '@/lib/queries';
+import Link from 'next/link';
+import React from 'react';
+import { ErrorSectionComponent } from '../helpers/Error';
+import CarouselWrapper from '../carousel/CarouselWrapper';
+import LandingCard from './LandingMovieCard';
 
 const LandingListing = async ({ type }: { type: MovieType }) => {
   try {
@@ -13,16 +13,12 @@ const LandingListing = async ({ type }: { type: MovieType }) => {
     const movies = response.data?.results;
 
     if (!movies || !response.success)
-      throw new Error(
-        `Something went wrong fetching this movie list ${response.message}`
-      );
+      throw new Error(`Something went wrong fetching this movie list ${response.message}`);
 
     return (
       <div className="w-full mb-24">
         <div className="flex justify-between items-center mb-[17px]">
-          <h2 className="text-xl md:text-2xl font-[600] text-gray-300">
-            {title}
-          </h2>
+          <h2 className="text-xl md:text-2xl font-[600] text-gray-300">{title}</h2>
 
           <Link
             className="text-sm font-[600] transition hover:text-blue-500 hover:scale-105"

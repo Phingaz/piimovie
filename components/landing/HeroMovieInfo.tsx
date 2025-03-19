@@ -70,7 +70,7 @@ const HeroMovieInfo = ({ movies }: { movies: Movie[] }) => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className="flex gap-3 w-fit justify-center items-center bg-blue-900 text-white px-5 py-3 rounded-md font-bold hover:bg-red-accent transition-all ease-in-out duration-300 cursor-pointer"
+                className="flex gap-3 w-fit justify-center items-center bg-blue-900 text-white px-5 py-3 rounded-md font-bold hover:bg-blue-800 transition-all ease-in-out duration-300 cursor-pointer"
                 onClick={() => router.push(`/movie/${movie?.id}`)}
               >
                 <PlayCircleIcon /> Watch Trailer

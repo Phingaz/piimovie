@@ -4,7 +4,7 @@ import { CarouselCardsLoader } from "../helpers/Loaders";
 
 const LadingListingWrapper = () => {
   return (
-    <div className="md:mt-[300px] max-w-[1350px] 3xl:max-w-[1750px] px-8 mx-auto">
+    <div className="md:mt-[250px] max-w-[1350px] 3xl:max-w-[1750px] px-8 mx-auto">
       <Suspense fallback={<CarouselCardsLoader title="Now playing" />}>
         <LandingListing type="now_playing" />
       </Suspense>

@@ -26,14 +26,14 @@ const MoreInfo = ({ movie }: { movie: MovieDetail }) => {
       <div className="grid md:grid-cols-3 md:gap-5 gap-0">
         <div className="flex flex-col col-span-1">
           {/* Origin Country */}
-          <div className="flex items-center gap-1 p-1 text-[13px]">
+          <div className="flex items-start gap-1 p-1 text-[13px]">
             <Flag size={16} />
             <span className="font-medium">Origin:</span>
             <span>{movie.origin_country.join(", ")}</span>
           </div>
 
           {/* Original Language */}
-          <div className="flex items-center gap-1 p-1 text-[13px]">
+          <div className="flex items-start gap-1 p-1 text-[13px]">
             <Globe size={16} />
             <span className="font-medium">Language:</span>
             <span>
@@ -44,21 +44,21 @@ const MoreInfo = ({ movie }: { movie: MovieDetail }) => {
           </div>
 
           {/* Status */}
-          <div className="flex items-center gap-1 p-1 text-[13px]">
+          <div className="flex items-start gap-1 p-1 text-[13px]">
             <CircleCheck size={16} />
             <span className="font-medium">Status:</span>
             <span>{movie.status}</span>
           </div>
 
           {/* Budget */}
-          <div className="flex items-center gap-1 p-1 text-[13px]">
+          <div className="flex items-start gap-1 p-1 text-[13px]">
             <DollarSign size={16} />
             <span className="font-medium">Budget:</span>
             <span>{formatCurrency(movie.budget)}</span>
           </div>
 
           {/* Revenue */}
-          <div className="flex items-center gap-1 p-1 text-[13px]">
+          <div className="flex items-start gap-1 p-1 text-[13px]">
             <TrendingUp size={16} />
             <span className="font-medium">Revenue:</span>
             <span className="mr-1">{formatCurrency(movie.revenue)}</span>
@@ -76,14 +76,14 @@ const MoreInfo = ({ movie }: { movie: MovieDetail }) => {
 
         <div className="flex flex-col col-span-2">
           {/* Tagline */}
-          <div className="flex items-center gap-1 p-1 text-[13px]">
+          <div className="flex items-start gap-1 p-1 text-[13px]">
             <MessageSquareQuote size={16} />
             <span className="font-medium">Tagline:</span>
             <span className="text-sm italic">{movie.tagline}</span>
           </div>
 
           {/* Spoken Languages */}
-          <div className="flex items-center gap-1 p-1 text-[13px]">
+          <div className="flex items-start gap-1 p-1 text-[13px]">
             <MessageCircle size={16} />
             <span className="font-medium">Spoken Languages:</span>
             <span>{movie.spoken_languages.map((l) => l.name).join(", ")}</span>

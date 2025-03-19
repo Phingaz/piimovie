@@ -15,7 +15,7 @@ const Reviews = async ({ id }: { id: number }) => {
     const reviews = response.data.results;
 
     return (
-      <div className="md:max-h-[600px] overflow-y-auto pr-5 tiny-scrollbar">
+      <div className="overflow-y-auto pr-5 tiny-scrollbar">
         <SectionTitle>
           <>Reviews</>
         </SectionTitle>

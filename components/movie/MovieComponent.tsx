@@ -14,13 +14,13 @@ import Reviews from "./Reviews";
 
 const MovieComponent = ({ movie }: { movie: MovieDetail }) => {
   return (
-    <section className="w-full h-full relative">
-      <div className="relative h-[75svh] w-full mb-[50px] 3xl:mb-[100px]">
+    <section className="w-full h-full relative -mt-[30px]">
+      <div className="relative h-[75svh] w-full">
         <Background movie={movie} />
         <Details movie={movie} />
       </div>
-      <div className="flex justify-center w-full">
-        <div className="container flex md:flex-row flex-col md:grid grid-cols-3 gap-3 md:gap-8">
+      <div className="flex justify-center w-full mt-[100px] 3xl:mt-[150px]">
+        <div className="container flex md:flex-row flex-col md:grid grid-cols-3 gap-3 md:gap-8 mb-[70px]">
           <div className="flex-[7] flex flex-col md:gap-12 gap-6 col-span-2">
             <MoreInfo movie={movie} />
             <Suspense fallback={<CarouselCardsLoader title="Cast & Crew" />}>
@@ -35,7 +35,7 @@ const MovieComponent = ({ movie }: { movie: MovieDetail }) => {
               <Recommended id={movie.id} />
             </Suspense>
           </div>
-          <div className="flex-[3] flex flex-col gap-8">
+          <div className="flex-[3] flex flex-col gap-8 md:max-h-[1170px] 3xl:max-h-[1390px]">
             <VideoPlayer id={movie.id} />
             <Suspense fallback={<CarouselCardsLoader title="Images" />}>
               <Images id={movie.id} />

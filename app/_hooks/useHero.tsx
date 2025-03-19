@@ -3,8 +3,8 @@ import { getRandomMovie, imageUrl, preloadImage } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { Movie } from "../types";
 
-const time = 2000;
-const intervalTime = 50000;
+const time = 20;
+const intervalTime = 500;
 
 const useHero = (movies: Movie[]) => {
   const [movie, setMovie] = useState<Movie | null>(() =>

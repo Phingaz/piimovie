@@ -1,6 +1,7 @@
 import { Movie, MovieType, MovieTypeEnum } from '@/app/types';
 import { type ClassValue, clsx } from 'clsx';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import { TransitionStartFunction } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -14,8 +15,11 @@ export const logger = (message?: string) => {
 
 export const preloadImage = (url: string) => {
   if (url) {
-    const img = new Image();
-    img.src = url;
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'image';
+    link.href = url;
+    document.head.appendChild(link);
   }
 };
 
@@ -27,7 +31,7 @@ export function getRandomMovie(movies: Movie[] | undefined) {
 }
 
 export const getRandomNumber = (range: number) => {
-  return Math.floor(Math.random() * range);
+  return Math.floor(Math.random() * range) + 1;
 };
 
 export const getRandomType = (): MovieType => {
@@ -103,10 +107,12 @@ export const updateSearchParam = ({
   param,
   searchParams,
   router,
+  startTransition,
 }: {
   param: Record<string, string | null>;
   searchParams: URLSearchParams;
   router: AppRouterInstance;
+  startTransition: TransitionStartFunction;
 }) => {
   const params = new URLSearchParams(searchParams.toString());
 
@@ -118,5 +124,5 @@ export const updateSearchParam = ({
     }
   });
 
-  router.push(`?${params.toString()}`, { scroll: false });
+  startTransition(() => router.push(`?${params.toString()}`, { scroll: false }));
 };

@@ -1,15 +1,11 @@
-"use client";
+'use client';
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from 'next/navigation';
 
-import {
-  ChevronLeft,
-  ChevronRight,
-  ChevronsLeft,
-  ChevronsRight,
-} from "lucide-react";
-import { useEffect, useState } from "react";
-import { cn, updateSearchParam } from "@/lib/utils";
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { cn, updateSearchParam } from '@/lib/utils';
+import { useMainCtx } from '@/app/_context/Main';
 
 interface PaginationProps {
   currentPage: number;
@@ -18,23 +14,17 @@ interface PaginationProps {
   className?: string;
 }
 
-export default function Pagination({
-  currentPage,
-  totalPages,
-  totalResults,
-  className = "",
-}: PaginationProps) {
+export default function Pagination({ currentPage, totalPages, totalResults, className = '' }: PaginationProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { startTransition } = useMainCtx();
 
-  const [windowWidth, setWindowWidth] = useState(
-    typeof window !== "undefined" ? window.innerWidth : 1200
-  );
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const getVisiblePageCount = () => {
@@ -55,10 +45,7 @@ export default function Pagination({
       startPage = Math.max(endPage - visiblePageCount + 1, 1);
     }
 
-    return Array.from(
-      { length: endPage - startPage + 1 },
-      (_, i) => startPage + i
-    );
+    return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
   };
 
   const pageNumbers = getPageNumbers();
@@ -71,8 +58,9 @@ export default function Pagination({
       param: { page: page.toString() },
       router,
       searchParams,
+      startTransition,
     });
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const resultsPerPage = 20;
@@ -80,12 +68,9 @@ export default function Pagination({
   const endResult = Math.min(startResult + resultsPerPage - 1, totalResults);
 
   return (
-    <div
-      className={`flex flex-col items-center gap-4 my-4 md:my-8 ${className}`}
-    >
+    <div className={`flex flex-col items-center gap-4 my-4 md:my-8 ${className}`}>
       <div className="text-sm text-gray-400">
-        Showing {startResult}-{endResult} of {totalResults.toLocaleString()}{" "}
-        results
+        Showing {startResult}-{endResult} of {totalResults.toLocaleString()} results
       </div>
 
       <div className="flex items-center gap-1">
@@ -93,11 +78,7 @@ export default function Pagination({
           <NavigationButton
             onClick={() => handlePageChange(1)}
             disabled={currentPage === 1}
-            className={
-              currentPage === 1
-                ? "text-gray-500 cursor-not-allowed"
-                : "text-white hover:bg-gray-700"
-            }
+            className={currentPage === 1 ? 'text-gray-500 cursor-not-allowed' : 'text-white hover:bg-gray-700'}
             aria-label="First page"
           >
             <ChevronsLeft size={20} />
@@ -107,11 +88,7 @@ export default function Pagination({
         <NavigationButton
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className={
-            currentPage === 1
-              ? "text-gray-500 cursor-not-allowed"
-              : "text-white hover:bg-gray-700"
-          }
+          className={currentPage === 1 ? 'text-gray-500 cursor-not-allowed' : 'text-white hover:bg-gray-700'}
           aria-label="Previous page"
         >
           <ChevronLeft size={20} />
@@ -119,13 +96,9 @@ export default function Pagination({
 
         {showFirstPageButton && (
           <>
-            <NavigationButton onClick={() => handlePageChange(1)}>
-              1
-            </NavigationButton>
+            <NavigationButton onClick={() => handlePageChange(1)}>1</NavigationButton>
             {pageNumbers[0] > 2 && (
-              <span className="flex items-center justify-center w-10 h-10 text-gray-400">
-                ...
-              </span>
+              <span className="flex items-center justify-center w-10 h-10 text-gray-400">...</span>
             )}
           </>
         )}
@@ -135,13 +108,9 @@ export default function Pagination({
             key={pageNum}
             disabled={pageNum === currentPage}
             onClick={() => handlePageChange(pageNum)}
-            className={
-              pageNum === currentPage
-                ? "bg-blue-500 text-white"
-                : "text-white hover:bg-gray-700"
-            }
+            className={pageNum === currentPage ? 'bg-blue-500 text-white' : 'text-white hover:bg-gray-700'}
             aria-label={`Page ${pageNum}`}
-            aria-current={pageNum === currentPage ? "page" : undefined}
+            aria-current={pageNum === currentPage ? 'page' : undefined}
           >
             {pageNum}
           </NavigationButton>
@@ -150,24 +119,16 @@ export default function Pagination({
         {showLastPageButton && (
           <>
             {pageNumbers[pageNumbers.length - 1] < totalPages - 1 && (
-              <span className="flex items-center justify-center w-10 h-10 text-gray-400">
-                ...
-              </span>
+              <span className="flex items-center justify-center w-10 h-10 text-gray-400">...</span>
             )}
-            <NavigationButton onClick={() => handlePageChange(totalPages)}>
-              {totalPages}
-            </NavigationButton>
+            <NavigationButton onClick={() => handlePageChange(totalPages)}>{totalPages}</NavigationButton>
           </>
         )}
 
         <NavigationButton
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className={
-            currentPage === totalPages
-              ? "text-gray-500 cursor-not-allowed"
-              : "text-white hover:bg-gray-700"
-          }
+          className={currentPage === totalPages ? 'text-gray-500 cursor-not-allowed' : 'text-white hover:bg-gray-700'}
           aria-label="Next page"
         >
           <ChevronRight size={20} />
@@ -175,11 +136,7 @@ export default function Pagination({
 
         {!isMobile && (
           <NavigationButton
-            className={
-              currentPage === totalPages
-                ? "text-gray-500 cursor-not-allowed"
-                : "text-white hover:bg-gray-700"
-            }
+            className={currentPage === totalPages ? 'text-gray-500 cursor-not-allowed' : 'text-white hover:bg-gray-700'}
             onClick={() => handlePageChange(totalPages)}
             disabled={currentPage === totalPages}
             aria-label="Last page"

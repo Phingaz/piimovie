@@ -10,7 +10,7 @@ export default async function Home() {
       page: getRandomNumber(10),
       type: getRandomType(),
     });
-
+    
     if (!result.success) throw new Error(result.message);
 
     const movies = result.data?.results;
