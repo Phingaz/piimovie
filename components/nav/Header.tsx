@@ -77,14 +77,14 @@ const Header = () => {
                 </li>
               ))}
               <div className="flex gap-3 items-center">
-                <Link href="/search" className="text-gray-300 bg-gray-700/50 p-[6px] rounded-md w-fit group">
-                  <Search size={25} className="group-hover:animate-bounce" />
+                <Link href="/search" className="text-gray-300 bg-gray-700/50 p-[6px] rounded-md w-fit">
+                  <Search size={25} />
                 </Link>
-                <Link href="/favorites" className="text-gray-300 bg-gray-700/50 p-[6px] rounded-md w-fit group">
-                  <Heart size={25} className="group-hover:animate-bounce" />
+                <Link href="/favorites" className="text-gray-300 bg-gray-700/50 p-[6px] rounded-md w-fit">
+                  <Heart size={25} />
                 </Link>
-                <Link href="/download" className="text-gray-300 bg-gray-700/50 p-[6px] rounded-md w-fit group">
-                  <DownloadIcon size={25} className="group-hover:animate-bounce" />
+                <Link href="/download" className="text-gray-300 bg-gray-700/50 p-[6px] rounded-md w-fit">
+                  <DownloadIcon size={25} />
                 </Link>
               </div>
             </ul>
