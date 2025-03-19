@@ -1,20 +1,17 @@
-"use client";
+'use client';
 
-import { Movie } from "@/app/types";
-import { Search } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { Movie } from '@/app/types';
+import { Search } from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useState, useEffect } from 'react';
 
-export default function SearchBar({
-  path = "search",
-  placeholder = "Search...",
-}) {
+export default function SearchBar({ path = 'search', placeholder = 'Search...' }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [query, setQuery] = useState(searchParams.get("q") || "");
+  const [query, setQuery] = useState(searchParams.get('q') || '');
 
   useEffect(() => {
-    setQuery(searchParams.get("q") || "");
+    setQuery(searchParams.get('q') || '');
   }, [searchParams]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,11 +38,7 @@ export default function SearchBar({
         className="h-full focus:outline-none w-full bg-transparent text-gray-100"
       />
       {query && (
-        <button
-          type="button"
-          onClick={clearSearch}
-          className="text-gray-400 hover:text-white h-full cursor-pointer"
-        >
+        <button type="button" onClick={clearSearch} className="text-gray-400 hover:text-white h-full cursor-pointer">
           ✖
         </button>
       )}
@@ -65,21 +58,15 @@ interface LocalSearchProps {
   setFilteredResults: React.Dispatch<React.SetStateAction<Movie[]>>;
 }
 
-export const LocalSearch = ({
-  data,
-  placeholder = "Search...",
-  setFilteredResults,
-}: LocalSearchProps) => {
-  const [query, setQuery] = useState("");
+export const LocalSearch = ({ data, placeholder = 'Search...', setFilteredResults }: LocalSearchProps) => {
+  const [query, setQuery] = useState('');
 
   useEffect(() => {
     if (!query) {
       setFilteredResults(data);
     } else {
       const lowerQuery = query.toLowerCase();
-      const filtered = data.filter((item) =>
-        String(item.title).toLowerCase().includes(lowerQuery)
-      );
+      const filtered = data.filter((item) => String(item.title).toLowerCase().includes(lowerQuery));
       setFilteredResults(filtered);
     }
   }, [query, data, setFilteredResults]);
@@ -96,7 +83,7 @@ export const LocalSearch = ({
       {query && (
         <button
           type="button"
-          onClick={() => setQuery("")}
+          onClick={() => setQuery('')}
           className="text-gray-400 hover:text-white h-full cursor-pointer"
         >
           ✖
