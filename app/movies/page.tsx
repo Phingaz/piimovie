@@ -3,10 +3,11 @@ import { getMovies } from '@/lib/queries';
 import React from 'react';
 import Pagination from '@/components/utils/buttons/Pagination';
 import { MovieTypeEnum } from '../types';
-import { movieGenreId } from '@/lib/constants';
+import { movieGenreId, movieTypeOptions } from '@/lib/constants';
 import SearchBar from '@/components/utils/SearchComponent';
 import ListingCard from '@/components/utils/ListingCard';
 import { Metadata } from 'next';
+import Select from '@/components/utils/Select';
 
 export async function generateMetadata({
   searchParams,
@@ -28,8 +29,6 @@ const Page = async ({ searchParams }: { searchParams: Promise<{ page: string; li
     list: keyof typeof MovieTypeEnum;
   };
 
-  // await new Promise((resolve) => setTimeout(resolve, 1000));
-
   try {
     const result = await getMovies({ page: Number(page) || 1, type: list });
 
@@ -45,7 +44,10 @@ const Page = async ({ searchParams }: { searchParams: Promise<{ page: string; li
       <div className="container mx-auto md-5 md:py-10 px-3 md:px-[2rem] relative">
         <div className="flex md:justify-between md:items-center mb-10 md:flex-row flex-col gap-3 md:gap-0">
           <h1 className="text-3xl md:text-4xl font-[600]">{title}</h1>
-          <SearchBar />
+          <div className="flex gap-2 items-center">
+            <SearchBar />
+            <Select options={movieTypeOptions} />
+          </div>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:gap-x-8 md:gap-y-10 gap-3 mb-10 md:mb-20">
           {movies?.map((movie) => {

@@ -14,7 +14,7 @@ const ListingCard = ({ movie, genres }: { movie: Movie; genres: string }) => {
       className="relative rounded-md aspect-3/4 border border-gray-700/80 shadow-sm shadow-gray-700/80"
     >
       <div className="bg-gradient-to-b to-black absolute top-0 left-0 w-full h-full flex items-end rounded-md">
-        <div className="absolute top-0 right-0 p-2 cursor-pointer z-50 w-full flex justify-between">
+        <div className="absolute top-0 right-0 p-2 cursor-pointer z-10 w-full flex justify-between">
           <Ratings showBg isReview vote_average={movie.vote_average} />
           <Favorite movie={movie} />
         </div>

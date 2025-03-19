@@ -1,11 +1,10 @@
-import React from "react";
-import CarouselWrapper from "../carousel/CarouselWrapper";
-import CarouselItem from "../carousel/CarouselItem";
-import { imageCardUrl } from "@/lib/utils";
-import ImageComponent from "../utils/ImageComponent";
-import { getMovieImages } from "@/lib/queries";
-import SectionTitle from "../utils/texts/SectionTitle";
-import { ErrorMovieSection } from "../helpers/Error";
+import React from 'react';
+import CarouselWrapper from '../carousel/CarouselWrapper';
+import CarouselItem from '../carousel/CarouselItem';
+import { getMovieImages } from '@/lib/queries';
+import SectionTitle from '../utils/texts/SectionTitle';
+import { ErrorMovieSection } from '../helpers/Error';
+import ImageModalCard from '../utils/ImageModalCard';
 
 const Images = async ({ id }: { id: number }) => {
   try {
@@ -25,16 +24,9 @@ const Images = async ({ id }: { id: number }) => {
             return (
               <CarouselItem
                 key={el.file_path}
-                className="rounded-md carousel-item"
+                className={`rounded-md carousel-item ${images.length > 1 ? 'multiple' : 'single'}`}
               >
-                <ImageComponent
-                  string={
-                    el.file_path
-                      ? imageCardUrl(el.file_path)
-                      : "/placeholder.png"
-                  }
-                  title={el.file_path}
-                />
+                <ImageModalCard el={el} />
               </CarouselItem>
             );
           })}
