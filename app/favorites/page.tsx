@@ -1,13 +1,13 @@
-"use client";
-import React from "react";
-import { LocalSearch } from "@/components/utils/SearchComponent";
-import { useFavoriteCtx } from "../_context/Favorite";
-import LandingCard from "@/components/landing/LandingMovieCard";
-import { SearchXIcon } from "lucide-react";
+'use client';
+import React from 'react';
+import { LocalSearch } from '@/components/utils/SearchComponent';
+import { useFavoriteCtx } from '../_context/Favorite';
+import LandingCard from '@/components/landing/LandingMovieCard';
+import { SearchXIcon } from 'lucide-react';
 
 const Page = () => {
   const { favMovies: movies } = useFavoriteCtx();
-  const [filteredResults, setFilteredResults] = React.useState(movies);
+  const [filteredResults, setFilteredResults] = React.useState(typeof window !== 'undefined' ? movies : []);
 
   return (
     <div className="text-white md:pt-10">
@@ -25,12 +25,8 @@ const Page = () => {
         ) : (
           <div className="flex justify-center items-center flex-col border border-dashed py-20 rounded-md bg-gray-900">
             <SearchXIcon size={50} className=" text-gray-400" />
-            <h3 className="text-lg font-medium text-white mb-2">
-              No favorites
-            </h3>
-            <p className="text-gray-400 max-w-md text-center">
-              Try adding a movie as favorite to add it to this list.
-            </p>
+            <h3 className="text-lg font-medium text-white mb-2">No favorites</h3>
+            <p className="text-gray-400 max-w-md text-center">Try adding a movie as favorite to add it to this list.</p>
           </div>
         )}
       </div>
