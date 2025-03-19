@@ -54,7 +54,7 @@ const Header = () => {
         active
           ? "bg-black/50 backdrop-blur-sm bg-opacity-10"
           : "backdrop-blur-[5px]"
-      } sticky top-0 left-0 h-[80px] z-[99999] flex justify-between items-center overflow-x-clip text-gray-100 -mb-[80px]`}
+      } sticky top-0 left-0 h-[80px] z-[99999] flex justify-between items-center overflow-x-clip text-gray-100`}
     >
       <div className="w-[1350px] 3xl:w-[1750px] px-8 mx-auto">
         <div className="w-full mx-auto flex justify-between items-center">

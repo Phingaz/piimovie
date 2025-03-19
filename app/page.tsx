@@ -1,8 +1,8 @@
-import ErrorPageComponent from "@/components/helpers/Error";
-import Hero from "@/components/landing/Hero";
-import LadingListingWrapper from "@/components/landing/LadingListingWrapper";
-import { getMovies } from "@/lib/queries";
-import { getRandomNumber, getRandomType } from "@/lib/utils";
+import ErrorPageComponent from '@/components/helpers/Error';
+import Hero from '@/components/landing/Hero';
+import LadingListingWrapper from '@/components/landing/LadingListingWrapper';
+import { getMovies } from '@/lib/queries';
+import { getRandomNumber, getRandomType } from '@/lib/utils';
 
 export default async function Home() {
   try {
@@ -16,7 +16,7 @@ export default async function Home() {
     const movies = result.data?.results;
 
     return (
-      <main className="relative">
+      <main className="relative -mt-[80px]">
         <Hero movies={movies} />
         <LadingListingWrapper />
       </main>
