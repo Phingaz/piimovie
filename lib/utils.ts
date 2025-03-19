@@ -1,7 +1,7 @@
-import { Movie, MovieType, MovieTypeEnum } from "@/app/types";
-import { type ClassValue, clsx } from "clsx";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { twMerge } from "tailwind-merge";
+import { Movie, MovieType, MovieTypeEnum } from '@/app/types';
+import { type ClassValue, clsx } from 'clsx';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -9,7 +9,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export const logger = (message?: string) => {
   const timestamp = new Date().toISOString();
-  console.log(`[${timestamp}] - ${message || "Error message is empty"}`);
+  console.log(`[${timestamp}] - ${message || 'Error message is empty'}`);
 };
 
 export const preloadImage = (url: string) => {
@@ -32,17 +32,15 @@ export const getRandomNumber = (range: number) => {
 
 export const getRandomType = (): MovieType => {
   const movieTypes = Object.keys(MovieTypeEnum);
-  return movieTypes[
-    Math.floor(Math.random() * movieTypes.length)
-  ] as unknown as MovieType;
+  return movieTypes[Math.floor(Math.random() * movieTypes.length)] as unknown as MovieType;
 };
 
 export const cleanDate = (date: string) => {
   const dateObject = new Date(date);
   const formattedDate = dateObject.toLocaleDateString(undefined, {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
   });
 
   return formattedDate;
@@ -56,18 +54,18 @@ export const runTimeInHourAndMin = (runtime: number) => {
 };
 
 export const formatCurrency = (value: number) => {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
   }).format(value);
 };
 
 export const formatDate = (release_date: string) => {
   const d = new Date(release_date);
   return d.toLocaleDateString(undefined, {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
   });
 };
 
@@ -83,20 +81,18 @@ export const imageCardUrl = (imgUrl: string) => {
   return `https://image.tmdb.org/t/p/w500/${imgUrl}`;
 };
 
-export const serverResult = <T>(
-  data: T,
-  message = "Successfully fetched data"
-) => {
+export const serverResult = <T>(data: T, message = 'Successfully fetched data') => {
   logger(message);
   return { data, success: true, message };
 };
 
 export function catchError(error: unknown) {
-  let status_message = "An unknown error occurred";
+  let status_message = 'An unknown error occurred';
+  const timestamp = new Date().toISOString();
 
   if (error instanceof Error) {
     status_message = error.message;
-    logger(error.message);
+    console.error(`[${timestamp}] - ${error}`);
   } else {
     console.error(error);
   }

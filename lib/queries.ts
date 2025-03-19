@@ -9,15 +9,15 @@ import {
   MovieReviewsApiResponse,
   MovieType,
   VideoApiResponse,
-} from "@/app/types";
-import { catchError, serverResult } from "./utils";
+} from '@/app/types';
+import { catchError, serverResult } from './utils';
 
-const baseUrl = "https://api.themoviedb.org/3";
+const baseUrl = 'https://api.themoviedb.org/3';
 const token = process.env.API_KEY;
 
 export async function fetchData<T>({ url, args, message }: FetchDataArgs<T>) {
   try {
-    if (!url) throw Error("No url provided");
+    if (!url) throw Error('No url provided');
 
     const req = await fetch(url, {
       headers: { Authorization: `Bearer ${token}` },
@@ -36,13 +36,7 @@ export async function fetchData<T>({ url, args, message }: FetchDataArgs<T>) {
   }
 }
 
-export const getMovies = async ({
-  type,
-  page = 1,
-}: {
-  page: number;
-  type: MovieType;
-}) => {
+export const getMovies = async ({ type, page = 1 }: { page: number; type: MovieType }) => {
   const url = `${baseUrl}/movie/${type}?language=en-US&page=${page}`;
   return await fetchData<MovieApiResponse>({
     url,
@@ -50,13 +44,7 @@ export const getMovies = async ({
   });
 };
 
-export const searchMovies = async ({
-  query,
-  page = 1,
-}: {
-  page: number;
-  query: MovieType;
-}) => {
+export const searchMovies = async ({ query, page = 1 }: { page: number; query: MovieType }) => {
   const url = `${baseUrl}/search/movie?query=${query}&page=${page}&include_adult=true&language=en-US`;
   return await fetchData<MovieApiResponse>({
     url,
@@ -68,7 +56,7 @@ export const searchMoviesForDownload = async ({
   query,
   page = 1,
   limit = 20,
-  site = "piratebay",
+  site = 'piratebay',
 }: {
   site?: string;
   limit?: number;
