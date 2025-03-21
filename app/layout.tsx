@@ -49,6 +49,9 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
+      <head>
+        <meta name="robots" content="noindex" />
+      </head>
       <ReactScan />
       <body className={`${heading.variable} ${body.variable} antialiased`}>
         <Providers value={{ user, fav }}>
