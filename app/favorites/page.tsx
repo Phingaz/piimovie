@@ -16,6 +16,7 @@ const Page = () => {
     typeof window !== 'undefined' ? movies : null,
   );
 
+  console.log(filteredResults?.length);
   return (
     <div className="container mx-auto py-10 mt-[70px] px-3 md:px-[2rem]">
       <div className="flex md:justify-between md:items-center mb-10 md:flex-row flex-col gap-3 md:gap-0">
@@ -28,7 +29,7 @@ const Page = () => {
           <h3 className="text-lg font-medium text-white mb-1">Sign in to continue</h3>
           <p className="text-gray-400 max-w-md text-center">Please sign in to manage your favorite movies</p>
         </div>
-      ) : filteredResults && filteredResults.length >= 1 ? (
+      ) : filteredResults && filteredResults.length <= 1 ? (
         <div className="flex justify-center items-center flex-col border border-dashed py-20 rounded-md bg-gray-900">
           <SearchXIcon size={50} className="mb-5 text-gray-400" />
           <h3 className="text-lg font-medium text-white mb-1">No favorites</h3>

@@ -1,11 +1,13 @@
 import ErrorPageComponent from '@/components/helpers/Error';
+import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-export default async function Home({ searchParams }: { searchParams: Promise<{ t: string }> }) {
+export default async function Home() {
   let redirectPath: string | null = null;
 
   try {
-    const { t } = await searchParams;
+    const c = await cookies();
+    const t = c.get('t')?.value;
 
     if (t === 'movie') {
       redirectPath = '/movie';

@@ -23,7 +23,7 @@ export default function NotFoundPage() {
 
       return (
         <div
-          key={i}
+          key={`${i}-${size}`}
           className="absolute rounded-full opacity-50"
           style={{
             width: `${size}px`,

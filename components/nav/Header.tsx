@@ -64,13 +64,13 @@ const Header = () => {
           </Link>
 
           <nav
-            className={`lg:flex justify-between items-center w-[62%] ${mobileNav ? ' fixed top-0 right-0 bg-black h-[100vh] w-[250px]' : 'hidden'}`}
+            className={`lg:flex justify-between items-center w-[62%] ${mobileNav ? ' fixed top-0 right-0 bg-black h-[100vh] w-[270px] pt-10' : 'hidden'}`}
           >
-            <div className="flex justify-between gap-5 font-[300] flex-col lg:flex-row pt-20 lg:pt-0 items-center w-full h-full">
+            <div className="flex lg:justify-between gap-5 font-[300] lg:flex-row flex-col pt-20 lg:pt-0 items-center w-full h-full">
               <LinkSwitcher mobileNav={mobileNav} toggleMobileNav={toggleMobileNav} />
 
-              <div className="flex items-center gap-4 min-w-fit">
-                <div className="flex gap-3 items-center">
+              <div className="flex items-center flex-col lg:flex-row gap-4 min-w-fit">
+                <div className="flex gap-3 items-center flex-row">
                   <Link
                     href="/search"
                     onClick={() => mobileNav && toggleMobileNav()}

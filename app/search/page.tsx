@@ -8,10 +8,17 @@ import ListingCard from '@/components/utils/ListingCard';
 import { SearchXIcon } from 'lucide-react';
 import { Metadata } from 'next';
 import { searchMovies } from '../queries/movies';
+import { redirect } from 'next/navigation';
 
-export function generateMetadata(): Metadata {
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ page: string; q: string }>;
+}): Promise<Metadata> {
+  const { q } = await searchParams;
+
   return {
-    title: `Movie Box | Search`,
+    title: `Movie Box | Search | ${q}`,
     description: 'Search for movies.',
   };
 }
@@ -21,6 +28,8 @@ const Page = async ({ searchParams }: { searchParams: Promise<{ page: string; q:
     page: string;
     q: keyof typeof MovieTypeEnum;
   };
+
+  if (!q) redirect('/search?q=thor');
 
   try {
     const result = await searchMovies({ page: Number(page) || 1, query: q });
@@ -35,7 +44,7 @@ const Page = async ({ searchParams }: { searchParams: Promise<{ page: string; q:
     return (
       <div className="container mx-auto py-10 px-3 md:px-[2rem] mt-[100px]">
         <div className="flex md:justify-between md:items-center mb-10 md:flex-row flex-col gap-3 md:gap-0">
-          <h1 className="text-4xl font-bold">Search Result</h1>
+          <h1 className="text-4xl font-bold">Search Results</h1>
           <SearchBar />
         </div>
 
