@@ -2,8 +2,8 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { CreatedBy } from '@/app/types/show';
 import { imageCardUrl } from '@/lib/utils';
+import { CreatedBy } from '@/app/types/utils';
 
 export default function CreatorCard({ creator }: { creator: CreatedBy }) {
   return (

@@ -1,10 +1,9 @@
-import ErrorPageComponent from '@/components/helpers/Error';
 import React from 'react';
 import { MovieCategoryEnum } from '../types/movies';
 import SearchBar from '@/components/utils/SearchComponent';
 import TorrentItem from '@/components/utils/TorrentCard';
 import SimplePagination from '@/components/utils/buttons/SimplePagination';
-import { DownloadIcon } from 'lucide-react';
+import { SearchXIcon } from 'lucide-react';
 import { Metadata } from 'next';
 import { searchMoviesForDownload } from '../queries/queries';
 
@@ -48,17 +47,27 @@ const Page = async ({ searchParams }: { searchParams: Promise<{ page: string; q:
           </>
         ) : (
           <div className="flex justify-center items-center flex-col border border-dashed py-20 rounded-md bg-gray-900">
-            <DownloadIcon size={50} className="mb-5 text-gray-400" />
-            <h3 className="text-lg font-medium text-white mb-1">No download results</h3>
-            <p className="text-gray-400 max-w-md text-center">
-              Try searching for movies, actors, directors, or genres to find what you&apos;re looking for.
-            </p>
+            <SearchXIcon size={70} className="mb-5 text-gray-400" />
+            <h3 className="text-lg font-medium text-white mb-1">Empty result</h3>
+            <p className="text-gray-400 max-w-md text-center">No torrents found, try refining your search</p>
           </div>
         )}
       </div>
     );
-  } catch (error) {
-    return <ErrorPageComponent error={error} />;
+  } catch {
+    return (
+      <div className="container mx-auto mt-[70px] py-10 px-3 md:px-[2rem]">
+        <div className="flex md:justify-between md:items-center mb-10 md:flex-row flex-col gap-3 md:gap-0">
+          <h1 className="text-4xl font-bold">Download</h1>
+          <SearchBar path="download" />
+        </div>
+        <div className="flex justify-center items-center flex-col border border-dashed py-20 rounded-md bg-gray-900">
+          <SearchXIcon size={70} className="mb-5 text-gray-400" />
+          <h3 className="text-lg font-medium text-white mb-1">Empty result</h3>
+          <p className="text-gray-400 max-w-md text-center">No torrents found, try refining your search</p>
+        </div>
+      </div>
+    );
   }
 };
 
