@@ -6,7 +6,7 @@ import TorrentItem from '@/components/utils/TorrentCard';
 import SimplePagination from '@/components/utils/buttons/SimplePagination';
 import { DownloadIcon } from 'lucide-react';
 import { Metadata } from 'next';
-import { searchMoviesForDownload } from '../queries/movies';
+import { searchMoviesForDownload } from '../queries/queries';
 
 export function generateMetadata(): Metadata {
   return {
