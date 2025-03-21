@@ -13,7 +13,12 @@ const Providers = ({ children, value }: { children: React.ReactNode; value: { us
       ui_host: 'https://us.i.posthog.com',
       capture_pageview: false,
       person_profiles: 'identified_only',
+      
     });
+
+    if (value.user) {
+      posthog.identify(value.user.id, value.user);
+    }
   }
 
   return (
