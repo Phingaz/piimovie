@@ -16,10 +16,10 @@ import {
   Check,
   ExternalLink,
 } from 'lucide-react';
-import { MovieDownlodResult } from '@/app/types/movies';
 import { formatDate } from '@/lib/utils';
+import { DownlodResult } from '@/app/types/utils';
 
-export default function TorrentItem({ torrent }: { torrent: MovieDownlodResult }) {
+export default function TorrentItem({ torrent }: { torrent: DownlodResult }) {
   const [copiedHash, setCopiedHash] = useState(false);
   const [copiedMagnet, setCopiedMagnet] = useState(false);
 
