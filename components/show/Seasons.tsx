@@ -6,11 +6,11 @@ import ImageComponent from '../utils/ImageComponent';
 import SectionTitle from '../utils/texts/SectionTitle';
 import { ErrorMovieSection } from '../helpers/Error';
 import EmptyList from '../utils/EmptyList';
-import { Season } from '@/app/types/show';
 import NumberOfSeasons from './NumberOfSeasons';
 import NumberOfEpisodes from './NumberOfEpisodes';
 import Ratings from '../utils/texts/Ratings';
 import ReleaseDate from '../utils/texts/ReleaseDate';
+import { Season } from '@/app/types/utils';
 
 const Seasons = async ({ seasons }: { seasons: Season[] }) => {
   try {
