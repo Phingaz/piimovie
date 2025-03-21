@@ -1,14 +1,10 @@
-import ErrorPageComponent from "@/components/helpers/Error";
-import MovieComponent from "@/components/movie/MovieComponent";
-import { getMovieInfo } from "@/lib/queries";
-import { Metadata } from "next";
-import React from "react";
+import { getMovieInfo } from '@/app/queries/queries';
+import ErrorPageComponent from '@/components/helpers/Error';
+import MovieComponent from '@/components/movie/MovieComponent';
+import { Metadata } from 'next';
+import React from 'react';
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ movie: string }>;
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ movie: string }> }): Promise<Metadata> {
   try {
     const id = (await params).movie;
     const response = await getMovieInfo({ id });
@@ -17,12 +13,12 @@ export async function generateMetadata({
 
     return {
       title: `${response.data.title} | Movie Info`,
-      description: response.data.overview || "Find out more about this movie.",
+      description: response.data.overview || 'Find out more about this movie.',
     };
   } catch {
     return {
-      title: "Error | Movie Not Found",
-      description: "Something went wrong while fetching the movie details.",
+      title: 'Error | Movie Not Found',
+      description: 'Something went wrong while fetching the movie details.',
     };
   }
 }

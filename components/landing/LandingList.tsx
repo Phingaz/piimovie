@@ -1,10 +1,10 @@
 import { MovieType, MovieTypeEnum } from '@/app/types';
-import { getMovies } from '@/lib/queries';
 import Link from 'next/link';
 import React from 'react';
 import { ErrorSectionComponent } from '../helpers/Error';
 import CarouselWrapper from '../carousel/CarouselWrapper';
 import LandingCard from './LandingMovieCard';
+import { getMovies } from '@/app/queries/queries';
 
 const LandingListing = async ({ type }: { type: MovieType }) => {
   try {
@@ -16,7 +16,7 @@ const LandingListing = async ({ type }: { type: MovieType }) => {
       throw new Error(`Something went wrong fetching this movie list ${response.message}`);
 
     return (
-      <div className="w-full mb-24">
+      <div className="w-full mb-15">
         <div className="flex justify-between items-center mb-[17px]">
           <h2 className="text-xl md:text-2xl font-[600] text-gray-300">{title}</h2>
 

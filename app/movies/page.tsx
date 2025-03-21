@@ -1,5 +1,4 @@
 import ErrorPageComponent from '@/components/helpers/Error';
-import { getMovies } from '@/lib/queries';
 import React from 'react';
 import Pagination from '@/components/utils/buttons/Pagination';
 import { MovieTypeEnum } from '../types';
@@ -8,6 +7,7 @@ import SearchBar from '@/components/utils/SearchComponent';
 import ListingCard from '@/components/utils/ListingCard';
 import { Metadata } from 'next';
 import Select from '@/components/utils/Select';
+import { getMovies } from '../queries/queries';
 
 export async function generateMetadata({
   searchParams,
@@ -41,7 +41,7 @@ const Page = async ({ searchParams }: { searchParams: Promise<{ page: string; li
     const title = MovieTypeEnum[list];
 
     return (
-      <div className="container mx-auto md-5 md:py-10 px-3 md:px-[2rem] relative">
+      <div className="container mx-auto mt-[100px] md-5 md:py-10 px-3 md:px-[2rem] relative">
         <div className="flex md:justify-between md:items-center mb-10 md:flex-row flex-col gap-3 md:gap-0">
           <h1 className="text-3xl md:text-4xl font-[600]">{title}</h1>
           <div className="flex gap-2 items-center">

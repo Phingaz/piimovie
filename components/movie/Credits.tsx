@@ -1,13 +1,13 @@
-import React from "react";
-import CarouselWrapper from "../carousel/CarouselWrapper";
-import CarouselItem from "../carousel/CarouselItem";
-import { imageCardUrl } from "@/lib/utils";
-import ImageComponent from "../utils/ImageComponent";
-import { getMovieCredits } from "@/lib/queries";
-import SectionTitle from "../utils/texts/SectionTitle";
-import { ErrorMovieSection } from "../helpers/Error";
-import EmptyList from "../utils/EmptyList";
-import Link from "next/link";
+import React from 'react';
+import CarouselWrapper from '../carousel/CarouselWrapper';
+import CarouselItem from '../carousel/CarouselItem';
+import { imageCardUrl } from '@/lib/utils';
+import ImageComponent from '../utils/ImageComponent';
+import SectionTitle from '../utils/texts/SectionTitle';
+import { ErrorMovieSection } from '../helpers/Error';
+import EmptyList from '../utils/EmptyList';
+import Link from 'next/link';
+import { getMovieCredits } from '@/app/queries/queries';
 
 const Credits = async ({ id }: { id: number }) => {
   try {
@@ -47,11 +47,7 @@ const Credits = async ({ id }: { id: number }) => {
                     </span>
                   </div>
                   <ImageComponent
-                    string={
-                      el.profile_path
-                        ? imageCardUrl(el.profile_path)
-                        : "/placeholder.png"
-                    }
+                    string={el.profile_path ? imageCardUrl(el.profile_path) : '/placeholder.png'}
                     title={el.name}
                   />
                 </CarouselItem>

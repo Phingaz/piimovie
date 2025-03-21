@@ -1,6 +1,5 @@
 import React, { createContext, TransitionStartFunction, useTransition } from 'react';
 import { NavigationCtxProvider } from './Navigation';
-import { FavoriteCtxProvider } from './Favorite';
 
 export type TMainCtx = {
   isLoading: boolean;
@@ -9,16 +8,16 @@ export type TMainCtx = {
 
 const MainCtx = createContext<TMainCtx | undefined>(undefined);
 
-export function MainCtxProvider({ children }: React.PropsWithChildren<object>) {
+type MainCtxProviderProps = {} & React.PropsWithChildren<object>;
+
+export function MainCtxProvider({ children }: MainCtxProviderProps) {
   const [isLoading, startTransition] = useTransition();
 
   const contextValue = { isLoading, startTransition };
 
   return (
     <MainCtx.Provider value={contextValue}>
-      <NavigationCtxProvider>
-        <FavoriteCtxProvider>{children}</FavoriteCtxProvider>
-      </NavigationCtxProvider>
+      <NavigationCtxProvider>{children}</NavigationCtxProvider>
     </MainCtx.Provider>
   );
 }

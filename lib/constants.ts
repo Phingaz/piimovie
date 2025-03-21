@@ -1,5 +1,16 @@
 import { SelectOption } from '@/components/utils/Select';
 
+export const links = [
+  {
+    label: 'Movies',
+    href: '/movies?list=now_playing',
+  },
+  {
+    label: 'Tv Shows',
+    href: '/tv-shows',
+  },
+];
+
 export const movieGenreId = [
   { id: 28, name: 'Action' },
   { id: 12, name: 'Adventure' },
@@ -25,18 +36,18 @@ export const movieGenreId = [
 export const movieTypeOptions: SelectOption[] = [
   {
     label: 'Now Playing',
-    value: "now_playing",
+    value: 'now_playing',
   },
   {
     label: 'Popular',
-    value: "popular",
+    value: 'popular',
   },
   {
     label: 'Top Rated',
-    value: "top_rated",
+    value: 'top_rated',
   },
   {
     label: 'Upcoming',
-    value: "upcoming",
+    value: 'upcoming',
   },
 ];

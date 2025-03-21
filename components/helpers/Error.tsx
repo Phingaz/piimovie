@@ -6,7 +6,7 @@ import SectionTitle from "../utils/texts/SectionTitle";
 
 const ErrorPageComponent = ({ error }: { error: unknown }) => {
   return (
-    <div className="min-h-[80svh] bg-gray-950 flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8">
+    <div className="h-[100svh] flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 text-center text-gray-300">
         <div className="flex justify-center">
           <CircleAlert className="h-24 w-24 text-red-700" />

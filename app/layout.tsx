@@ -4,6 +4,11 @@ import { Poppins, Inter } from 'next/font/google';
 import './globals.css';
 import Providers from './Providers';
 import Header from '@/components/nav/Header';
+import { Toaster } from '@/components/ui/sonner';
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
+import { getFavorites } from './queries/favorites';
+import { movie } from '@prisma/client';
 
 const heading = Poppins({
   subsets: ['latin'],
@@ -25,19 +30,30 @@ export const metadata: Metadata = {
     'Discover, search, and download your favorite movies with ease. Our app lets you find the latest releases, timeless classics, and hidden gems—all in one place. With powerful search, seamless torrenting, and a personalized favorites list, your movie collection is just a tap away.',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  let fav: movie[] | null = null;
+
+  if (session && session.user) {
+    fav = await getFavorites(session.user);
+  }
+
   return (
     <html lang="en">
       <ReactScan />
       <body className={`${heading.variable} ${body.variable} antialiased`}>
-        <Providers>
+        <Providers fav={fav}>
           <Header />
-          {children}
+          <main className="relative -mt-[80px]">{children}</main>
         </Providers>
+        <Toaster richColors />
       </body>
     </html>
   );

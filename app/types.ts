@@ -56,13 +56,13 @@ export interface MovieCreditApiResponse {
   cast: MovieCredit[];
 }
 
-export type MovieType = "now_playing" | "popular" | "top_rated" | "upcoming";
+export type MovieType = 'now_playing' | 'popular' | 'top_rated' | 'upcoming';
 
 export enum MovieTypeEnum {
-  now_playing = "Now Playing",
-  popular = "Popular",
-  top_rated = "Top Rated",
-  upcoming = "Upcoming",
+  now_playing = 'Now Playing',
+  popular = 'Popular',
+  top_rated = 'Top Rated',
+  upcoming = 'Upcoming',
 }
 
 export interface Movie {

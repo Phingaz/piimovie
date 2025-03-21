@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Home } from "lucide-react";
-import Link from "next/link";
-import { useEffect, useState } from "react";
+import { Home } from 'lucide-react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 export default function NotFoundPage() {
   const [particles, setParticles] = useState<React.ReactElement[]>([]);
@@ -13,7 +13,7 @@ export default function NotFoundPage() {
   }, []);
 
   const generateParticles = (count: number) => {
-    const colors = ["#4299e1", "#2d3748", "#a0aec0", "#e2e8f0"];
+    const colors = ['#4299e1', '#2d3748', '#a0aec0', '#e2e8f0'];
     const newParticles = Array.from({ length: count }, (_, i) => {
       const size = Math.random() * 20 + 5;
       const color = colors[Math.floor(Math.random() * colors.length)];
@@ -52,23 +52,17 @@ export default function NotFoundPage() {
 
       <div className="text-center p-6 max-w-lg relative">
         {/* Error Code */}
-        <h1
-          className={`text-9xl font-bold ${
-            easterEggActive ? "text-purple-600" : "text-gray-300"
-          } animate-pulse`}
-        >
+        <h1 className={`text-9xl font-bold ${easterEggActive ? 'text-purple-600' : 'text-gray-300'} animate-pulse`}>
           404
         </h1>
 
         {/* Error Title */}
-        <h2 className="text-2xl font-semibold mt-4">
-          {easterEggActive ? "You found a secret!" : "Page Not Found"}
-        </h2>
+        <h2 className="text-2xl font-semibold mt-4">{easterEggActive ? 'You found a secret!' : 'Page Not Found'}</h2>
 
         {/* Error Message */}
         <p className="text text-gray-300 mt-2">
           {easterEggActive
-            ? "You discovered the Easter egg! Nice job exploring."
+            ? 'You discovered the Easter egg! Nice job exploring.'
             : "The page you're looking for doesn't exist or has been moved."}
           <br />
 

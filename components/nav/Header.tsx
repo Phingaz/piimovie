@@ -3,13 +3,21 @@ import Image from 'next/image';
 import React from 'react';
 import { motion, useCycle } from 'framer-motion';
 import Link from 'next/link';
-import { DownloadIcon, Heart, Search } from 'lucide-react';
+import { DownloadIcon, Heart, Loader2, LogOutIcon, Search } from 'lucide-react';
+import { authClient } from '@/lib/auth';
+import { links } from '@/lib/constants';
+import { clientToastError } from '@/lib/utils';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 
 const Header = () => {
+  const { data } = authClient.useSession();
+  const user = data && data.user;
+
   const [active, setActive] = React.useState(false);
   const [width, setWidth] = React.useState(0);
 
   const [mobileNav, toggleMobileNav] = useCycle(false, true);
+  const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -37,21 +45,21 @@ const Header = () => {
     };
   }, [mobileNav, toggleMobileNav, width]);
 
-  const links = [
-    {
-      label: 'Movies',
-      href: '/movies?list=now_playing',
-    },
-    {
-      label: 'Tv Shows',
-      href: '/tv-shows',
-    },
-  ];
+  const googleAuthSignIn = async () => {
+    try {
+      setLoading(true);
+      await authClient.signIn.social({ provider: 'google' });
+    } catch (error: unknown) {
+      clientToastError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <header
       className={`${
-        active ? 'bg-black/50 backdrop-blur-sm bg-opacity-10' : 'backdrop-blur-[5px]'
+        active ? 'bg-black/80 backdrop-blur-sm bg-opacity-10' : 'bg-black/40 backdrop-blur-[5px]'
       } sticky top-0 left-0 h-[80px] z-[99999] flex justify-between items-center overflow-x-clip text-gray-100`}
     >
       <div className="w-[1350px] 3xl:w-[1750px] px-8 mx-auto">
@@ -69,12 +77,16 @@ const Header = () => {
           </Link>
 
           {/* nav */}
-          <nav className={`lg:block ${mobileNav ? ' fixed top-0 right-0 bg-black h-[100vh] w-[250px]' : 'hidden'}`}>
-            <ul className="flex gap-5 font-[300] flex-col lg:flex-row pt-20 lg:pt-0 items-center w-full h-full">
+          <nav
+            className={`lg:flex justify-between items-center w-[62%] ${mobileNav ? ' fixed top-0 right-0 bg-black h-[100vh] w-[250px]' : 'hidden'}`}
+          >
+            <div className="flex gap-5 font-[300] flex-col lg:flex-row pt-20 lg:pt-0 items-center w-full h-full">
               {links.map((link) => (
-                <li key={link.href} onClick={() => mobileNav && toggleMobileNav()} className="min-w-fit">
-                  <Link href={link.href}>{link.label}</Link>
-                </li>
+                <p key={link.href} onClick={() => mobileNav && toggleMobileNav()} className="min-w-fit">
+                  <Link href={link.href} className="text-lg font-semibold">
+                    {link.label}
+                  </Link>
+                </p>
               ))}
               <div className="flex gap-3 items-center">
                 <Link href="/search" className="text-gray-300 bg-gray-700/50 p-[6px] rounded-md w-fit">
@@ -87,7 +99,43 @@ const Header = () => {
                   <DownloadIcon size={25} />
                 </Link>
               </div>
-            </ul>
+            </div>
+
+            <div className="flex items-center gap-4 min-w-fit">
+              {user ? (
+                <Avatar>
+                  <AvatarImage src={user.image ?? ''} alt={user.name} />
+                  <AvatarFallback>{user.name}</AvatarFallback>
+                </Avatar>
+              ) : (
+                <motion.button
+                  whileTap={{ scale: 0.8 }}
+                  className="flex items-center gap-3 w-fit bg-blue-950 hover:bg-blue-800 transition-all text-gray-100 h-[40px] px-6 rounded-sm text-sm cursor-pointer"
+                  onClick={googleAuthSignIn}
+                >
+                  {loading ? (
+                    <>
+                      Please wait ... <Loader2 size={17} className="animate-spin" />
+                    </>
+                  ) : (
+                    <>
+                      Sign in with google <Image width={20} height={20} src="/google.svg" alt="google-logo" />
+                    </>
+                  )}
+                </motion.button>
+              )}
+              {user && (
+                <motion.button
+                  whileTap={{ scale: 0.8 }}
+                  className="text-gray-300 h-[40px] p-[6px] rounded-md w-fit font-semibold text-lg cursor-pointer"
+                  onClick={async () => {
+                    await authClient.signOut();
+                  }}
+                >
+                  <LogOutIcon strokeWidth={2} size={25} />
+                </motion.button>
+              )}
+            </div>
           </nav>
 
           {/* mobileToggle */}

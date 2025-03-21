@@ -10,10 +10,11 @@ import {
   MovieType,
   VideoApiResponse,
 } from '@/app/types';
-import { catchError, serverResult } from './utils';
+import ENV from '@/lib/env';
+import { catchError, serverResult } from '@/lib/logs';
 
-const baseUrl = 'https://api.themoviedb.org/3';
-const token = process.env.API_KEY;
+const tmdbUrl = ENV.TMDB_URL;
+const token = ENV.TMDB_API_KEY;
 
 export async function fetchData<T>({ url, args, message }: FetchDataArgs<T>) {
   try {
@@ -37,7 +38,7 @@ export async function fetchData<T>({ url, args, message }: FetchDataArgs<T>) {
 }
 
 export const getMovies = async ({ type, page = 1 }: { page: number; type: MovieType }) => {
-  const url = `${baseUrl}/movie/${type}?language=en-US&page=${page}`;
+  const url = `${tmdbUrl}/movie/${type}?language=en-US&page=${page}`;
   return await fetchData<MovieApiResponse>({
     url,
     message: `Successfully fetched ${type}, page ${page}`,
@@ -45,7 +46,8 @@ export const getMovies = async ({ type, page = 1 }: { page: number; type: MovieT
 };
 
 export const searchMovies = async ({ query, page = 1 }: { page: number; query: MovieType }) => {
-  const url = `${baseUrl}/search/movie?query=${query}&page=${page}&include_adult=true&language=en-US`;
+  const url = `${tmdbUrl}/search/movie?query=${query}&page=${page}&include_adult=true&language=en-US&sort_by=release_date.gte
+`;
   return await fetchData<MovieApiResponse>({
     url,
     message: `Successfully searched for movies with query ${query}`,
@@ -71,7 +73,7 @@ export const searchMoviesForDownload = async ({
 };
 
 export const getMovieInfo = async ({ id }: { id: string }) => {
-  const url = `${baseUrl}/movie/${id}`;
+  const url = `${tmdbUrl}/movie/${id}`;
 
   return await fetchData<MovieDetail>({
     url,
@@ -80,7 +82,7 @@ export const getMovieInfo = async ({ id }: { id: string }) => {
 };
 
 export const getMovieKeyWords = async ({ id }: { id: number }) => {
-  const url = `${baseUrl}/movie/${id}/keywords`;
+  const url = `${tmdbUrl}/movie/${id}/keywords`;
 
   return await fetchData<MovieKeywordApiResponse>({
     url,
@@ -89,7 +91,7 @@ export const getMovieKeyWords = async ({ id }: { id: number }) => {
 };
 
 export const getMovieCredits = async ({ id }: { id: number }) => {
-  const url = `${baseUrl}/movie/${id}/credits`;
+  const url = `${tmdbUrl}/movie/${id}/credits`;
 
   return await fetchData<MovieCreditApiResponse>({
     url,
@@ -98,7 +100,7 @@ export const getMovieCredits = async ({ id }: { id: number }) => {
 };
 
 export const getSimilarMovie = async ({ id }: { id: number }) => {
-  const url = `${baseUrl}/movie/${id}/similar`;
+  const url = `${tmdbUrl}/movie/${id}/similar`;
 
   return await fetchData<MovieApiResponse>({
     url,
@@ -107,7 +109,7 @@ export const getSimilarMovie = async ({ id }: { id: number }) => {
 };
 
 export const getRecomendedMovie = async ({ id }: { id: number }) => {
-  const url = `${baseUrl}/movie/${id}/recommendations`;
+  const url = `${tmdbUrl}/movie/${id}/recommendations`;
 
   return await fetchData<MovieApiResponse>({
     url,
@@ -116,7 +118,7 @@ export const getRecomendedMovie = async ({ id }: { id: number }) => {
 };
 
 export const getMovieReviews = async ({ id }: { id: number }) => {
-  const url = `${baseUrl}/movie/${id}/reviews`;
+  const url = `${tmdbUrl}/movie/${id}/reviews`;
 
   return await fetchData<MovieReviewsApiResponse>({
     url,
@@ -125,7 +127,7 @@ export const getMovieReviews = async ({ id }: { id: number }) => {
 };
 
 export const getMovieImages = async ({ id }: { id: number }) => {
-  const url = `${baseUrl}/movie/${id}/images`;
+  const url = `${tmdbUrl}/movie/${id}/images`;
 
   return await fetchData<MovieImagesApiResponse>({
     url,
@@ -134,7 +136,7 @@ export const getMovieImages = async ({ id }: { id: number }) => {
 };
 
 export const getVideos = async ({ id }: { id: number }) => {
-  const url = `${baseUrl}/movie/${id}/videos`;
+  const url = `${tmdbUrl}/movie/${id}/videos`;
 
   return await fetchData<VideoApiResponse>({
     url,

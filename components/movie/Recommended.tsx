@@ -1,10 +1,10 @@
-import React from "react";
-import CarouselWrapper from "../carousel/CarouselWrapper";
-import { getRecomendedMovie } from "@/lib/queries";
-import SectionTitle from "../utils/texts/SectionTitle";
-import { ErrorMovieSection } from "../helpers/Error";
-import LandingCard from "../landing/LandingMovieCard";
-import EmptyList from "../utils/EmptyList";
+import React from 'react';
+import CarouselWrapper from '../carousel/CarouselWrapper';
+import SectionTitle from '../utils/texts/SectionTitle';
+import { ErrorMovieSection } from '../helpers/Error';
+import LandingCard from '../landing/LandingMovieCard';
+import EmptyList from '../utils/EmptyList';
+import { getRecomendedMovie } from '@/app/queries/queries';
 
 const Recommended = async ({ id }: { id: number }) => {
   try {
@@ -18,10 +18,7 @@ const Recommended = async ({ id }: { id: number }) => {
           <>Recommended Movies</>
         </SectionTitle>
         {recommendedmovies.length < 1 ? (
-          <EmptyList
-            type="recommended movies found"
-            message="We couldn't find any recommended movies at the moment."
-          />
+          <EmptyList type="recommended movies found" message="We couldn't find any recommended movies at the moment." />
         ) : (
           <CarouselWrapper isLanding={false}>
             {recommendedmovies.map((movie) => {

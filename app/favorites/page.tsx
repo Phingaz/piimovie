@@ -4,28 +4,42 @@ import { LocalSearch } from '@/components/utils/SearchComponent';
 import { useFavoriteCtx } from '../_context/Favorite';
 import LandingCard from '@/components/landing/LandingMovieCard';
 import { SearchXIcon } from 'lucide-react';
+import { authClient } from '@/lib/auth';
+import { Movie } from '../types';
+import { movie } from '@prisma/client';
 
 const Page = () => {
-  const { favMovies: movies } = useFavoriteCtx();
-  const [filteredResults, setFilteredResults] = React.useState(typeof window !== 'undefined' ? movies : []);
+  const { data } = authClient.useSession();
+  const user = data && data.user;
+
+  const { fav: movies } = useFavoriteCtx();
+  const [filteredResults, setFilteredResults] = React.useState<movie[] | null>(
+    typeof window !== 'undefined' ? movies : null,
+  );
 
   return (
-    <div className="container mx-auto py-10 px-3 md:px-[2rem]">
+    <div className="container mx-auto py-10 mt-[100px] px-3 md:px-[2rem]">
       <div className="flex md:justify-between md:items-center mb-10 md:flex-row flex-col gap-3 md:gap-0">
         <h1 className="text-4xl font-bold">Favorite</h1>
         <LocalSearch data={movies} setFilteredResults={setFilteredResults} />
       </div>
-      {filteredResults.length >= 1 ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:gap-x-8 md:gap-y-10 gap-3 mb-20">
-          {filteredResults?.map((movie) => {
-            return <LandingCard key={movie.id} movie={movie} />;
-          })}
+      {!user ? (
+        <div className="flex justify-center items-center flex-col border border-dashed py-20 rounded-md bg-gray-900">
+          <SearchXIcon size={50} className="mb-5 text-gray-400" />
+          <h3 className="text-lg font-medium text-white mb-1">Sign in to continue</h3>
+          <p className="text-gray-400 max-w-md text-center">Please sign in to manage your favorite movies</p>
+        </div>
+      ) : !data && filteredResults && filteredResults.length >= 1 ? (
+        <div className="flex justify-center items-center flex-col border border-dashed py-20 rounded-md bg-gray-900">
+          <SearchXIcon size={50} className="mb-5 text-gray-400" />
+          <h3 className="text-lg font-medium text-white mb-1">No favorites</h3>
+          <p className="text-gray-400 max-w-md text-center">Try adding a movie as favorite to add it to this list.</p>
         </div>
       ) : (
-        <div className="flex justify-center items-center flex-col border border-dashed py-20 rounded-md bg-gray-900">
-          <SearchXIcon size={50} className=" text-gray-400" />
-          <h3 className="text-lg font-medium text-white mb-2">No favorites</h3>
-          <p className="text-gray-400 max-w-md text-center">Try adding a movie as favorite to add it to this list.</p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:gap-x-8 md:gap-y-10 gap-3 mb-20">
+          {filteredResults?.map((movie) => {
+            return <LandingCard key={movie.id} movie={movie as unknown as Movie} />;
+          })}
         </div>
       )}
     </div>

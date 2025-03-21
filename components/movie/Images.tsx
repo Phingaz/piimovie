@@ -1,10 +1,10 @@
 import React from 'react';
 import CarouselWrapper from '../carousel/CarouselWrapper';
 import CarouselItem from '../carousel/CarouselItem';
-import { getMovieImages } from '@/lib/queries';
 import SectionTitle from '../utils/texts/SectionTitle';
 import { ErrorMovieSection } from '../helpers/Error';
 import ImageModalCard from '../utils/ImageModalCard';
+import { getMovieImages } from '@/app/queries/queries';
 
 const Images = async ({ id }: { id: number }) => {
   try {

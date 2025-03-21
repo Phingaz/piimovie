@@ -20,9 +20,9 @@ const Ratings = ({
     >
       <Star fill="yellow" size={isReview ? 15 : 20} className="text-amber-400" />
       <p className={`${isReview ? "text-[12px]" : "text-sm"}`}>
-        {vote_average.toFixed()}/10
+        {vote_average?.toFixed()}/10
       </p>
-      {voteCount && <p className="text-sm">({voteCount}) votes</p>}
+      {voteCount && <p className="text-sm">({voteCount ?? 0}) votes</p>}
     </span>
   );
 };

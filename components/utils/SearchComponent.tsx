@@ -1,6 +1,5 @@
 'use client';
-
-import { Movie } from '@/app/types';
+import { movie } from '@prisma/client';
 import { Search } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
@@ -53,9 +52,9 @@ export default function SearchBar({ path = 'search', placeholder = 'Search...' }
 }
 
 interface LocalSearchProps {
-  data: Movie[];
+  data: movie[] | null;
   placeholder?: string;
-  setFilteredResults: React.Dispatch<React.SetStateAction<Movie[]>>;
+  setFilteredResults: React.Dispatch<React.SetStateAction<movie[] | null>>;
 }
 
 export const LocalSearch = ({ data, placeholder = 'Search...', setFilteredResults }: LocalSearchProps) => {
@@ -65,8 +64,9 @@ export const LocalSearch = ({ data, placeholder = 'Search...', setFilteredResult
     if (!query) {
       setFilteredResults(data);
     } else {
+      if (!data) return;
       const lowerQuery = query.toLowerCase();
-      const filtered = data.filter((item) => String(item.title).toLowerCase().includes(lowerQuery));
+      const filtered = data.filter((item) => String(item.title).toLowerCase()?.includes(lowerQuery));
       setFilteredResults(filtered);
     }
   }, [query, data, setFilteredResults]);

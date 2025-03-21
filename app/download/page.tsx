@@ -1,5 +1,4 @@
 import ErrorPageComponent from '@/components/helpers/Error';
-import { searchMoviesForDownload } from '@/lib/queries';
 import React from 'react';
 import { MovieTypeEnum } from '../types';
 import SearchBar from '@/components/utils/SearchComponent';
@@ -7,6 +6,7 @@ import TorrentItem from '@/components/utils/TorrentCard';
 import SimplePagination from '@/components/utils/buttons/SimplePagination';
 import { DownloadIcon } from 'lucide-react';
 import { Metadata } from 'next';
+import { searchMoviesForDownload } from '../queries/queries';
 
 export function generateMetadata(): Metadata {
   return {
@@ -48,8 +48,8 @@ const Page = async ({ searchParams }: { searchParams: Promise<{ page: string; q:
           </>
         ) : (
           <div className="flex justify-center items-center flex-col border border-dashed py-20 rounded-md bg-gray-900">
-            <DownloadIcon size={50} className=" text-gray-400" />
-            <h3 className="text-lg font-medium text-white mb-2">No download results</h3>
+            <DownloadIcon size={50} className="mb-5 text-gray-400" />
+            <h3 className="text-lg font-medium text-white mb-1">No download results</h3>
             <p className="text-gray-400 max-w-md text-center">
               Try searching for movies, actors, directors, or genres to find what you&apos;re looking for.
             </p>

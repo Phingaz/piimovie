@@ -1,16 +1,21 @@
 import { Movie, MovieType, MovieTypeEnum } from '@/app/types';
+import { movie } from '@prisma/client';
 import { type ClassValue, clsx } from 'clsx';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { TransitionStartFunction } from 'react';
+import { toast } from 'sonner';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const logger = (message?: string) => {
-  const timestamp = new Date().toISOString();
-  console.log(`[${timestamp}] - ${message || 'Error message is empty'}`);
+export const clientToastError = (error: unknown) => {
+  if (error instanceof Error) {
+    toast.error(error.message);
+  } else {
+    toast.error('An unknown error occurred');
+  }
 };
 
 export const preloadImage = (url: string) => {
@@ -73,7 +78,7 @@ export const formatDate = (release_date: string) => {
   });
 };
 
-export const isFav = (favMovies: Movie[], id: number) => {
+export const isFav = (favMovies: movie[], id: number) => {
   return favMovies?.some((favMovie) => favMovie.id === id);
 };
 
@@ -84,24 +89,6 @@ export const imageUrl = (imgUrl: string) => {
 export const imageCardUrl = (imgUrl: string) => {
   return `https://image.tmdb.org/t/p/w500/${imgUrl}`;
 };
-
-export const serverResult = <T>(data: T, message = 'Successfully fetched data') => {
-  logger(message);
-  return { data, success: true, message };
-};
-
-export function catchError(error: unknown) {
-  let status_message = 'An unknown error occurred';
-  const timestamp = new Date().toISOString();
-
-  if (error instanceof Error) {
-    status_message = error.message;
-    console.error(`[${timestamp}] - ${error}`);
-  } else {
-    console.error(error);
-  }
-  return { success: false, message: status_message, data: null };
-}
 
 export const updateSearchParam = ({
   param,

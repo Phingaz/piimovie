@@ -1,6 +1,6 @@
-import React from "react";
-import { getVideos } from "@/lib/queries";
-import { MovieDetailError } from "../helpers/Error";
+import React from 'react';
+import { MovieDetailError } from '../helpers/Error';
+import { getVideos } from '@/app/queries/queries';
 
 export const VideoPlayer = async ({ id }: { id: number }) => {
   try {

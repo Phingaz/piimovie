@@ -2,12 +2,12 @@ import { connection } from 'next/server';
 import ErrorPageComponent from '@/components/helpers/Error';
 import Hero from '@/components/landing/Hero';
 import LadingListingWrapper from '@/components/landing/LadingListingWrapper';
-import { getMovies } from '@/lib/queries';
+import { getMovies } from '@/app/queries/queries';
 import { getRandomNumber, getRandomType } from '@/lib/utils';
 
 export default async function Home() {
   try {
-    await connection()
+    await connection();
 
     const result = await getMovies({
       page: getRandomNumber(10),
@@ -19,10 +19,10 @@ export default async function Home() {
     const movies = result.data?.results;
 
     return (
-      <main className="relative -mt-[80px]">
+      <>
         <Hero movies={movies} />
         <LadingListingWrapper />
-      </main>
+      </>
     );
   } catch (error) {
     return <ErrorPageComponent error={error} />;
