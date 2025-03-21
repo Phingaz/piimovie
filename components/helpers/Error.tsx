@@ -1,4 +1,3 @@
-import { MovieType, MovieTypeEnum } from '@/app/types/movies';
 import { CircleAlert, Home } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
@@ -34,9 +33,7 @@ const ErrorPageComponent = ({ error }: { error: unknown }) => {
 
 export default ErrorPageComponent;
 
-export const ErrorSectionComponent = ({ type, error }: { type: MovieType; error: unknown }) => {
-  const title = MovieTypeEnum[type];
-
+export const ErrorSectionComponent = ({ title, error }: { title: string; error: unknown }) => {
   return (
     <div className="w-full mb-24 ">
       <div className="flex justify-between items-center mb-5">

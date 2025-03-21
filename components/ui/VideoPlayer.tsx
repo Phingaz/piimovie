@@ -1,16 +1,17 @@
 import React from 'react';
 import { MovieDetailError } from '../helpers/Error';
-import { getVideos } from '@/app/queries/movies';
+import { getVideos } from '@/app/queries/queries';
+import { ListType } from '@/app/types/utils';
 
-export const VideoPlayer = async ({ id }: { id: number }) => {
+export const VideoPlayer = async ({ id, type }: { id: number; type: ListType }) => {
   try {
-    const response = await getVideos({ id });
+    const response = await getVideos({ id, type });
 
     if (!response.success || !response.data) throw new Error(response.message);
     const results = response.data.results;
 
     return (
-      <div className="aspect-video w-full border-gray-500/50 border-2">
+      <div className={`aspect-video w-full border-gray-500/50 border-2 ${type === 'movie' ? 'h-auto' : 'h-full'}`}>
         <iframe
           width="100%"
           height="100%"

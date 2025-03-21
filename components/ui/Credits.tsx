@@ -7,11 +7,13 @@ import SectionTitle from '../utils/texts/SectionTitle';
 import { ErrorMovieSection } from '../helpers/Error';
 import EmptyList from '../utils/EmptyList';
 import Link from 'next/link';
-import { getMovieCredits } from '@/app/queries/movies';
+import { getCredits } from '../../app/queries/queries';
+import { ListType } from '@/app/types/utils';
 
-const Credits = async ({ id }: { id: number }) => {
+const Credits = async ({ id, type }: { id: number; type: ListType }) => {
   try {
-    const response = await getMovieCredits({ id });
+    const response = await getCredits({ type, id });
+
     if (!response.data) throw new Error(response.message);
     const credits = response.data.cast;
 
@@ -46,10 +48,7 @@ const Credits = async ({ id }: { id: number }) => {
                       </Link>
                     </span>
                   </div>
-                  <ImageComponent
-                    string={el.profile_path ? imageCardUrl(el.profile_path) : '/placeholder.png'}
-                    title={el.name}
-                  />
+                  <ImageComponent string={imageCardUrl(el.profile_path)} title={el.name} />
                 </CarouselItem>
               );
             })}

@@ -46,14 +46,14 @@ export default function LinkSwitcher({
         </button>
         <button
           className={`flex items-center justify-center py-1 z-2 px-2 min-w-fit text-sm transition-colors duration-300 rounded-[3px] ${
-            path === 'show' ? 'text-gray-100 font-[700]' : 'font-[400] text-gray-400 cursor-pointer'
+            path === 'tv' ? 'text-gray-100 font-[700]' : 'font-[400] text-gray-400 cursor-pointer'
           }`}
           onClick={() => {
             if (mobileNav) toggleMobileNav();
-            setCookie('t', 'show');
-            router.push('/show');
+            setCookie('t', 'tv');
+            router.push('/tv');
           }}
-          aria-pressed={path === 'show'}
+          aria-pressed={path === 'tv'}
         >
           <TvMinimalPlay className="w-4 h-4 mr-2" />
           Tv Shows

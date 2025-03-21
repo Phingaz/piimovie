@@ -4,18 +4,19 @@ import SectionTitle from '../utils/texts/SectionTitle';
 import { ErrorMovieSection } from '../helpers/Error';
 import LandingCard from '../landing/LandingMovieCard';
 import EmptyList from '../utils/EmptyList';
-import { getSimilarMovie } from '@/app/queries/movies';
+import { getSimilar } from '@/app/queries/queries';
+import { ListType } from '@/app/types/utils';
 
-const Similar = async ({ id }: { id: number }) => {
+const Similar = async ({ id, type }: { id: number; type: ListType }) => {
   try {
-    const response = await getSimilarMovie({ id });
+    const response = await getSimilar({ id, type });
     if (!response.data) throw new Error(response.message);
     const similarMovies = response.data.results;
 
     return (
       <div>
         <SectionTitle>
-          <>Similar Movies</>
+          <>Similar {type === 'movie' ? 'Movies' : 'Tv Shows'}</>
         </SectionTitle>
 
         {similarMovies.length < 1 ? (
@@ -23,14 +24,14 @@ const Similar = async ({ id }: { id: number }) => {
         ) : (
           <CarouselWrapper isLanding={false} hideButtons={similarMovies.length < 1}>
             {similarMovies.map((movie) => {
-              return <LandingCard key={movie.id} movie={movie} />;
+              return <LandingCard key={movie.id} movie={movie} type={type} />;
             })}
           </CarouselWrapper>
         )}
       </div>
     );
   } catch (error) {
-    return <ErrorMovieSection error={error} title="Similar Movies" />;
+    return <ErrorMovieSection error={error} title={`Similar ${type === 'movie' ? 'Movies' : 'Tv Shows'}`} />;
   }
 };
 

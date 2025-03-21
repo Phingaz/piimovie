@@ -11,8 +11,8 @@ export default async function Home() {
 
     if (t === 'movie') {
       redirectPath = '/movie';
-    } else if (t === 'show') {
-      redirectPath = '/show';
+    } else if (t === 'tv') {
+      redirectPath = '/tv';
     } else {
       redirectPath = '/movie';
     }

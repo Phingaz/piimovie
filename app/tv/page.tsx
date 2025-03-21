@@ -1,22 +1,17 @@
 import { connection } from 'next/server';
 import ErrorPageComponent from '@/components/helpers/Error';
 import LadingListingWrapper from '@/components/landing/LadingListingWrapper';
-import { getRandomNumber, getRandomMovieCategory } from '@/lib/utils';
+import { getRandomNumber, getRandomShowCategory } from '@/lib/utils';
 import { getListing } from '../queries/queries';
 import HeroMovieImg from '@/components/landing/HeroMovieImage';
 import HeroMovieInfo from '@/components/landing/HeroMovieInfo';
 
-const type = 'movie';
+const type = 'tv';
 
 export default async function Home() {
   try {
     await connection();
-
-    const result = await getListing({
-      type,
-      page: getRandomNumber(10),
-      category: getRandomMovieCategory(),
-    });
+    const result = await getListing({ page: getRandomNumber(10), category: getRandomShowCategory(), type });
 
     if (!result.success) throw new Error(result.message);
 

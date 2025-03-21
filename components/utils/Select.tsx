@@ -20,7 +20,7 @@ const SelectComponent = ({ defaultValue, options }: { defaultValue: string | nul
 
   const handleSelect = (option: string) => {
     updateSearchParam({
-      param: { list: option ?? null, page: '1' },
+      param: { category: option ?? null, page: '1' },
       router,
       searchParams,
       startTransition,

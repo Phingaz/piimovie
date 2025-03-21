@@ -4,8 +4,12 @@ import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
 import { MovieDetail } from '@/app/types/movies';
 import { imageUrl } from '@/lib/utils';
+import { ShowDetail } from '@/app/types/show';
 
-const Background = ({ movie }: { movie: MovieDetail }) => {
+const Background = ({ movie }: { movie: MovieDetail | ShowDetail }) => {
+  const title = React.useMemo(() => (movie as MovieDetail).title || (movie as ShowDetail).original_name, [movie]);
+  const imageUrlPath = React.useMemo(() => imageUrl(movie.backdrop_path), [movie]);
+
   return (
     <AnimatePresence mode="wait">
       {movie && (
@@ -21,8 +25,8 @@ const Background = ({ movie }: { movie: MovieDetail }) => {
             <Image
               fill
               priority
-              alt={movie.title}
-              src={movie.backdrop_path ? imageUrl(movie.backdrop_path) : '/placeholder.png'}
+              alt={title}
+              src={imageUrlPath}
               className="scale-[1.2] object-top object-cover w-full h-full absolute"
             />
           </motion.div>

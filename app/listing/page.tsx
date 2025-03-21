@@ -1,36 +1,40 @@
 import ErrorPageComponent from '@/components/helpers/Error';
 import React from 'react';
 import Pagination from '@/components/utils/buttons/Pagination';
-import { MovieTypeEnum } from '../types/movies';
-import { movieGenreId, movieTypeOptions } from '@/lib/constants';
+import { MovieCategoryEnum } from '../types/movies';
+import { movieGenreId, MovieCategoryOptions, TvCategoryOptions } from '@/lib/constants';
 import SearchBar from '@/components/utils/SearchComponent';
 import ListingCard from '@/components/utils/ListingCard';
 import { Metadata } from 'next';
 import SelectComponent from '@/components/utils/Select';
-import { getMovies } from '../queries/movies';
+import { getListing } from '../queries/queries';
+import { ListType } from '../types/utils';
+import { cookies } from 'next/headers';
 
 export async function generateMetadata({
   searchParams,
 }: {
-  searchParams: Promise<{ list: string }>;
+  searchParams: Promise<{ category: string }>;
 }): Promise<Metadata> {
-  const { list } = await searchParams;
-  const title = MovieTypeEnum[list as keyof typeof MovieTypeEnum];
+  const { category } = await searchParams;
+  const type = (await cookies()).get('t')?.value as ListType;
+  const title = MovieCategoryEnum[category as keyof typeof MovieCategoryEnum];
 
   return {
-    title: `Movie Box | Movies | ${title}`,
+    title: `Movie Box | ${type.charAt(0).toLocaleUpperCase + type.slice(1, -1)} | ${title}`,
     description: `Movie listing for ${title}`,
   };
 }
 
-const Page = async ({ searchParams }: { searchParams: Promise<{ page: string; list: string }> }) => {
-  const { page, list } = (await searchParams) as {
+const Page = async ({ searchParams }: { searchParams: Promise<{ page: string; category: string }> }) => {
+  const { page, category } = (await searchParams) as {
     page: string;
-    list: keyof typeof MovieTypeEnum;
+    category: keyof typeof MovieCategoryEnum;
   };
 
   try {
-    const result = await getMovies({ page: Number(page) || 1, type: list });
+    const type = (await cookies()).get('t')?.value as ListType;
+    const result = await getListing({ category, page: Number(page) || 1, type });
 
     if (!result.data) throw new Error(result.message);
 
@@ -38,14 +42,17 @@ const Page = async ({ searchParams }: { searchParams: Promise<{ page: string; li
     const currentPage = result.data?.page;
     const totalPages = result.data?.total_pages;
     const totalResults = result.data?.total_results;
-    const title = MovieTypeEnum[list];
+    const title = MovieCategoryEnum[category];
 
     return (
       <div className="container mx-auto mt-[100px] md-5 md:py-10 px-3 md:px-[2rem] relative">
         <div className="flex md:justify-between md:items-center mb-10 md:flex-row flex-col gap-3 md:gap-0">
           <h1 className="text-3xl md:text-4xl font-[600]">{title}</h1>
           <div className="flex md:flex-row flex-col gap-2 md:items-center mt-5 md:mt-0">
-            <SelectComponent defaultValue={list} options={movieTypeOptions} />
+            <SelectComponent
+              defaultValue={category}
+              options={type === 'movie' ? MovieCategoryOptions : TvCategoryOptions}
+            />
             <SearchBar />
           </div>
         </div>
@@ -56,7 +63,7 @@ const Page = async ({ searchParams }: { searchParams: Promise<{ page: string; li
               .map((genre) => genre.name)
               .join(', ');
 
-            return <ListingCard key={movie.id} genres={genres} movie={movie} />;
+            return <ListingCard key={movie.id} genres={genres} type={type} movie={movie} />;
           })}
         </div>
         <Pagination currentPage={currentPage} totalPages={totalPages} totalResults={totalResults} />

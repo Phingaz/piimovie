@@ -1,6 +1,6 @@
 import ErrorPageComponent from '@/components/helpers/Error';
 import React from 'react';
-import { MovieTypeEnum } from '../types/movies';
+import { MovieCategoryEnum } from '../types/movies';
 import SearchBar from '@/components/utils/SearchComponent';
 import TorrentItem from '@/components/utils/TorrentCard';
 import SimplePagination from '@/components/utils/buttons/SimplePagination';
@@ -18,7 +18,7 @@ export function generateMetadata(): Metadata {
 const Page = async ({ searchParams }: { searchParams: Promise<{ page: string; q: string }> }) => {
   const { page, q } = (await searchParams) as {
     page: string;
-    q: keyof typeof MovieTypeEnum;
+    q: keyof typeof MovieCategoryEnum;
   };
 
   try {

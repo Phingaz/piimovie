@@ -1,6 +1,6 @@
 'use client';
 import { PlayCircleIcon } from 'lucide-react';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Movie } from '@/app/types/movies';
 import { useRouter } from 'next/navigation';
@@ -9,17 +9,29 @@ import { imageUrl } from '@/lib/utils';
 import Ratings from '../utils/texts/Ratings';
 import ReleaseDate from '../utils/texts/ReleaseDate';
 import useHero from '@/app/_hooks/useHero';
+import { Show } from '@/app/types/show';
+import { ListType } from '@/app/types/utils';
 
-const HeroMovieInfo = ({ movies }: { movies: Movie[] }) => {
+const HeroMovieInfo = ({ items, type }: { type: ListType; items?: Movie[] | Show[] }) => {
   const router = useRouter();
-  const { movie } = useHero(movies);
+  const { movie } = useHero(items);
+
+  const title = useMemo(() => (movie ? (movie as Movie).title || (movie as Show).original_name : ''), [movie]);
+  const posterUrl = useMemo(() => imageUrl(movie?.poster_path), [movie]);
+  const overview = useMemo(() => movie?.overview || 'No overview available.', [movie]);
+  const movieId = useMemo(() => movie?.id, [movie]);
+  const releaseDate = useMemo(
+    () => (movie ? (movie as Movie).release_date || (movie as Show).first_air_date : ''),
+    [movie],
+  );
 
   if (!movie) return null;
+
   return (
     <div className="bg-gradient-to-b to-black absolute top-0 left-0 w-full min-h-[80svh] md:min-h-[110svh] z-2 flex items-center backdrop-blur-[5px]">
       <AnimatePresence mode="wait">
         <motion.div
-          key={movie?.id}
+          key={movieId}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -31,10 +43,11 @@ const HeroMovieInfo = ({ movies }: { movies: Movie[] }) => {
               width={320}
               height={420}
               loading="eager"
-              alt={movie.title}
-              src={movie.poster_path ? imageUrl(movie.poster_path) : '/placeholder.png'}
+              alt={title}
+              src={posterUrl}
               className="rounded-lg border border-gray-500/50 hidden md:block aspect-[3/4] object-center object-cover ml-8 w-[300px] h-[400px]"
             />
+
             <div className="flex flex-col gap-4 justify-center px-8">
               <motion.h1
                 initial={{ opacity: 0, y: -2 }}
@@ -42,33 +55,29 @@ const HeroMovieInfo = ({ movies }: { movies: Movie[] }) => {
                 transition={{ delay: 0.005 }}
                 className="md:text-5xl text-3xl font-bold leading-tighter text-gray-100"
               >
-                {movie?.title}
+                {title}
               </motion.h1>
 
               <div className="text-gray-400 font-[500] flex gap-3">
                 <Ratings vote_average={movie.vote_average} />
-                <ReleaseDate release_date={movie.release_date} />
+                <ReleaseDate release_date={releaseDate} />
               </div>
-              <motion.div
-                initial={{ opacity: 0, y: -1 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="flex gap-4"
-              ></motion.div>
+
               <motion.p
                 className="text-[15px] line-clamp-3"
                 initial={{ opacity: 0, y: -1 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.15, type: 'bounce' }}
               >
-                {movie?.overview}
+                {overview}
               </motion.p>
+
               <motion.button
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
                 className="flex gap-3 w-fit justify-center items-center bg-blue-900 text-white px-5 py-3 rounded-md font-bold hover:bg-blue-800 transition-all ease-in-out duration-300 cursor-pointer"
-                onClick={() => router.push(`/movie/${movie?.id}`)}
+                onClick={() => router.push(`/${type ?? 'movie'}/${movieId}`)}
               >
                 <PlayCircleIcon /> Watch Trailer
               </motion.button>

@@ -1,10 +1,11 @@
 import React from 'react';
 import SectionTitle from '../utils/texts/SectionTitle';
-import { getMovieKeyWords } from '@/app/queries/movies';
+import { getKeyWords } from '@/app/queries/queries';
+import { ListType } from '@/app/types/utils';
 
-const MovieKeywords = async ({ id }: { id: number }) => {
+const Keywords = async ({ id, type }: { id: number; type: ListType }) => {
   try {
-    const response = await getMovieKeyWords({ id });
+    const response = await getKeyWords({ id, type });
     if (!response.data) throw new Error(response.message);
     const keywords = response.data.keywords;
 
@@ -32,4 +33,4 @@ const MovieKeywords = async ({ id }: { id: number }) => {
     return null;
   }
 };
-export default MovieKeywords;
+export default Keywords;

@@ -5,9 +5,13 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Movie } from '@/app/types/movies';
 import { imageUrl } from '@/lib/utils';
 import useHero from '@/app/_hooks/useHero';
+import { Show } from '@/app/types/show';
 
-const HeroMovieImg = ({ movies }: { movies: Movie[] }) => {
-  const { movie, time, direction, intervalTime } = useHero(movies);
+const HeroMovieImg = ({ items }: { items?: Movie[] | Show[] }) => {
+  const { movie, time, direction, intervalTime } = useHero(items);
+  const title = React.useMemo(() => (movie as Movie).title || (movie as Show).original_name, [movie]);
+  const imageUrlPath = React.useMemo(() => imageUrl(movie?.backdrop_path), [movie]);
+
   if (!movie) return null;
 
   return (
@@ -37,8 +41,8 @@ const HeroMovieImg = ({ movies }: { movies: Movie[] }) => {
               <Image
                 fill
                 priority
-                alt={movie.title}
-                src={movie.backdrop_path ? imageUrl(movie.backdrop_path) : '/placeholder.png'}
+                alt={title}
+                src={imageUrlPath}
                 className="scale-[1.2] object-top object-cover w-full h-full absolute"
               />
             </motion.div>

@@ -6,11 +6,12 @@ import Image from 'next/image';
 import { formatDate, imageCardUrl } from '@/lib/utils';
 import Ratings from '../utils/texts/Ratings';
 import Comment from './Comment';
-import { getMovieReviews } from '@/app/queries/movies';
+import { getReviews } from '@/app/queries/queries';
+import { ListType } from '@/app/types/utils';
 
-const Reviews = async ({ id }: { id: number }) => {
+const Reviews = async ({ id, type }: { id: number; type: ListType }) => {
   try {
-    const response = await getMovieReviews({ id });
+    const response = await getReviews({ id, type });
     if (!response.data) throw new Error(response.message);
     const reviews = response.data.results;
 
@@ -28,11 +29,7 @@ const Reviews = async ({ id }: { id: number }) => {
                 <div key={review.id} className="bg-gray-900 rounded-lg p-4 flex flex-col gap-3">
                   <div className="flex items-start gap-3">
                     <Image
-                      src={
-                        review.author_details.avatar_path
-                          ? imageCardUrl(review.author_details.avatar_path)
-                          : '/placeholder.png'
-                      }
+                      src={imageCardUrl(review.author_details.avatar_path)}
                       width={50}
                       height={50}
                       alt={review.author}

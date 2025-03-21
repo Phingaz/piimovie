@@ -1,13 +1,15 @@
-import { getMovieInfo } from '@/app/queries/movies';
+import { getDetails } from '@/app/queries/queries';
 import ErrorPageComponent from '@/components/helpers/Error';
 import MovieComponent from '@/components/movie/MovieComponent';
 import { Metadata } from 'next';
 import React from 'react';
 
+const type = 'movie';
+
 export async function generateMetadata({ params }: { params: Promise<{ movie: string }> }): Promise<Metadata> {
   try {
     const id = (await params).movie;
-    const response = await getMovieInfo({ id });
+    const response = await getDetails({ id, type });
 
     if (!response.data) throw new Error(response.message);
 
@@ -26,11 +28,11 @@ export async function generateMetadata({ params }: { params: Promise<{ movie: st
 const Page = async ({ params }: { params: Promise<{ movie: string }> }) => {
   try {
     const id = (await params).movie;
-    const response = await getMovieInfo({ id });
+    const response = await getDetails({ id, type });
 
     if (!response.data) throw new Error(response.message);
 
-    return <MovieComponent movie={response.data} />;
+    return <MovieComponent type={type} movie={response.data} />;
   } catch (error) {
     return <ErrorPageComponent error={error} />;
   }

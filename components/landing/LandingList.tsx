@@ -1,19 +1,25 @@
-import { MovieType, MovieTypeEnum } from '@/app/types/movies';
+import { MovieCategory, MovieCategoryEnum } from '@/app/types/movies';
 import Link from 'next/link';
 import React from 'react';
 import { ErrorSectionComponent } from '../helpers/Error';
 import CarouselWrapper from '../carousel/CarouselWrapper';
 import LandingCard from './LandingMovieCard';
-import { getMovies } from '@/app/queries/movies';
+import { ShowCategory, ShowCategoryEnum } from '@/app/types/show';
+import { getListing } from '@/app/queries/queries';
+import { ListType } from '@/app/types/utils';
 
-const LandingListing = async ({ type }: { type: MovieType }) => {
+const LandingListing = async ({ type, category }: { type: ListType; category: MovieCategory | ShowCategory }) => {
+  const title =
+    type === 'movie' ? MovieCategoryEnum[category as MovieCategory] : ShowCategoryEnum[category as ShowCategory];
+
   try {
-    const response = await getMovies({ page: 1, type });
-    const title = MovieTypeEnum[type];
-    const movies = response.data?.results;
+    const response = await getListing({ category, page: 1, type });
 
-    if (!movies || !response.success)
-      throw new Error(`Something went wrong fetching this movie list ${response.message}`);
+    const items = response.data?.results;
+
+    if (!items || !response.success) {
+      throw new Error(`Something went wrong fetching this list: ${response.message}`);
+    }
 
     return (
       <div className="w-full mb-15">
@@ -22,20 +28,20 @@ const LandingListing = async ({ type }: { type: MovieType }) => {
 
           <Link
             className="text-sm font-[600] transition hover:text-blue-500 hover:scale-105"
-            href={`/movies?list=${type}&page=1`}
+            href={`/listing?category=${category}&page=1`}
           >
             See more
           </Link>
         </div>
         <CarouselWrapper isLanding>
-          {movies.map((movie) => (
-            <LandingCard key={movie.id} movie={movie} />
+          {items.map((item) => (
+            <LandingCard key={item.id} movie={item} type={type} />
           ))}
         </CarouselWrapper>
       </div>
     );
   } catch (error) {
-    return <ErrorSectionComponent type={type} error={error} />;
+    return <ErrorSectionComponent title={title} error={error} />;
   }
 };
 

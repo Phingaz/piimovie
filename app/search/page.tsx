@@ -1,14 +1,16 @@
 import ErrorPageComponent from '@/components/helpers/Error';
 import React from 'react';
 import Pagination from '@/components/utils/buttons/Pagination';
-import { MovieTypeEnum } from '../types/movies';
+import { MovieCategoryEnum } from '../types/movies';
 import { movieGenreId } from '@/lib/constants';
 import SearchBar from '@/components/utils/SearchComponent';
 import ListingCard from '@/components/utils/ListingCard';
 import { SearchXIcon } from 'lucide-react';
 import { Metadata } from 'next';
-import { searchMovies } from '../queries/movies';
 import { redirect } from 'next/navigation';
+import { search } from '../queries/queries';
+import { cookies } from 'next/headers';
+import { ListType } from '../types/utils';
 
 export async function generateMetadata({
   searchParams,
@@ -26,13 +28,15 @@ export async function generateMetadata({
 const Page = async ({ searchParams }: { searchParams: Promise<{ page: string; q: string }> }) => {
   const { page, q } = (await searchParams) as {
     page: string;
-    q: keyof typeof MovieTypeEnum;
+    q: keyof typeof MovieCategoryEnum;
   };
+
+  const type = (await cookies()).get('t')?.value as ListType;
 
   if (!q) redirect('/search?q=thor');
 
   try {
-    const result = await searchMovies({ page: Number(page) || 1, query: q });
+    const result = await search({ page: Number(page) || 1, query: q, type });
 
     if (!result.data) throw new Error(result.message);
 
@@ -57,7 +61,7 @@ const Page = async ({ searchParams }: { searchParams: Promise<{ page: string; q:
                   .map((genre) => genre.name)
                   .join(', ');
 
-                return <ListingCard key={movie.id} genres={genres} movie={movie} />;
+                return <ListingCard key={movie.id} type={type} genres={genres} movie={movie} />;
               })}
             </div>
             <Pagination currentPage={currentPage} totalPages={totalPages} totalResults={totalResults} />

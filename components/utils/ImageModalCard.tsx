@@ -14,7 +14,7 @@ const ImageModalCard = ({ el }: { el: Poster }) => {
     <div className="w-full h-full">
       <button onClick={imageModal.open} className="cursor-pointer">
         <ImageComponent
-          string={el.file_path ? imageCardUrl(el.file_path) : '/placeholder.png'}
+          string={imageCardUrl(el.file_path)}
           title={el.file_path}
           className="w-full h-full aspect-[3/4]"
         />
@@ -25,7 +25,7 @@ const ImageModalCard = ({ el }: { el: Poster }) => {
           fill
           alt={el.file_path}
           title={el.file_path}
-          src={el.file_path ? imageUrl(el.file_path) : '/placeholder.png'}
+          src={imageUrl(el.file_path)}
           className="w-full h-full object-cover object-center rounded-lg"
         />
       </Modal>

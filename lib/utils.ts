@@ -1,4 +1,5 @@
-import { Movie, MovieType, MovieTypeEnum } from '@/app/types/movies';
+import { Movie, MovieCategory, MovieCategoryEnum } from '@/app/types/movies';
+import { Show, ShowCategory, ShowCategoryEnum } from '@/app/types/show';
 import { movie } from '@prisma/client';
 import { type ClassValue, clsx } from 'clsx';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
@@ -28,7 +29,7 @@ export const preloadImage = (url: string) => {
   }
 };
 
-export function getRandomMovie(movies: Movie[] | undefined) {
+export function getRandomMovie(movies: Movie[] | Show[] | undefined) {
   if (!movies) return null;
 
   const random = Math.floor(Math.random() * 20);
@@ -39,9 +40,14 @@ export const getRandomNumber = (range: number) => {
   return Math.floor(Math.random() * range) + 1;
 };
 
-export const getRandomType = (): MovieType => {
-  const movieTypes = Object.keys(MovieTypeEnum);
-  return movieTypes[Math.floor(Math.random() * movieTypes.length)] as unknown as MovieType;
+export const getRandomMovieCategory = (): MovieCategory => {
+  const MovieCategorys = Object.keys(MovieCategoryEnum);
+  return MovieCategorys[Math.floor(Math.random() * MovieCategorys.length)] as unknown as MovieCategory;
+};
+
+export const getRandomShowCategory = (): ShowCategory => {
+  const MovieCategorys = Object.keys(ShowCategoryEnum);
+  return MovieCategorys[Math.floor(Math.random() * MovieCategorys.length)] as unknown as ShowCategory;
 };
 
 export const cleanDate = (date: string) => {
@@ -82,12 +88,12 @@ export const isFav = (favMovies: movie[], id: number) => {
   return favMovies?.some((favMovie) => favMovie.id === id);
 };
 
-export const imageUrl = (imgUrl: string) => {
-  return `https://image.tmdb.org/t/p/original/${imgUrl}`;
+export const imageUrl = (imgUrl?: string) => {
+  return imgUrl ? `https://image.tmdb.org/t/p/original/${imgUrl}` : '/placeholder.png';
 };
 
-export const imageCardUrl = (imgUrl: string) => {
-  return `https://image.tmdb.org/t/p/w500/${imgUrl}`;
+export const imageCardUrl = (imgUrl?: string) => {
+  return imgUrl ? `https://image.tmdb.org/t/p/w500/${imgUrl}` : '/placeholder.png';
 };
 
 export const updateSearchParam = ({

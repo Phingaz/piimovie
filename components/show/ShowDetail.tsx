@@ -1,23 +1,24 @@
 'use client';
 import React from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { MovieDetail } from '@/app/types/movies';
 import Image from 'next/image';
 import { imageUrl } from '@/lib/utils';
 import Ratings from '../utils/texts/Ratings';
-import ReleaseDate from '../utils/texts/ReleaseDate';
-import RunTimeDetails from '../utils/texts/RunTime';
 import Genres from '../utils/texts/Genres';
 import Favorite from '../utils/buttons/Favorite';
 import Download from '../utils/buttons/Download';
 import GoBack from '../utils/buttons/GoBack';
+import { ShowDetail } from '@/app/types/show';
 import { movie } from '@prisma/client';
+import ShowRunTime from './ShowRunTime';
+import NumberOfEpisodes from './NumberOfEpisodes';
+import NumberOfSeasons from './NumberOfSeasons';
 
-const Details = ({ movie }: { movie: MovieDetail }) => {
+const ShowDetails = ({ show }: { show: ShowDetail }) => {
   return (
     <AnimatePresence mode="wait">
       <motion.div
-        key={movie?.id}
+        key={show?.id}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -28,8 +29,8 @@ const Details = ({ movie }: { movie: MovieDetail }) => {
           <Image
             width={300}
             height={300}
-            alt={movie.title}
-            src={movie.poster_path ? imageUrl(movie.poster_path) : '/placeholder.png'}
+            alt={show.original_name}
+            src={imageUrl(show.poster_path)}
             className="rounded-lg h-[400px] aspect-[3/4] object-center object-cover hidden md:block"
           />
           <div className="flex flex-col gap-2 justify-center md:px-8">
@@ -41,15 +42,17 @@ const Details = ({ movie }: { movie: MovieDetail }) => {
               transition={{ delay: 0.005 }}
               className="md:text-5xl text-4xl font-bold leading-tighter text-gray-100 mb-1"
             >
-              {movie?.title}
+              {show.original_name}
             </motion.h1>
+            <p className="text-xl md:text-2xl italic text-gray-300 mb-4">{show.tagline}</p>
 
-            <Genres genres={movie.genres} />
+            <Genres genres={show.genres} />
 
             <div className="text-gray-300 font-[500] flex flex-wrap items-center md:gap-5 gap-3 gap-y-[2px] mb-2 mt-2 md:mt-0">
-              <Ratings voteCount={movie.vote_count} vote_average={movie.vote_average} />
-              <RunTimeDetails runtime={movie.runtime} />
-              <ReleaseDate release_date={movie.release_date} />
+              <Ratings voteCount={show.vote_count} vote_average={show.vote_average} />
+              <ShowRunTime first_air_date={show.first_air_date} last_air_date={show.last_air_date} />
+              <NumberOfSeasons number_of_seasons={show.number_of_seasons} />
+              <NumberOfEpisodes number_of_episodes={show.number_of_episodes} />
             </div>
 
             <motion.p
@@ -58,12 +61,12 @@ const Details = ({ movie }: { movie: MovieDetail }) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15, type: 'bounce' }}
             >
-              {movie?.overview}
+              {show.overview}
             </motion.p>
 
             <div className="flex gap-5 items-center mt-2">
-              <Favorite isLarge movie={movie as unknown as movie} />
-              <Download title={movie.title} />
+              <Favorite isLarge movie={{ ...show, title: show.original_name } as unknown as movie} />
+              <Download title={show.original_name} />
             </div>
           </div>
         </div>
@@ -72,4 +75,4 @@ const Details = ({ movie }: { movie: MovieDetail }) => {
   );
 };
 
-export default Details;
+export default ShowDetails;

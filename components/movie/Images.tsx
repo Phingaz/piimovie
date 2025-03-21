@@ -4,11 +4,12 @@ import CarouselItem from '../carousel/CarouselItem';
 import SectionTitle from '../utils/texts/SectionTitle';
 import { ErrorMovieSection } from '../helpers/Error';
 import ImageModalCard from '../utils/ImageModalCard';
-import { getMovieImages } from '@/app/queries/movies';
+import { getImages } from '@/app/queries/queries';
+import { ListType } from '@/app/types/utils';
 
-const Images = async ({ id }: { id: number }) => {
+const Images = async ({ id, type }: { id: number; type: ListType }) => {
   try {
-    const response = await getMovieImages({ id });
+    const response = await getImages({ id, type });
     if (!response.data) throw new Error(response.message);
     const images = response.data.backdrops;
 
