@@ -1,5 +1,5 @@
 'use client';
-import { Movie } from '@/app/types';
+import { Movie } from '@/app/types/movies';
 import Link from 'next/link';
 import React from 'react';
 import { imageCardUrl } from '@/lib/utils';

@@ -1,4 +1,4 @@
-import { Movie } from '@/app/types';
+import { Movie } from '@/app/types/movies';
 import Link from 'next/link';
 import React from 'react';
 import { formatDate, imageCardUrl } from '@/lib/utils';

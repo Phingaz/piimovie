@@ -1,19 +1,15 @@
-"use client"
-import { getRandomMovie, imageUrl, preloadImage } from "@/lib/utils";
-import { useEffect, useState } from "react";
-import { Movie } from "../types";
+'use client';
+import { getRandomMovie, imageUrl, preloadImage } from '@/lib/utils';
+import { useEffect, useState } from 'react';
+import { Movie } from '../types/movies';
 
 const time = 20;
 const intervalTime = 500;
 
 const useHero = (movies: Movie[]) => {
-  const [movie, setMovie] = useState<Movie | null>(() =>
-    getRandomMovie(movies)
-  );
-  const [nextMovie, setNextMovie] = useState<Movie | null>(() =>
-    getRandomMovie(movies)
-  );
-  const [direction, setDirection] = useState<"left" | "right">("right");
+  const [movie, setMovie] = useState<Movie | null>(() => getRandomMovie(movies));
+  const [nextMovie, setNextMovie] = useState<Movie | null>(() => getRandomMovie(movies));
+  const [direction, setDirection] = useState<'left' | 'right'>('right');
 
   useEffect(() => {
     if (!movies.length) return;
@@ -34,7 +30,7 @@ const useHero = (movies: Movie[]) => {
       } while (newMovie && newMovie.id === nextMovie?.id);
 
       setNextMovie(newMovie);
-      setDirection((prev) => (prev === "right" ? "left" : "right"));
+      setDirection((prev) => (prev === 'right' ? 'left' : 'right'));
     }, intervalTime * time);
 
     return () => clearInterval(interval);

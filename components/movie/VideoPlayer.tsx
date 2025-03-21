@@ -1,6 +1,6 @@
 import React from 'react';
 import { MovieDetailError } from '../helpers/Error';
-import { getVideos } from '@/app/queries/queries';
+import { getVideos } from '@/app/queries/movies';
 
 export const VideoPlayer = async ({ id }: { id: number }) => {
   try {

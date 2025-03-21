@@ -59,7 +59,7 @@ export const LoadingCard = () => {
 
 export const ListingLoader = ({ title, description }: { title: string; description: string }) => {
   return (
-    <div className="text-gray-100 pt-10 relative overflow-clip">
+    <div className="text-gray-100 pt-10 relative overflow-clip mt-[50px]">
       <div className="absolute h-[100svh] top-0 left-0 bg-black/30 w-full z-1 flex justify-center items-center">
         <span className="flex flex-col justify-center items-center gap-3">
           <p>{description}</p>

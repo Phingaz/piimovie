@@ -1,13 +1,13 @@
 import ErrorPageComponent from '@/components/helpers/Error';
 import React from 'react';
 import Pagination from '@/components/utils/buttons/Pagination';
-import { MovieTypeEnum } from '../types';
+import { MovieTypeEnum } from '../types/movies';
 import { movieGenreId } from '@/lib/constants';
 import SearchBar from '@/components/utils/SearchComponent';
 import ListingCard from '@/components/utils/ListingCard';
 import { SearchXIcon } from 'lucide-react';
 import { Metadata } from 'next';
-import { searchMovies } from '../queries/queries';
+import { searchMovies } from '../queries/movies';
 
 export function generateMetadata(): Metadata {
   return {

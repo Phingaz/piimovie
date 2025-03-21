@@ -1,10 +1,10 @@
-import { MovieType, MovieTypeEnum } from '@/app/types';
+import { MovieType, MovieTypeEnum } from '@/app/types/movies';
 import Link from 'next/link';
 import React from 'react';
 import { ErrorSectionComponent } from '../helpers/Error';
 import CarouselWrapper from '../carousel/CarouselWrapper';
 import LandingCard from './LandingMovieCard';
-import { getMovies } from '@/app/queries/queries';
+import { getMovies } from '@/app/queries/movies';
 
 const LandingListing = async ({ type }: { type: MovieType }) => {
   try {

@@ -7,7 +7,7 @@ import SectionTitle from '../utils/texts/SectionTitle';
 import { ErrorMovieSection } from '../helpers/Error';
 import EmptyList from '../utils/EmptyList';
 import Link from 'next/link';
-import { getMovieCredits } from '@/app/queries/queries';
+import { getMovieCredits } from '@/app/queries/movies';
 
 const Credits = async ({ id }: { id: number }) => {
   try {
@@ -27,8 +27,8 @@ const Credits = async ({ id }: { id: number }) => {
           <CarouselWrapper isLanding={false}>
             {credits.map((el) => {
               return (
-                <CarouselItem key={el.id} className="rounded-md carousel-item">
-                  <div className="from-65% bg-gradient-to-b to-black absolute top-0 left-0 w-full h-full flex items-end z-[1000]">
+                <CarouselItem key={el.id} className="rounded-md carousel-item relative">
+                  <div className="from-65% bg-gradient-to-b to-black absolute top-0 left-0 w-full h-full flex items-end z-1">
                     <span className="px-2 pb-1 cursor-text drop-shadow-sm flex flex-col gap">
                       <Link
                         target="_blank"

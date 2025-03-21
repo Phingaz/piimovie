@@ -1,5 +1,4 @@
 import {
-  FetchDataArgs,
   MovieApiResponse,
   MovieCreditApiResponse,
   MovieDetail,
@@ -9,33 +8,11 @@ import {
   MovieReviewsApiResponse,
   MovieType,
   VideoApiResponse,
-} from '@/app/types';
+} from '@/app/types/movies';
 import ENV from '@/lib/env';
-import { catchError, serverResult } from '@/lib/logs';
+import { fetchData } from './utils';
 
 const tmdbUrl = ENV.TMDB_URL;
-const token = ENV.TMDB_API_KEY;
-
-export async function fetchData<T>({ url, args, message }: FetchDataArgs<T>) {
-  try {
-    if (!url) throw Error('No url provided');
-
-    const req = await fetch(url, {
-      headers: { Authorization: `Bearer ${token}` },
-      ...args,
-    });
-
-    if (req.status !== 200) {
-      throw Error(req.statusText);
-    }
-
-    const res = await req.json();
-
-    return serverResult(res as T, message);
-  } catch (error) {
-    return catchError(error);
-  }
-}
 
 export const getMovies = async ({ type, page = 1 }: { page: number; type: MovieType }) => {
   const url = `${tmdbUrl}/movie/${type}?language=en-US&page=${page}`;
@@ -46,7 +23,7 @@ export const getMovies = async ({ type, page = 1 }: { page: number; type: MovieT
 };
 
 export const searchMovies = async ({ query, page = 1 }: { page: number; query: MovieType }) => {
-  const url = `${tmdbUrl}/search/movie?query=${query}&page=${page}&include_adult=true&language=en-US&sort_by=release_date.gte
+  const url = `${tmdbUrl}/search/movie?query=${query}&page=${page}&include_adult=true&language=en-US
 `;
   return await fetchData<MovieApiResponse>({
     url,

@@ -25,7 +25,7 @@ const body = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Movie Box',
+  title: 'Movie Box | Home',
   description:
     'Discover, search, and download your favorite movies with ease. Our app lets you find the latest releases, timeless classics, and hidden gems—all in one place. With powerful search, seamless torrenting, and a personalized favorites list, your movie collection is just a tap away.',
 };

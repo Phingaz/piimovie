@@ -2,7 +2,7 @@
 import React from 'react';
 import ImageComponent from './ImageComponent';
 import { imageCardUrl, imageUrl } from '@/lib/utils';
-import { Poster } from '@/app/types';
+import { Poster } from '@/app/types/movies';
 import useModal from '@/app/_hooks/useModal';
 import Modal from './Modal';
 import Image from 'next/image';

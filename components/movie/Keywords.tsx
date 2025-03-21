@@ -1,6 +1,6 @@
 import React from 'react';
 import SectionTitle from '../utils/texts/SectionTitle';
-import { getMovieKeyWords } from '@/app/queries/queries';
+import { getMovieKeyWords } from '@/app/queries/movies';
 
 const MovieKeywords = async ({ id }: { id: number }) => {
   try {

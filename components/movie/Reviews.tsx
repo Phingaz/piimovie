@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { formatDate, imageCardUrl } from '@/lib/utils';
 import Ratings from '../utils/texts/Ratings';
 import Comment from './Comment';
-import { getMovieReviews } from '@/app/queries/queries';
+import { getMovieReviews } from '@/app/queries/movies';
 
 const Reviews = async ({ id }: { id: number }) => {
   try {

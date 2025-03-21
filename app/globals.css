@@ -3,6 +3,10 @@
 
 @custom-variant dark (&:is(.dark *));
 
+.t {
+  text-shadow: 0.5px 0.5px 2px #000;
+}
+
 .container {
   @apply max-w-[1350px] 3xl:max-w-[1750px] px-4 md:px-8;
 }

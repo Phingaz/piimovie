@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { MovieDetail } from '@/app/types';
+import { MovieDetail } from '@/app/types/movies';
 import Image from 'next/image';
 import { imageUrl } from '@/lib/utils';
 import Ratings from '../utils/texts/Ratings';

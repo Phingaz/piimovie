@@ -4,7 +4,7 @@ import { LocalSearch } from '@/components/utils/SearchComponent';
 import { useFavoriteCtx } from '../_context/Favorite';
 import LandingCard from '@/components/landing/LandingMovieCard';
 import { SearchXIcon } from 'lucide-react';
-import { Movie } from '../types';
+import { Movie } from '../types/movies';
 import { movie } from '@prisma/client';
 import { useMainCtx } from '../_context/Main';
 
@@ -17,7 +17,7 @@ const Page = () => {
   );
 
   return (
-    <div className="container mx-auto py-10 mt-[100px] px-3 md:px-[2rem]">
+    <div className="container mx-auto py-10 mt-[70px] px-3 md:px-[2rem]">
       <div className="flex md:justify-between md:items-center mb-10 md:flex-row flex-col gap-3 md:gap-0">
         <h1 className="text-4xl font-bold">Favorite</h1>
         <LocalSearch data={movies} setFilteredResults={setFilteredResults} />

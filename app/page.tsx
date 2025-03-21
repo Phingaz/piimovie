@@ -1,30 +1,22 @@
-import { connection } from 'next/server';
 import ErrorPageComponent from '@/components/helpers/Error';
-import Hero from '@/components/landing/Hero';
-import LadingListingWrapper from '@/components/landing/LadingListingWrapper';
-import { getMovies } from '@/app/queries/queries';
-import { getRandomNumber, getRandomType } from '@/lib/utils';
+import { redirect } from 'next/navigation';
 
-export default async function Home() {
+export default async function Home({ searchParams }: { searchParams: Promise<{ t: string }> }) {
+  let redirectPath: string | null = null;
+
   try {
-    await connection();
+    const { t } = await searchParams;
 
-    const result = await getMovies({
-      page: getRandomNumber(10),
-      type: getRandomType(),
-    });
-
-    if (!result.success) throw new Error(result.message);
-
-    const movies = result.data?.results;
-
-    return (
-      <>
-        <Hero movies={movies} />
-        <LadingListingWrapper />
-      </>
-    );
+    if (t === 'movie') {
+      redirectPath = '/movie';
+    } else if (t === 'show') {
+      redirectPath = '/show';
+    } else {
+      redirectPath = '/movie';
+    }
   } catch (error) {
     return <ErrorPageComponent error={error} />;
+  } finally {
+    redirect(redirectPath as string);
   }
 }

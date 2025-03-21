@@ -4,7 +4,7 @@ import SectionTitle from '../utils/texts/SectionTitle';
 import { ErrorMovieSection } from '../helpers/Error';
 import LandingCard from '../landing/LandingMovieCard';
 import EmptyList from '../utils/EmptyList';
-import { getSimilarMovie } from '@/app/queries/queries';
+import { getSimilarMovie } from '@/app/queries/movies';
 
 const Similar = async ({ id }: { id: number }) => {
   try {

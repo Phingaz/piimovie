@@ -1,4 +1,4 @@
-import { getMovieInfo } from '@/app/queries/queries';
+import { getMovieInfo } from '@/app/queries/movies';
 import ErrorPageComponent from '@/components/helpers/Error';
 import MovieComponent from '@/components/movie/MovieComponent';
 import { Metadata } from 'next';

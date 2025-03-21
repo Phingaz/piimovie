@@ -4,7 +4,7 @@ import CarouselItem from '../carousel/CarouselItem';
 import SectionTitle from '../utils/texts/SectionTitle';
 import { ErrorMovieSection } from '../helpers/Error';
 import ImageModalCard from '../utils/ImageModalCard';
-import { getMovieImages } from '@/app/queries/queries';
+import { getMovieImages } from '@/app/queries/movies';
 
 const Images = async ({ id }: { id: number }) => {
   try {

@@ -2,7 +2,7 @@
 import { PlayCircleIcon } from 'lucide-react';
 import React from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Movie } from '@/app/types';
+import { Movie } from '@/app/types/movies';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { imageUrl } from '@/lib/utils';
@@ -16,7 +16,7 @@ const HeroMovieInfo = ({ movies }: { movies: Movie[] }) => {
 
   if (!movie) return null;
   return (
-    <div className="bg-gradient-to-b to-black absolute top-0 left-0 w-full min-h-[80svh] md:min-h-[110svh] z-[10] flex items-center backdrop-blur-[5px]">
+    <div className="bg-gradient-to-b to-black absolute top-0 left-0 w-full min-h-[80svh] md:min-h-[110svh] z-2 flex items-center backdrop-blur-[5px]">
       <AnimatePresence mode="wait">
         <motion.div
           key={movie?.id}
@@ -24,7 +24,7 @@ const HeroMovieInfo = ({ movies }: { movies: Movie[] }) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ ease: 'easeInOut', duration: 1 }}
-          className="w-full flex justify-center absolute top-[20%] md:top-[60%] overflow-visible"
+          className="w-full flex justify-center absolute top-[35%] md:top-[60%] overflow-visible"
         >
           <div className="w-5xl md:w-7xl flex text-gray-300 drop-shadow-hero">
             <Image

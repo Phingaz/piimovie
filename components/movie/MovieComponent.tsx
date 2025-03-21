@@ -1,16 +1,16 @@
-import React, { Suspense } from "react";
-import { MovieDetail } from "@/app/types";
-import Details from "./Details";
-import Background from "./Background";
-import { VideoPlayer } from "./VideoPlayer";
-import Credits from "./Credits";
-import { CarouselCardsLoader } from "../helpers/Loaders";
-import Images from "./Images";
-import MovieKeywords from "./Keywords";
-import Similar from "./Similar";
-import Recommended from "./Recommended";
-import MoreInfo from "./MoreInfo";
-import Reviews from "./Reviews";
+import React, { Suspense } from 'react';
+import { MovieDetail } from '@/app/types/movies';
+import Details from './Details';
+import Background from './Background';
+import { VideoPlayer } from './VideoPlayer';
+import Credits from './Credits';
+import { CarouselCardsLoader } from '../helpers/Loaders';
+import Images from './Images';
+import MovieKeywords from './Keywords';
+import Similar from './Similar';
+import Recommended from './Recommended';
+import MoreInfo from './MoreInfo';
+import Reviews from './Reviews';
 
 const MovieComponent = ({ movie }: { movie: MovieDetail }) => {
   return (
@@ -29,9 +29,7 @@ const MovieComponent = ({ movie }: { movie: MovieDetail }) => {
             <Suspense fallback={<CarouselCardsLoader title="Similar Movies" />}>
               <Similar id={movie.id} />
             </Suspense>
-            <Suspense
-              fallback={<CarouselCardsLoader title="Recommended Movies" />}
-            >
+            <Suspense fallback={<CarouselCardsLoader title="Recommended Movies" />}>
               <Recommended id={movie.id} />
             </Suspense>
           </div>

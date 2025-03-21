@@ -1,12 +1,12 @@
 import ErrorPageComponent from '@/components/helpers/Error';
 import React from 'react';
-import { MovieTypeEnum } from '../types';
+import { MovieTypeEnum } from '../types/movies';
 import SearchBar from '@/components/utils/SearchComponent';
 import TorrentItem from '@/components/utils/TorrentCard';
 import SimplePagination from '@/components/utils/buttons/SimplePagination';
 import { DownloadIcon } from 'lucide-react';
 import { Metadata } from 'next';
-import { searchMoviesForDownload } from '../queries/queries';
+import { searchMoviesForDownload } from '../queries/movies';
 
 export function generateMetadata(): Metadata {
   return {
@@ -32,7 +32,7 @@ const Page = async ({ searchParams }: { searchParams: Promise<{ page: string; q:
     const list = result.data?.data;
 
     return (
-      <div className="container mx-auto py-10 px-3 md:px-[2rem]">
+      <div className="container mx-auto mt-[70px] py-10 px-3 md:px-[2rem]">
         <div className="flex md:justify-between md:items-center mb-10 md:flex-row flex-col gap-3 md:gap-0">
           <h1 className="text-4xl font-bold">Download</h1>
           <SearchBar path="download" />

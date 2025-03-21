@@ -1,8 +1,8 @@
-import { MovieType, MovieTypeEnum } from "@/app/types";
-import { CircleAlert, Home } from "lucide-react";
-import Link from "next/link";
-import React from "react";
-import SectionTitle from "../utils/texts/SectionTitle";
+import { MovieType, MovieTypeEnum } from '@/app/types/movies';
+import { CircleAlert, Home } from 'lucide-react';
+import Link from 'next/link';
+import React from 'react';
+import SectionTitle from '../utils/texts/SectionTitle';
 
 const ErrorPageComponent = ({ error }: { error: unknown }) => {
   return (
@@ -11,16 +11,12 @@ const ErrorPageComponent = ({ error }: { error: unknown }) => {
         <div className="flex justify-center">
           <CircleAlert className="h-24 w-24 text-red-700" />
         </div>
-        <h1 className="mt-6 text-3xl font-semibold sm:text-4xl">
-          Ooops, something went wrong!
-        </h1>
+        <h1 className="mt-6 text-3xl font-semibold sm:text-4xl">Ooops, something went wrong!</h1>
         <p className="mt-2 text-sm">
-          We encountered an error trying to process your request, please try
-          again at a later time.
+          We encountered an error trying to process your request, please try again at a later time.
         </p>
         <p className="mt-2 text-sm text-red-500 border rounded-md border-red-500 p-3">
-          Error message:{" "}
-          {error instanceof Error ? error.message : "An unknown error occurred"}
+          Error message: {error instanceof Error ? error.message : 'An unknown error occurred'}
         </p>
         <div className="mt-8 flex justify-center items-center gap-5 h-[40px]">
           <Link
@@ -38,41 +34,25 @@ const ErrorPageComponent = ({ error }: { error: unknown }) => {
 
 export default ErrorPageComponent;
 
-export const ErrorSectionComponent = ({
-  type,
-  error,
-}: {
-  type: MovieType;
-  error: unknown;
-}) => {
+export const ErrorSectionComponent = ({ type, error }: { type: MovieType; error: unknown }) => {
   const title = MovieTypeEnum[type];
 
   return (
     <div className="w-full mb-24 ">
       <div className="flex justify-between items-center mb-5">
-        <h2 className="text-xl md:text-2xl font-[600] text-gray-300">
-          {title}
-        </h2>
+        <h2 className="text-xl md:text-2xl font-[600] text-gray-300">{title}</h2>
       </div>
       <div>
+        <p className="mt-2 text-sm text-red-500 rounded-md">An error occurred processing this request</p>
         <p className="mt-2 text-sm text-red-500 rounded-md">
-          An error occurred processing this request
-        </p>
-        <p className="mt-2 text-sm text-red-500 rounded-md">
-          {error instanceof Error ? error.message : "An unknown error occurred"}
+          {error instanceof Error ? error.message : 'An unknown error occurred'}
         </p>
       </div>
     </div>
   );
 };
 
-export const ErrorMovieSection = ({
-  title,
-  error,
-}: {
-  title: string;
-  error: unknown;
-}) => {
+export const ErrorMovieSection = ({ title, error }: { title: string; error: unknown }) => {
   return (
     <div className="w-full">
       <SectionTitle>
@@ -80,8 +60,8 @@ export const ErrorMovieSection = ({
       </SectionTitle>
       <div>
         <p className="text-sm text-red-500 rounded-md">
-          An error occurred processing this request:{" "}
-          {error instanceof Error ? error.message : "An unknown error occurred"}
+          An error occurred processing this request:{' '}
+          {error instanceof Error ? error.message : 'An unknown error occurred'}
         </p>
       </div>
     </div>

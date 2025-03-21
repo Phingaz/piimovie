@@ -27,7 +27,7 @@ const CarouselBtns = ({
   return (
     <div
       className={cn(
-        "flex gap-1 md:gap-3 items-center w-fit absolute z-[10]",
+        "flex gap-1 md:gap-3 items-center w-fit absolute z-1",
         isLanding
           ? "md:right-20 md:-top-[52px] right-0 -top-20"
           : "right-0 -top-[42px]"

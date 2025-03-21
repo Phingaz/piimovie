@@ -1,4 +1,4 @@
-import { Movie, MovieType, MovieTypeEnum } from '@/app/types';
+import { Movie, MovieType, MovieTypeEnum } from '@/app/types/movies';
 import { movie } from '@prisma/client';
 import { type ClassValue, clsx } from 'clsx';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
