@@ -1,4 +1,4 @@
-import { Genre } from '@/app/types/movies';
+import { Genre } from '@/app/types/utils';
 import React from 'react';
 
 const Genres = ({ genres }: { genres: Genre[] }) => {
