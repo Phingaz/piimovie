@@ -19,7 +19,7 @@ const HeroMovieImg = ({ movies }: { movies: Movie[] }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ ease: "easeInOut", duration: 1 }}
+            transition={{ ease: "easeInOut", duration: 0.5 }}
             className="w-full h-full absolute top-0 left-0"
           >
             <motion.div

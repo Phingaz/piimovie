@@ -39,6 +39,8 @@ export default async function RootLayout({
     headers: await headers(),
   });
 
+  const user = session?.user;
+
   let fav: movie[] | null = null;
 
   if (session && session.user) {
@@ -49,7 +51,7 @@ export default async function RootLayout({
     <html lang="en">
       <ReactScan />
       <body className={`${heading.variable} ${body.variable} antialiased`}>
-        <Providers fav={fav}>
+        <Providers value={{ user, fav }}>
           <Header />
           <main className="relative -mt-[80px]">{children}</main>
         </Providers>

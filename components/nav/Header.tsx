@@ -8,11 +8,10 @@ import { authClient } from '@/lib/auth';
 import { links } from '@/lib/constants';
 import { clientToastError } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { useMainCtx } from '@/app/_context/Main';
 
 const Header = () => {
-  const { data } = authClient.useSession();
-  const user = data && data.user;
-
+  const { user } = useMainCtx();
   const [active, setActive] = React.useState(false);
   const [width, setWidth] = React.useState(0);
 
@@ -46,6 +45,7 @@ const Header = () => {
   }, [mobileNav, toggleMobileNav, width]);
 
   const googleAuthSignIn = async () => {
+    if (loading) return;
     try {
       setLoading(true);
       await authClient.signIn.social({ provider: 'google' });
@@ -83,7 +83,7 @@ const Header = () => {
             <div className="flex gap-5 font-[300] flex-col lg:flex-row pt-20 lg:pt-0 items-center w-full h-full">
               {links.map((link) => (
                 <p key={link.href} onClick={() => mobileNav && toggleMobileNav()} className="min-w-fit">
-                  <Link href={link.href} className="text-lg font-semibold">
+                  <Link href={link.href} className="text-lg font-[500]">
                     {link.label}
                   </Link>
                 </p>
@@ -110,7 +110,7 @@ const Header = () => {
               ) : (
                 <motion.button
                   whileTap={{ scale: 0.8 }}
-                  className="flex items-center gap-3 w-fit bg-blue-950 hover:bg-blue-800 transition-all text-gray-100 h-[40px] px-6 rounded-sm text-sm cursor-pointer"
+                  className="flex items-center gap-3 w-fit bg-[#000] hover:bg-blue-950 px-3 transition-all text-gray-100 h-[40px] rounded-full text-sm cursor-pointer"
                   onClick={googleAuthSignIn}
                 >
                   {loading ? (
@@ -119,7 +119,14 @@ const Header = () => {
                     </>
                   ) : (
                     <>
-                      Sign in with google <Image width={20} height={20} src="/google.svg" alt="google-logo" />
+                      <Image
+                        width={20}
+                        height={20}
+                        src="/google.svg"
+                        alt="google-logo"
+                        className=" object-cover object-center min-w-fit size-[25px]"
+                      />
+                      Sign in with google
                     </>
                   )}
                 </motion.button>

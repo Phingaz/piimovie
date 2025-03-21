@@ -1,19 +1,21 @@
 import React, { createContext, TransitionStartFunction, useTransition } from 'react';
 import { NavigationCtxProvider } from './Navigation';
+import { User } from 'better-auth';
 
 export type TMainCtx = {
+  user?: User;
   isLoading: boolean;
   startTransition: TransitionStartFunction;
 };
 
 const MainCtx = createContext<TMainCtx | undefined>(undefined);
 
-type MainCtxProviderProps = {} & React.PropsWithChildren<object>;
+type MainCtxProviderProps = { user?: User } & React.PropsWithChildren<object>;
 
-export function MainCtxProvider({ children }: MainCtxProviderProps) {
+export function MainCtxProvider({ user, children }: MainCtxProviderProps) {
   const [isLoading, startTransition] = useTransition();
 
-  const contextValue = { isLoading, startTransition };
+  const contextValue = { user, isLoading, startTransition };
 
   return (
     <MainCtx.Provider value={contextValue}>

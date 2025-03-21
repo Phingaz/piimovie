@@ -1,6 +1,6 @@
 'use client';
 import { useFavoriteCtx } from '@/app/_context/Favorite';
-import { authClient } from '@/lib/auth';
+import { useMainCtx } from '@/app/_context/Main';
 import { clientToastError, isFav } from '@/lib/utils';
 import { movie } from '@prisma/client';
 import { motion } from 'framer-motion';
@@ -11,8 +11,8 @@ import { toast } from 'sonner';
 const Favorite = ({ movie, isLarge = false }: { isLarge?: boolean; movie: movie }) => {
   const { fav, manageFav } = useFavoriteCtx();
   const isFavorite = fav ? isFav(fav, movie.id) : false;
-  const { data } = authClient.useSession();
-  const user = data && data.user;
+
+  const { user } = useMainCtx();
 
   const [isLoading, setIsLoading] = React.useState(false);
 

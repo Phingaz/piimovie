@@ -1,10 +1,10 @@
 'use client';
 import React, { createContext } from 'react';
 import { addToFavorites, removeFromFavorites } from '../queries/favorites';
-import { authClient } from '@/lib/auth';
 import { toast } from 'sonner';
 import { movie } from '@prisma/client';
 import { useRouter } from 'next/navigation';
+import { useMainCtx } from './Main';
 
 export type TFavoriteCtx = {
   fav: movie[] | null;
@@ -19,8 +19,7 @@ type FavoriteCtxProviderProps = {
 };
 
 export function FavoriteCtxProvider({ children, fav }: FavoriteCtxProviderProps) {
-  const { data } = authClient.useSession();
-  const user = data && data.user;
+  const { user } = useMainCtx();
   const router = useRouter();
 
   const manageFav = async (movie: movie) => {

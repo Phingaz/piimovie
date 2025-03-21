@@ -110,7 +110,7 @@ export default function Select({
             id={`${name}-options`}
             role="listbox"
             aria-labelledby={name}
-            className="absolute z-11 w-full mt-1 bg-gray-800 border border-gray-700 rounded-md shadow-lg max-h-60 overflow-auto focus:outline-none text-[15px]"
+            className="absolute z-540 w-full mt-1 bg-gray-800 border border-gray-700 rounded-md shadow-lg max-h-60 overflow-auto focus:outline-none text-[15px]"
           >
             {options.map((option) => (
               <li

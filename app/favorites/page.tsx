@@ -4,13 +4,12 @@ import { LocalSearch } from '@/components/utils/SearchComponent';
 import { useFavoriteCtx } from '../_context/Favorite';
 import LandingCard from '@/components/landing/LandingMovieCard';
 import { SearchXIcon } from 'lucide-react';
-import { authClient } from '@/lib/auth';
 import { Movie } from '../types';
 import { movie } from '@prisma/client';
+import { useMainCtx } from '../_context/Main';
 
 const Page = () => {
-  const { data } = authClient.useSession();
-  const user = data && data.user;
+  const { user } = useMainCtx();
 
   const { fav: movies } = useFavoriteCtx();
   const [filteredResults, setFilteredResults] = React.useState<movie[] | null>(
@@ -29,7 +28,7 @@ const Page = () => {
           <h3 className="text-lg font-medium text-white mb-1">Sign in to continue</h3>
           <p className="text-gray-400 max-w-md text-center">Please sign in to manage your favorite movies</p>
         </div>
-      ) : !data && filteredResults && filteredResults.length >= 1 ? (
+      ) : filteredResults && filteredResults.length >= 1 ? (
         <div className="flex justify-center items-center flex-col border border-dashed py-20 rounded-md bg-gray-900">
           <SearchXIcon size={50} className="mb-5 text-gray-400" />
           <h3 className="text-lg font-medium text-white mb-1">No favorites</h3>
