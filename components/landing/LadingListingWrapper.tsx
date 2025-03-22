@@ -22,7 +22,7 @@ const LandingListingWrapper = ({ type }: { type: ListType }) => {
         ];
 
   return (
-    <div className="md:mt-[230px] 3xl:mt-[120px] container mx-auto">
+    <div className="mt-[40px] md:mt-[230px] 3xl:mt-[150px] container mx-auto">
       {categories.map(({ loader, category }, index) => (
         <Suspense key={index} fallback={<CarouselCardsLoader title={loader} />}>
           <LandingListing type={type} category={category} />
