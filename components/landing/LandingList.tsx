@@ -27,6 +27,7 @@ const LandingListing = async ({ type, category }: { type: ListType; category: Mo
           <h2 className="text-xl md:text-2xl font-[600] text-gray-300">{title}</h2>
 
           <Link
+            scroll
             className="text-sm font-[600] transition hover:text-blue-500 hover:scale-105"
             href={`/listing?category=${category}&page=1`}
           >

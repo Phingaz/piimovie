@@ -13,7 +13,7 @@ const useHero = (movies?: Movie[] | Show[]) => {
   const [direction, setDirection] = useState<'left' | 'right'>('right');
 
   useEffect(() => {
-    if (movies?.length === 0) return;
+    if (!movies?.length) return;
 
     if (nextMovie?.backdrop_path) {
       preloadImage(imageUrl(nextMovie.backdrop_path));
@@ -26,21 +26,22 @@ const useHero = (movies?: Movie[] | Show[]) => {
       setDirection((prev) => (prev === 'right' ? 'left' : 'right'));
       setMovie(nextMovie);
 
-      let newMovie: Movie | Show | null = null;
-      let attempts = 0;
+      setNextMovie((prevNextMovie) => {
+        let newMovie: Movie | Show | null = null;
+        let attempts = 0;
 
-      while (movies && attempts < movies.length) {
-        newMovie = getRandomMovie(movies);
-        if (newMovie?.id !== nextMovie?.id) break;
-        attempts++;
-      }
+        while (movies && attempts < movies.length) {
+          newMovie = getRandomMovie(movies);
+          if (newMovie?.id !== prevNextMovie?.id) break;
+          attempts++;
+        }
 
-      setNextMovie(newMovie);
+        return newMovie;
+      });
     }, intervalTime * time);
 
     return () => clearInterval(interval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [movies]);
+  }, [movies, nextMovie]);
 
   return { time, movie, direction, intervalTime };
 };

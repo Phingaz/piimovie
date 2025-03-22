@@ -4,15 +4,21 @@ import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Movie } from '@/app/types/movies';
 import { imageUrl } from '@/lib/utils';
-import useHero from '@/app/_hooks/useHero';
 import { Show } from '@/app/types/show';
 
-const HeroMovieImg = ({ items }: { items?: Movie[] | Show[] }) => {
-  const { movie, time, direction, intervalTime } = useHero(items);
+const HeroMovieImg = ({
+  movie,
+  time,
+  intervalTime,
+  direction,
+}: {
+  movie: Movie | Show;
+  time: number;
+  intervalTime: number;
+  direction: string;
+}) => {
   const title = React.useMemo(() => (movie as Movie).title || (movie as Show).original_name, [movie]);
   const imageUrlPath = React.useMemo(() => imageUrl(movie?.backdrop_path), [movie]);
-
-  if (!movie) return null;
 
   return (
     <div className="w-full h-[80svh] md:h-[100svh] bg-black relative overflow-clip">

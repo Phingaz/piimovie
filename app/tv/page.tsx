@@ -1,4 +1,3 @@
-import { getDetails } from '@/app/queries/queries';
 import { PageLoader } from '@/components/helpers/Loaders';
 import TvComponent from '@/components/show/TvComponent';
 import { Metadata } from 'next';
@@ -6,23 +5,12 @@ import React, { Suspense } from 'react';
 
 const type = 'tv';
 
-export async function generateMetadata({ params }: { params: Promise<{ movie: string }> }): Promise<Metadata> {
-  try {
-    const id = (await params).movie;
-    const response = await getDetails({ id, type });
-
-    if (!response.data) throw new Error(response.message);
-
-    return {
-      title: `${response.data.original_name} | Movie Info`,
-      description: response.data.overview || 'Find out more about this movie.',
-    };
-  } catch {
-    return {
-      title: 'Error | Movie Not Found',
-      description: 'Something went wrong while fetching the movie details.',
-    };
-  }
+export function generateMetadata(): Metadata {
+  return {
+    title: `Pii Movie | ${type.charAt(0).toLocaleUpperCase() + type.slice(1)}`,
+    description:
+      'Discover, search, and download your favorite movies with ease. Our app lets you find the latest releases, timeless classics, and hidden gems—all in one place. With powerful search, seamless torrenting, and a personalized favorites list, your movie collection is just a tap away.',
+  };
 }
 
 const Page = async ({ params }: { params: Promise<{ movie: string }> }) => {

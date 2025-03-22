@@ -8,13 +8,11 @@ import Image from 'next/image';
 import { imageUrl } from '@/lib/utils';
 import Ratings from '../utils/texts/Ratings';
 import ReleaseDate from '../utils/texts/ReleaseDate';
-import useHero from '@/app/_hooks/useHero';
 import { Show } from '@/app/types/show';
 import { ListType } from '@/app/types/utils';
 
-const HeroMovieInfo = ({ items, type }: { type: ListType; items?: Movie[] | Show[] }) => {
+const HeroMovieInfo = ({ movie, type }: { type: ListType; movie?: Movie | Show }) => {
   const router = useRouter();
-  const { movie } = useHero(items);
 
   const title = useMemo(() => (movie ? (movie as Movie).title || (movie as Show).original_name : ''), [movie]);
   const posterUrl = useMemo(() => imageUrl(movie?.poster_path), [movie]);
@@ -26,6 +24,7 @@ const HeroMovieInfo = ({ items, type }: { type: ListType; items?: Movie[] | Show
   );
 
   if (!movie) return null;
+  console.log(movie.id);
 
   return (
     <div className="bg-gradient-to-b to-black absolute top-0 left-0 w-full min-h-[80svh] md:min-h-[110svh] z-2 flex items-center backdrop-blur-[5px]">

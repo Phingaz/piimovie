@@ -1,12 +1,11 @@
 import React from 'react';
-import HeroMovieImg from './HeroMovieImage';
-import HeroMovieInfo from './HeroMovieInfo';
 import LandingListingWrapper from './LadingListingWrapper';
 import { ListType } from '@/app/types/utils';
 import { getListing } from '@/app/queries/queries';
 import { getRandomMovieCategory, getRandomNumber } from '@/lib/utils';
 import { Movie } from '@/app/types/movies';
 import ErrorPageComponent from '../helpers/Error';
+import LandingComponentClient from '../ui/LandingComponentClient';
 
 const LandingComponent = async ({ type }: { type: ListType }) => {
   try {
@@ -22,10 +21,7 @@ const LandingComponent = async ({ type }: { type: ListType }) => {
 
     return (
       <section>
-        <div className="relative">
-          <HeroMovieImg items={movies} />
-          <HeroMovieInfo type={type} items={movies} />
-        </div>
+        <LandingComponentClient type={type} items={movies} />
         <LandingListingWrapper type={type} />
       </section>
     );
