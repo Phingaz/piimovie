@@ -65,26 +65,32 @@ const MoreInfo = ({ show }: { show: ShowDetail }) => {
         </div>
       </div>
 
-      <div className="flex md:flex-row flex-col gap-16 mt-4 items-center">
-        {/* creators */}
-        <div className="flex flex-col gap-1">
-          <span className="font-medium text-sm">Creators:</span>
-          <div className="flex gap-3 items-center flex-wrap">
-            {show.created_by.map((creator) => {
-              return <CreatorCard key={creator.credit_id} creator={creator} />;
-            })}
-          </div>
+      {
+        <div className="flex flex-col gap-5 mt-4">
+          {/* creators */}
+          {show.created_by.length > 1 && (
+            <div className="flex flex-col gap-1">
+              <span className="font-medium text-sm">Creator(s):</span>
+              <div className="flex gap-3 items-center flex-wrap">
+                {show.created_by.map((creator) => {
+                  return <CreatorCard key={creator.credit_id} creator={creator} />;
+                })}
+              </div>
+            </div>
+          )}
+          {/* networks */}
+          {show.networks.length > 1 && (
+            <div className="flex flex-col gap-1">
+              <span className="font-medium text-sm">Showing Network(s):</span>
+              <div className="flex gap-3 items-center flex-wrap">
+                {show.networks.map((network) => {
+                  return <NetworkBadge key={network.id} network={network} />;
+                })}
+              </div>
+            </div>
+          )}
         </div>
-        {/* networks */}
-        <div className="flex flex-col gap-1">
-          <span className="font-medium text-sm">Networks:</span>
-          <div className="flex gap-3 items-center flex-wrap">
-            {show.networks.map((network) => {
-              return <NetworkBadge key={network.id} network={network} />;
-            })}
-          </div>
-        </div>
-      </div>
+      }
     </div>
   );
 };

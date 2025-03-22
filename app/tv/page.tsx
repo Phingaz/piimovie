@@ -17,7 +17,7 @@ const Page = async ({ params }: { params: Promise<{ movie: string }> }) => {
   const id = (await params).movie;
   return (
     <Suspense key={id} fallback={<PageLoader />}>
-      <TvComponent type={type} />;
+      <TvComponent type={type} />
     </Suspense>
   );
 };

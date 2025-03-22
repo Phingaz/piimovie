@@ -24,7 +24,6 @@ const HeroMovieInfo = ({ movie, type }: { type: ListType; movie?: Movie | Show }
   );
 
   if (!movie) return null;
-  console.log(movie.id);
 
   return (
     <div className="bg-gradient-to-b to-black absolute top-0 left-0 w-full min-h-[80svh] md:min-h-[110svh] z-2 flex items-center backdrop-blur-[5px]">

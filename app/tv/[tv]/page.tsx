@@ -30,7 +30,7 @@ const Page = async ({ params }: { params: Promise<{ tv: string }> }) => {
 
   return (
     <Suspense fallback={<PageLoader />}>
-      <ShowComponent type={type} id={id} />;
+      <ShowComponent type={type} id={id} />
     </Suspense>
   );
 };

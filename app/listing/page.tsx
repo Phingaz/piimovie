@@ -32,7 +32,7 @@ const Page = async ({ searchParams }: { searchParams: Promise<{ page: string; ca
 
   return (
     <Suspense key={JSON.stringify({ page, category, l: 8 })} fallback={<PageLoader />}>
-      <ListingComponent category={category} page={page} />;
+      <ListingComponent category={category} page={page} />
     </Suspense>
   );
 };

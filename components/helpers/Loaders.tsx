@@ -35,7 +35,7 @@ const CarouselCardsLoader = ({ title }: { title: string }) => {
 
 const PageLoader = () => {
   return (
-    <div className="w-full h-[100svh] bg-black grid place-content-center text-white">
+    <div className="w-full h-[100svh] bg-[#000] grid place-content-center text-white">
       <div className="loader"></div>
       <p className="animate-pulse font-bold">Please wait</p>
     </div>

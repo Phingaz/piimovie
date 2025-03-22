@@ -30,7 +30,7 @@ const Page = async ({ params }: { params: Promise<{ movie: string }> }) => {
 
   return (
     <Suspense key={id} fallback={<PageLoader />}>
-      <MovieComponent type={type} id={id} />;
+      <MovieComponent type={type} id={id} />
     </Suspense>
   );
 };
