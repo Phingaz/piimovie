@@ -1,8 +1,8 @@
 import { getDetails } from '@/app/queries/queries';
-import ErrorPageComponent from '@/components/helpers/Error';
+import { PageLoader } from '@/components/helpers/Loaders';
 import ShowComponent from '@/components/show/ShowComponent';
 import { Metadata } from 'next';
-import React from 'react';
+import React, { Suspense } from 'react';
 
 const type = 'tv';
 
@@ -26,16 +26,13 @@ export async function generateMetadata({ params }: { params: Promise<{ tv: strin
 }
 
 const Page = async ({ params }: { params: Promise<{ tv: string }> }) => {
-  try {
-    const id = (await params).tv;
-    const response = await getDetails({ id, type });
+  const id = (await params).tv;
 
-    if (!response.data) throw new Error(response.message);
-
-    return <ShowComponent type={type} show={response.data} />;
-  } catch (error) {
-    return <ErrorPageComponent error={error} />;
-  }
+  return (
+    <Suspense fallback={<PageLoader />}>
+      <ShowComponent type={type} id={id} />;
+    </Suspense>
+  );
 };
 
 export default Page;

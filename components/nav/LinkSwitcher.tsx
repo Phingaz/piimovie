@@ -18,7 +18,7 @@ export default function LinkSwitcher({
 
   React.useEffect(() => {
     if (!t) setCookie('t', 'movie');
-  });
+  }, [t, setCookie]);
 
   return (
     <div className="relative p-[5px] bg-[#000] rounded-sm w-[240px]">

@@ -1,37 +1,13 @@
-import { connection } from 'next/server';
-import ErrorPageComponent from '@/components/helpers/Error';
-import LadingListingWrapper from '@/components/landing/LadingListingWrapper';
-import { getRandomNumber, getRandomMovieCategory } from '@/lib/utils';
-import { getListing } from '../queries/queries';
-import HeroMovieImg from '@/components/landing/HeroMovieImage';
-import HeroMovieInfo from '@/components/landing/HeroMovieInfo';
+import { PageLoader } from '@/components/helpers/Loaders';
+import LandingComponent from '@/components/landing/LandingComponent';
+import { Suspense } from 'react';
 
 const type = 'movie';
 
-export default async function Home() {
-  try {
-    await connection();
-
-    const result = await getListing({
-      type,
-      page: getRandomNumber(10),
-      category: getRandomMovieCategory(),
-    });
-
-    if (!result.success) throw new Error(result.message);
-
-    const movies = result.data?.results;
-
-    return (
-      <section>
-        <div className="relative">
-          <HeroMovieImg items={movies} />
-          <HeroMovieInfo type={type} items={movies} />
-        </div>
-        <LadingListingWrapper type={type} />
-      </section>
-    );
-  } catch (error) {
-    return <ErrorPageComponent error={error} />;
-  }
+export default function Home() {
+  return (
+    <Suspense fallback={<PageLoader />}>
+      <LandingComponent type={type} />
+    </Suspense>
+  );
 }

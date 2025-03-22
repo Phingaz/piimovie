@@ -23,7 +23,7 @@ const CarouselCardsLoader = ({ title }: { title: string }) => {
       <div className="carousel-ref" ref={emblaRef}>
         <div className="carousel-wrapper">
           {Array.from({ length: 10 }).map((_, index) => (
-            <CarouselItem key={index} className="rounded-md carousel-item bg-gray-900 animate-pulse">
+            <CarouselItem key={index} className="rounded-md carousel-item bg-gray-800 animate-pulse">
               <></>
             </CarouselItem>
           ))}
@@ -45,7 +45,7 @@ const PageLoader = () => {
 export const LoadingCard = () => {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:gap-x-8 md:gap-y-10 gap-3 mb-20 overflow-clip">
-      {Array.from({ length: 10 })?.map((_, index) => {
+      {Array.from({ length: 20 })?.map((_, index) => {
         return (
           <div
             key={index}

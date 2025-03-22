@@ -22,7 +22,7 @@ export default function SearchBar({ path = 'search', placeholder = 'Search...' }
     router.push(`/${path}?q=${query}`);
   };
 
-  const clearSearch = () => router.push(`/${path}`);
+  const clearSearch = () => setQuery('');
 
   return (
     <form
