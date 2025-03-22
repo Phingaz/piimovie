@@ -1,5 +1,4 @@
 import { MovieCategory, MovieCategoryEnum } from '@/app/types/movies';
-import Link from 'next/link';
 import React from 'react';
 import { ErrorSectionComponent } from '../helpers/Error';
 import CarouselWrapper from '../carousel/CarouselWrapper';
@@ -7,6 +6,7 @@ import LandingCard from './LandingMovieCard';
 import { ShowCategory, ShowCategoryEnum } from '@/app/types/show';
 import { getListing } from '@/app/queries/queries';
 import { ListType } from '@/app/types/utils';
+import SeeMore from './SeeMore';
 
 const LandingListing = async ({ type, category }: { type: ListType; category: MovieCategory | ShowCategory }) => {
   const title =
@@ -26,13 +26,7 @@ const LandingListing = async ({ type, category }: { type: ListType; category: Mo
         <div className="flex justify-between items-center mb-[17px]">
           <h2 className="text-xl md:text-2xl font-[600] text-gray-300">{title}</h2>
 
-          <Link
-            scroll
-            className="text-sm font-[600] transition hover:text-blue-500 hover:scale-105"
-            href={`/listing?category=${category}&page=1`}
-          >
-            See more
-          </Link>
+          <SeeMore category={category} />
         </div>
         <CarouselWrapper isLanding>
           {items.map((item) => (

@@ -7,6 +7,7 @@ import { SearchXIcon } from 'lucide-react';
 import { Movie } from '../types/movies';
 import { movie } from '@prisma/client';
 import { useMainCtx } from '../_context/Main';
+import { ListType } from '../types/utils';
 
 const Page = () => {
   const { user } = useMainCtx();
@@ -37,7 +38,7 @@ const Page = () => {
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:gap-x-8 md:gap-y-10 gap-3 mb-20">
           {filteredResults?.map((movie) => {
-            return <LandingCard key={movie.id} type="movie" movie={movie as unknown as Movie} />;
+            return <LandingCard key={movie.id} type={movie.type as ListType} movie={movie as unknown as Movie} />;
           })}
         </div>
       )}

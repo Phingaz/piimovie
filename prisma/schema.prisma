@@ -12,7 +12,7 @@ model movie {
   poster_path  String
   title        String
   vote_average Int
-  type         String
+  type         String @default("movie")
   user         User   @relation(fields: [userId], references: [id])
   userId       String
 

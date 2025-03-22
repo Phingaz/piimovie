@@ -10,7 +10,7 @@ import { UserDropDown } from './UserDropdown';
 import HamBurger from './HamBurger';
 import dynamic from 'next/dynamic';
 
-const LinkSwitcher = dynamic(() => import('./LinkSwitcher'), {ssr: false});
+const LinkSwitcher = dynamic(() => import('./LinkSwitcher'), { ssr: false });
 
 const Header = () => {
   const { user } = useMainCtx();
@@ -73,7 +73,12 @@ const Header = () => {
                 <LinkSwitcher mobileNav={mobileNav} toggleMobileNav={toggleMobileNav} />
                 <Link
                   href={`/listing`}
-                  onClick={() => mobileNav && toggleMobileNav()}
+                  onClick={() => {
+                    if (mobileNav) toggleMobileNav();
+
+                    if (!window) return;
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
                   className="text-gray-200 w-fit font-semibold hover:text-blue-500 transition-colors t"
                 >
                   Listing
