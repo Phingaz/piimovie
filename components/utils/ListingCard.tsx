@@ -13,7 +13,7 @@ const ListingCard = ({ movie, genres, type }: { type: ListType; movie: Movie | S
 
   return (
     <div className="aspect-3/4 border border-gray-700/80 shadow-sm shadow-gray-700/80 rounded-md relative group overflow-clip transition-all">
-      <FavAndReview movie={movie} title={title} />
+      <FavAndReview type={type} movie={movie} title={title} />
       <Link key={movie.id} href={`/${type}/${movie.id}`} className="rounded-md h-full w-full ">
         <div className="from-60% bg-gradient-to-b to-black absolute z-1 top-0 left-0 w-full h-full flex items-end rounded-md">
           <div className="px-2 pb-1 text-gray-400 flex flex-col">

@@ -1,6 +1,7 @@
 'use client';
 import { useFavoriteCtx } from '@/app/_context/Favorite';
 import { useMainCtx } from '@/app/_context/Main';
+import { ListType } from '@/app/types/utils';
 import { clientToastError, isFav } from '@/lib/utils';
 import { movie } from '@prisma/client';
 import { motion } from 'framer-motion';
@@ -8,7 +9,7 @@ import { Heart } from 'lucide-react';
 import React from 'react';
 import { toast } from 'sonner';
 
-const Favorite = ({ movie, isLarge = false }: { isLarge?: boolean; movie: movie }) => {
+const Favorite = ({ type, movie, isLarge = false }: { type: ListType; isLarge?: boolean; movie: movie }) => {
   const { fav, manageFav } = useFavoriteCtx();
   const isFavorite = fav ? isFav(fav, movie.id) : false;
 
@@ -27,7 +28,7 @@ const Favorite = ({ movie, isLarge = false }: { isLarge?: boolean; movie: movie 
         return;
       }
 
-      await manageFav(movie);
+      await manageFav(movie, type);
     } catch (error) {
       clientToastError(error);
     } finally {

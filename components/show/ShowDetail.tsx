@@ -65,7 +65,7 @@ const ShowDetails = ({ show }: { show: ShowDetail }) => {
             </motion.p>
 
             <div className="flex gap-5 items-center mt-2">
-              <Favorite isLarge movie={{ ...show, title: show.original_name } as unknown as movie} />
+              <Favorite type="tv" isLarge movie={{ ...show, title: show.original_name } as unknown as movie} />
               <Download title={show.original_name} />
             </div>
           </div>

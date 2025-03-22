@@ -5,10 +5,11 @@ import { toast } from 'sonner';
 import { movie } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { useMainCtx } from './Main';
+import { ListType } from '../types/utils';
 
 export type TFavoriteCtx = {
   fav: movie[] | null;
-  manageFav: (movie: movie) => Promise<void>;
+  manageFav: (movie: movie, type: ListType) => Promise<void>;
 };
 
 const FavoriteCtx = createContext<TFavoriteCtx | undefined>(undefined);
@@ -22,7 +23,7 @@ export function FavoriteCtxProvider({ children, fav }: FavoriteCtxProviderProps)
   const { user } = useMainCtx();
   const router = useRouter();
 
-  const manageFav = async (movie: movie) => {
+  const manageFav = async (movie: movie, type: ListType) => {
     if (!user) {
       toast.error('Please sign in to perform this action');
       return;
@@ -31,7 +32,7 @@ export function FavoriteCtxProvider({ children, fav }: FavoriteCtxProviderProps)
     const isFav = fav?.find((favMovie) => favMovie.id === movie.id);
 
     if (!isFav) {
-      await addToFavorites(movie, user);
+      await addToFavorites(type, movie, user);
       toast.success('Added to favorites successfully');
     } else {
       await removeFromFavorites(movie.id);

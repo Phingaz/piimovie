@@ -26,7 +26,7 @@ const MovieComponent = async ({ id, type }: { id: string; type: ListType }) => {
       <section className="w-full h-full relative -mt-[30px]">
         <div className="relative h-[75svh] w-full">
           <Background movie={movie} />
-          <Details movie={movie} />
+          <Details type={type} movie={movie} />
         </div>
         <div className="flex justify-center w-full mt-[100px] 3xl:mt-[150px]">
           <div className="container flex md:flex-row flex-col md:grid grid-cols-3 gap-3 md:gap-8 mb-[70px]">

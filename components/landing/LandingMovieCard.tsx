@@ -13,7 +13,7 @@ const LandingCard = ({ type, movie }: { type: ListType; movie: Movie | Show }) =
 
   return (
     <CarouselItem className="carousel-item relative">
-      <FavAndReview title={title} movie={movie} />
+      <FavAndReview type={type} title={title} movie={movie} />
       <Link href={`/${type}/${movie.id}`} className="w-full max-w-[100px] h-full relative">
         <ImageComponent title={title} className="group-hover:scale-110" string={imageCardUrl(movie?.poster_path)} />
       </Link>

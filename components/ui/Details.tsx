@@ -12,8 +12,9 @@ import Favorite from '../utils/buttons/Favorite';
 import Download from '../utils/buttons/Download';
 import GoBack from '../utils/buttons/GoBack';
 import { movie } from '@prisma/client';
+import { ListType } from '@/app/types/utils';
 
-const Details = ({ movie }: { movie: MovieDetail }) => {
+const Details = ({ movie }: { type: ListType; movie: MovieDetail }) => {
   return (
     <AnimatePresence mode="wait">
       <motion.div
@@ -62,7 +63,7 @@ const Details = ({ movie }: { movie: MovieDetail }) => {
             </motion.p>
 
             <div className="flex gap-5 items-center mt-2">
-              <Favorite isLarge movie={movie as unknown as movie} />
+              <Favorite type="movie" isLarge movie={movie as unknown as movie} />
               <Download title={movie.title} />
             </div>
           </div>
