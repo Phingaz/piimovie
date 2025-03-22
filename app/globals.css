@@ -4,7 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 .t {
-  text-shadow: 0.5px 0.5px 2px #000;
+  text-shadow: 0.5px 0.5px 2px var(--background);
 }
 
 .container {
@@ -76,10 +76,10 @@ h6 {
 
 ::-webkit-scrollbar-thumb {
   border-radius: 2px;
-  background: light-dark(#5d5d5d, #0000);
+  background: light-dark(#5d5d5d, var(--background));
 }
 ::-webkit-scrollbar-track {
-  background: light-dark(#0000, #5d5d5d);
+  background: light-dark(var(--background), #5d5d5d);
   border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -108,13 +108,13 @@ input::-webkit-inner-spin-button {
 .loader {
   width: 80px;
   aspect-ratio: 1;
-  border: 10px solid #0000;
+  border: 10px solid var(--background);
   box-sizing: border-box;
   background:
-    radial-gradient(farthest-side, #fff 98%, #0000) 0 0/20px 20px,
-    radial-gradient(farthest-side, #fff 98%, #0000) 100% 0/20px 20px,
-    radial-gradient(farthest-side, #fff 98%, #0000) 100% 100%/20px 20px,
-    radial-gradient(farthest-side, #fff 98%, #0000) 0 100%/20px 20px,
+    radial-gradient(farthest-side, #fff 98%, var(--background)) 0 0/20px 20px,
+    radial-gradient(farthest-side, #fff 98%, var(--background)) 100% 0/20px 20px,
+    radial-gradient(farthest-side, #fff 98%, var(--background)) 100% 100%/20px 20px,
+    radial-gradient(farthest-side, #fff 98%, var(--background)) 0 100%/20px 20px,
     linear-gradient(#fff 0 0) 50%/40px 40px,
     #000;
   background-repeat: no-repeat;

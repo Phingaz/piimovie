@@ -8,7 +8,9 @@ import { useMainCtx } from '@/app/_context/Main';
 import SignInBtn from './SignInBtn';
 import { UserDropDown } from './UserDropdown';
 import HamBurger from './HamBurger';
-import LinkSwitcher from './LinkSwitcher';
+import dynamic from 'next/dynamic';
+
+const LinkSwitcher = dynamic(() => import('./LinkSwitcher'), {ssr: false});
 
 const Header = () => {
   const { user } = useMainCtx();
@@ -67,7 +69,16 @@ const Header = () => {
             className={`lg:flex justify-between items-center w-[62%] ${mobileNav ? ' fixed top-0 right-0 bg-black h-[100vh] w-[270px] pt-10' : 'hidden'}`}
           >
             <div className="flex lg:justify-between gap-5 font-[300] lg:flex-row flex-col pt-20 lg:pt-0 items-center w-full h-full">
-              <LinkSwitcher mobileNav={mobileNav} toggleMobileNav={toggleMobileNav} />
+              <div className="items-center flex gap-3 flex-col md:flex-row">
+                <LinkSwitcher mobileNav={mobileNav} toggleMobileNav={toggleMobileNav} />
+                <Link
+                  href={`/listing`}
+                  onClick={() => mobileNav && toggleMobileNav()}
+                  className="text-gray-200 w-fit font-semibold hover:text-blue-500 transition-colors t"
+                >
+                  Listing
+                </Link>
+              </div>
 
               <div className="flex items-center flex-col lg:flex-row gap-4 min-w-fit">
                 <div className="flex gap-3 items-center flex-row">

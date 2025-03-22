@@ -44,7 +44,7 @@ export default function TorrentItem({ torrent }: { torrent: DownlodResult }) {
       <div className="flex items-start mb-2">
         <File className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
         <div className="ml-2 flex-grow">
-          <h3 className="font-medium text-white break-words text-sm md:text-base">{torrent.name}</h3>
+          <h3 className="font-medium text-white break-all text-[13px] md:text-base">{torrent.name}</h3>
         </div>
       </div>
 

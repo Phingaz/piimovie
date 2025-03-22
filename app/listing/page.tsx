@@ -22,10 +22,13 @@ export async function generateMetadata({
 }
 
 const Page = async ({ searchParams }: { searchParams: Promise<{ page: string; category: string }> }) => {
-  const { page, category } = (await searchParams) as {
+  let { page, category } = (await searchParams) as {
     page: string;
     category: keyof typeof MovieCategoryEnum;
   };
+
+  if (!page) page = '1';
+  if (!category) category = 'top_rated';
 
   return (
     <Suspense key={JSON.stringify({ page, category, l: 8 })} fallback={<PageLoader />}>
