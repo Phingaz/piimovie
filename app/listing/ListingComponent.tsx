@@ -9,6 +9,8 @@ import SearchBar from '@/components/utils/SearchComponent';
 import ListingCard from '@/components/utils/ListingCard';
 import { MovieCategoryOptions, movieGenreId, TvCategoryOptions } from '@/lib/constants';
 import Pagination from '@/components/utils/buttons/Pagination';
+import PageSection from '@/components/utils/texts/PageSection';
+import PageTitle from '@/components/utils/texts/PageTitle';
 
 const ListingComponent = async ({ category, page }: { category: MovieCategory; page: string }) => {
   try {
@@ -25,8 +27,8 @@ const ListingComponent = async ({ category, page }: { category: MovieCategory; p
 
     return (
       <div className="container mx-auto mt-[100px] md-5 md:py-10 px-3 md:px-[2rem] relative">
-        <div className="flex md:justify-between md:items-center mb-10 md:flex-row flex-col gap-3 md:gap-0">
-          <h1 className="text-3xl md:text-4xl font-[600]">{title}</h1>
+        <PageSection>
+          <PageTitle>{title}</PageTitle>
           <div className="flex md:flex-row flex-col gap-2 md:items-center mt-5 md:mt-0">
             <SelectComponentUrl
               defaultValue={category}
@@ -34,7 +36,7 @@ const ListingComponent = async ({ category, page }: { category: MovieCategory; p
             />
             <SearchBar />
           </div>
-        </div>
+        </PageSection>{' '}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:gap-x-8 md:gap-y-10 gap-3 mb-10 md:mb-20">
           {movies?.map((movie) => {
             const genres = movieGenreId

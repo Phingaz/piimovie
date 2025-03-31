@@ -10,6 +10,8 @@ import { useMainCtx } from '../_context/Main';
 import { ListType } from '../types/utils';
 import { SelectComponent } from '@/components/utils/Select';
 import { FavOptions } from '@/lib/constants';
+import PageTitle from '@/components/utils/texts/PageTitle';
+import PageSection from '@/components/utils/texts/PageSection';
 
 const Page = () => {
   const { user } = useMainCtx();
@@ -31,13 +33,13 @@ const Page = () => {
 
   return (
     <div className="container mx-auto py-10 mt-[70px] px-3 md:px-[2rem]">
-      <div className="flex md:justify-between md:items-center mb-10 md:flex-row flex-col gap-3 md:gap-0">
-        <h1 className="text-4xl font-bold">Favorite</h1>
+      <PageSection>
+        <PageTitle>Favorite</PageTitle>
         <div className="flex md:flex-row flex-col gap-2 md:items-center">
           <SelectComponent value={value} setValue={setValue} options={FavOptions} />
           <LocalSearch data={movies} setFilteredResults={setSearchResults} />
         </div>
-      </div>
+      </PageSection>
       {!user ? (
         <div className="flex justify-center items-center flex-col border border-dashed py-20 rounded-md bg-gray-900">
           <SearchXIcon size={50} className="mb-5 text-gray-400" />

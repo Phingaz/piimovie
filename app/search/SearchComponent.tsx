@@ -7,6 +7,8 @@ import React from 'react';
 import { search } from '../queries/queries';
 import { movieGenreId } from '@/lib/constants';
 import { ListType } from '../types/utils';
+import PageTitle from '@/components/utils/texts/PageTitle';
+import PageSection from '@/components/utils/texts/PageSection';
 
 const SearchComponent = async ({ q, type, page }: { q: string; type: ListType; page: string }) => {
   try {
@@ -21,10 +23,10 @@ const SearchComponent = async ({ q, type, page }: { q: string; type: ListType; p
 
     return (
       <div className="container mx-auto py-10 px-3 md:px-[2rem] mt-[100px]">
-        <div className="flex md:justify-between md:items-center mb-10 md:flex-row flex-col gap-3 md:gap-0">
-          <h1 className="text-4xl font-bold">Search Results</h1>
+        <PageSection>
+          <PageTitle className="text-4xl font-bold">Search Results</PageTitle>
           <SearchBar />
-        </div>
+        </PageSection>
 
         {!q ? (
           <EmptySearch />
@@ -56,8 +58,8 @@ export default SearchComponent;
 
 const EmptySearch = () => {
   return (
-    <div className="flex justify-center items-center flex-col border border-dashed py-20 rounded-md bg-gray-900">
-      <SearchXIcon size={50} className="mb-5 text-gray-400" />
+    <div className="h-[calc(100svh-250px)] flex justify-center items-center flex-col border border-gray-500/50 border-dashed py-20 rounded-md bg-gray-900">
+      <SearchXIcon size={70} className="mb-3 text-gray-400" />
       <h3 className="text-lg font-medium text-white mb-1">No search results</h3>
       <p className="text-gray-400 max-w-md text-center">
         Try searching for a movie to find what you&apos;re looking for.

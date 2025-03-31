@@ -15,7 +15,7 @@ export default function SimplePagination({ currentPage, className = '' }: Simple
   const router = useRouter();
   const searchParams = useSearchParams();
   const { startTransition } = useMainCtx();
-  const page = Number(searchParams.get('page'));
+  const page = Number(searchParams.get('page')) || 1;
 
   const [jumpToPage, setJumpToPage] = useState('');
   const [error, setError] = useState('');
@@ -64,17 +64,17 @@ export default function SimplePagination({ currentPage, className = '' }: Simple
   };
 
   return (
-    <div className={`flex flex-col sm:flex-row items-center justify-center gap-4 ${className}`}>
+    <div className={`flex flex-col sm:flex-row items-center justify-center gap-4 mt-10 ${className}`}>
       <p className="text-sm text-gray-300">Current page: {page}</p>
       <div className="flex items-center gap-2">
         <button
           onClick={handlePrevious}
           disabled={currentPage === 1}
-          className={`flex items-center justify-center w-10 h-10 cursor-pointer disabled:cursor-not-allowed rounded-md transition-colors
+          className={`flex items-center justify-center size-9 cursor-pointer disabled:cursor-not-allowed rounded-sm transition-colors
             ${
               currentPage === 1
                 ? 'text-gray-500 bg-gray-800 cursor-not-allowed'
-                : 'text-white bg-gray-800 hover:bg-gray-700'
+                : 'text-gray-300 bg-gray-800 hover:bg-gray-700'
             }`}
           aria-label="Previous page"
         >
@@ -83,7 +83,7 @@ export default function SimplePagination({ currentPage, className = '' }: Simple
 
         <button
           onClick={handleNext}
-          className={`flex items-center justify-center w-10 h-10 cursor-pointer disabled:cursor-not-allowed rounded-md transition-colors text-white bg-gray-800 hover:bg-gray-700`}
+          className={`flex items-center justify-center size-9 cursor-pointer disabled:cursor-not-allowed rounded-sm transition-colors text-gray-300 bg-gray-800 hover:bg-gray-700`}
           aria-label="Next page"
         >
           <ChevronRight className="w-5 h-5" />
@@ -100,12 +100,12 @@ export default function SimplePagination({ currentPage, className = '' }: Simple
               if (error) setError('');
             }}
             placeholder="Jump to page..."
-            className="h-10 w-32 sm:w-40 px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white text-sm focus:outline-none"
+            className="h-9 w-32 sm:w-40 px-3 py-2 bg-gray-800 border border-gray-700 rounded-sm text-gray-300 text-sm focus:outline-none placeholder:text-xs"
             aria-label="Jump to page"
           />
           <button
             type="submit"
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300"
             aria-label="Search"
           >
             <Search className="w-4 h-4" />

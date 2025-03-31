@@ -22,7 +22,7 @@ const Page = async ({ searchParams }: { searchParams: Promise<{ page: string; ca
   };
 
   if (!page) page = '1';
-  if (!category) category = 'top_rated';
+  if (!category) category = 'popular';
 
   return (
     <Suspense key={JSON.stringify({ page, category, l: 8 })} fallback={<PageLoader />}>

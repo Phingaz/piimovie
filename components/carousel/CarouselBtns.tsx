@@ -27,7 +27,7 @@ const CarouselBtns = ({
   return (
     <div
       className={cn(
-        "flex gap-1 items-center w-fit absolute z-1",
+        "flex gap-2 items-center w-fit absolute z-1",
         isLanding
           ? "md:right-20 md:-top-[52px] right-0 -top-20"
           : "right-0 -top-[42px]"
@@ -38,7 +38,7 @@ const CarouselBtns = ({
         onClick={onPrevButtonClick}
         disabled={prevBtnDisabled}
         className={cn(
-          "cursor-pointer rounded-md p-[4px] bg-gray-200 disabled:bg-gray-800",
+          "cursor-pointer rounded-sm p-[4px] bg-gray-200 disabled:bg-gray-800",
           isLanding ? "scale-100" : "scale-80"
         )}
       >
@@ -52,7 +52,7 @@ const CarouselBtns = ({
         onClick={onNextButtonClick}
         disabled={nextBtnDisabled}
         className={cn(
-          "cursor-pointer rounded-md p-[4px] bg-gray-200 disabled:bg-gray-800",
+          "cursor-pointer rounded-sm p-[4px] bg-gray-200 disabled:bg-gray-800",
           isLanding ? "scale-100" : "scale-80"
         )}
       >
