@@ -14,7 +14,7 @@ export async function generateMetadata({
   const { q } = await searchParams;
 
   return {
-    title: `Movie Box | Search | ${q}`,
+    title: `Movie Box | Search ${q ? `| ${q}` : ''}`,
     description: 'Search for movies.',
   };
 }
@@ -26,7 +26,6 @@ const Page = async ({ searchParams }: { searchParams: Promise<{ page: string; q:
   };
 
   const type = (await cookies()).get('t')?.value as ListType;
-
 
   return (
     <Suspense key={JSON.stringify({ q, page })} fallback={<PageLoader />}>
