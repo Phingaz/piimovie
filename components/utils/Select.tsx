@@ -12,7 +12,7 @@ export interface SelectOption {
 
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-const SelectComponent = ({ defaultValue, options }: { defaultValue: string | null; options: SelectOption[] }) => {
+const SelectComponentUrl = ({ defaultValue, options }: { defaultValue: string | null; options: SelectOption[] }) => {
   const { startTransition } = useMainCtx();
 
   const router = useRouter();
@@ -30,7 +30,7 @@ const SelectComponent = ({ defaultValue, options }: { defaultValue: string | nul
   return (
     <Select onValueChange={handleSelect} defaultValue={defaultValue as string}>
       <SelectTrigger className="w-fit">
-        <SelectValue placeholder="Select a fruit" />
+        <SelectValue placeholder="Select an option" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
@@ -45,4 +45,33 @@ const SelectComponent = ({ defaultValue, options }: { defaultValue: string | nul
   );
 };
 
-export default SelectComponent;
+export const SelectComponent = ({
+  value,
+  setValue,
+  options,
+}: {
+  value: string;
+  setValue: React.Dispatch<React.SetStateAction<string>>;
+  options: SelectOption[];
+}) => {
+  const handleSelect = (el: string) => setValue(el);
+
+  return (
+    <Select onValueChange={handleSelect} defaultValue={value}>
+      <SelectTrigger className="w-fit">
+        <SelectValue placeholder="Select an option" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          {options.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  );
+};
+
+export default SelectComponentUrl;

@@ -28,9 +28,10 @@ export default function Pagination({ currentPage, totalPages, totalResults, clas
   }, []);
 
   const getVisiblePageCount = () => {
-    if (windowWidth < 768) return 3;
-    if (windowWidth < 1098) return 7;
-    return 2;
+    if (windowWidth < 768) return 4;
+    if (windowWidth < 1098) return 5;
+    if (windowWidth < 1330) return 7;
+    return 3;
   };
 
   const isMobile = windowWidth < 768;
@@ -161,8 +162,8 @@ const NavigationButton = ({
     <button
       {...props}
       className={cn(
-        `flex items-center justify-center md:size-10 size-7 rounded-md transition-colors cursor-pointer disabled:cursor-not-allowed`,
-        className
+        `flex items-center justify-center text-[13px] lg:size-8 size-5 md:size-7 rounded-[4px] transition-colors cursor-pointer disabled:cursor-not-allowed`,
+        className,
       )}
       aria-label="Last page"
     >

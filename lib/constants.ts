@@ -33,6 +33,21 @@ export const movieGenreId = [
   { id: 37, name: 'Western' },
 ];
 
+export const FavOptions: SelectOption[] = [
+  {
+    label: 'All',
+    value: 'all',
+  },
+  {
+    label: 'Tv Shows',
+    value: 'tv',
+  },
+  {
+    label: 'Movies',
+    value: 'movie',
+  },
+];
+
 export const MovieCategoryOptions: SelectOption[] = [
   {
     label: 'Now Playing',

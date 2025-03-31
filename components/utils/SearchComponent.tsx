@@ -66,7 +66,7 @@ export const LocalSearch = ({ data, placeholder = 'Search...', setFilteredResult
     } else {
       if (!data) return;
       const lowerQuery = query.toLowerCase();
-      const filtered = data.filter((item) => String(item.title).toLowerCase()?.includes(lowerQuery));
+      const filtered = data.filter((item) => String(item.title).toLowerCase().includes(lowerQuery));
       setFilteredResults(filtered);
     }
   }, [query, data, setFilteredResults]);

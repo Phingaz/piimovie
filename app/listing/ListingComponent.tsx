@@ -4,7 +4,7 @@ import React from 'react';
 import { getListing } from '../queries/queries';
 import { ListType } from '../types/utils';
 import { MovieCategory, MovieCategoryEnum } from '../types/movies';
-import SelectComponent from '@/components/utils/Select';
+import SelectComponentUrl from '@/components/utils/Select';
 import SearchBar from '@/components/utils/SearchComponent';
 import ListingCard from '@/components/utils/ListingCard';
 import { MovieCategoryOptions, movieGenreId, TvCategoryOptions } from '@/lib/constants';
@@ -28,7 +28,7 @@ const ListingComponent = async ({ category, page }: { category: MovieCategory; p
         <div className="flex md:justify-between md:items-center mb-10 md:flex-row flex-col gap-3 md:gap-0">
           <h1 className="text-3xl md:text-4xl font-[600]">{title}</h1>
           <div className="flex md:flex-row flex-col gap-2 md:items-center mt-5 md:mt-0">
-            <SelectComponent
+            <SelectComponentUrl
               defaultValue={category}
               options={type === 'movie' ? MovieCategoryOptions : TvCategoryOptions}
             />
