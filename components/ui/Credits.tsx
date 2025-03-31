@@ -24,7 +24,7 @@ const Credits = async ({ id, type }: { id: number; type: ListType }) => {
         </SectionTitle>
 
         {credits.length < 1 ? (
-          <EmptyList message="We couldn't find the cast & crew information for this movie." />
+          <EmptyList type="cast & crew" message="We couldn't find the cast & crew information for this movie." />
         ) : (
           <CarouselWrapper isLanding={false}>
             {credits.map((el) => {

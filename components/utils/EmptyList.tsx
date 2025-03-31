@@ -5,8 +5,8 @@ import React from "react";
 
 const EmptyList = ({ type, message }: { type?: string; message: string }) => {
   return (
-    <div className="w-full border border-dashed">
-      <div className="flex flex-col items-center justify-center py-12 text-center">
+    <div className="w-full rounded-md border border-dashed border-gray-500/50">
+      <div className="flex flex-col items-center justify-center py-12 text-center px-3">
         <div className="relative mb-4">
           <motion.div
             initial={{ opacity: 0.5, scale: 0.9 }}
@@ -33,7 +33,7 @@ const EmptyList = ({ type, message }: { type?: string; message: string }) => {
           </motion.div>
         </div>
 
-        {type && <h3 className="text-xl font-medium mb-2">No {type}</h3>}
+        {type && <h3 className="text-xl font-medium mb-2 text-gray-300">No {type}</h3>}
         <p className="text-muted-foreground max-w-md mb-6">{message}</p>
       </div>
     </div>

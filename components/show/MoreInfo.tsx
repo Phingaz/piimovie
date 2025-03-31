@@ -6,7 +6,7 @@ import NetworkBadge from './Networks';
 
 const MoreInfo = ({ show }: { show: ShowDetail }) => {
   return (
-    <div className="p-4 bg-background rounded-md border border-gray-500/50 col-span-2">
+    <div className="p-4 bg-background rounded-md border border-dashed border-gray-500/50 col-span-2">
       <SectionTitle>
         <>Show Information</>
       </SectionTitle>

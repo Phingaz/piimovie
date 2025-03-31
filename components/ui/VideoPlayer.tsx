@@ -11,11 +11,14 @@ export const VideoPlayer = async ({ id, type }: { id: number; type: ListType }) 
     const results = response.data.results;
 
     return (
-      <div className={`aspect-video w-full border-gray-500/50 border-2 ${type === 'movie' ? 'h-auto' : 'h-full'}`}>
+      <div
+        className={`aspect-video w-full rounded-md border-dashed border-gray-500/50 border ${type === 'movie' ? 'h-auto' : 'h-full'}`}
+      >
         <iframe
           width="100%"
           height="100%"
           allowFullScreen
+          className="rounded-md"
           title={results[0]?.name}
           src={`https://www.youtube.com/embed/${results[0]?.key}?autoplay=1&mute=1`}
         ></iframe>

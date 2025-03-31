@@ -9,7 +9,7 @@ const SectionTitle = ({
   children: ReactElement;
 }) => {
   return (
-    <h2 className={cn("mb-3 text-lg md:text-xl font-semibold", className)}>
+    <h2 className={cn("mb-3 text-lg md:text-xl font-semibold text-gray-300", className)}>
       {children}
     </h2>
   );
