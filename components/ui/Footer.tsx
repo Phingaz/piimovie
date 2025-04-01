@@ -12,7 +12,7 @@ export default function Footer() {
   return (
     <footer className="w-full bg-black text-gray-400 py-8 mt-auto">
       <div className="container mx-auto px-4">
-        <div className="flex gap-8">
+        <div className="flex gap-8 flex-col md:flex-row">
           <div className="space-y-4 flex-[4]">
             <Link href="/" className="font-bold text-lg text-gray-300 flex gap-3 items-start">
               <Image
@@ -49,7 +49,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="flex-[6] flex justify-between">
+          <div className="flex-[6] flex justify-between flex-wrap gap-8">
             <div className="space-y-4">
               <h3 className="font-bold text-lg text-gray-300">Quick Links</h3>
               <ul className="space-y-2 text-sm">
