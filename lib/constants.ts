@@ -67,6 +67,20 @@ export const MovieCategoryOptions: SelectOption[] = [
   },
 ];
 
+export const movieCat = [
+  { title: 'Popular', href: '/listing?category=popular' },
+  { title: 'Top Rated', href: '/listing?category=top_rated' },
+  { title: 'Upcoming', href: '/listing?category=upcoming' },
+  { title: 'Now Playing', href: '/listing?category=on_the_air' },
+];
+
+export const tvShowsCat = [
+  { title: 'Popular', href: '/listing?category=popular' },
+  { title: 'Top Rated', href: '/listing?category=top_rated' },
+  { title: 'On The Air', href: '/listing?category=now_playing' },
+  { title: 'Airing Today', href: '/listing?category=airing_today' },
+];
+
 export const TvCategoryOptions: SelectOption[] = [
   {
     label: 'On The Air',

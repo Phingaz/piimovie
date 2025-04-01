@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { User } from 'better-auth';
 import { LogOutIcon } from 'lucide-react';
 import { authClient } from '@/lib/auth';
+import { useRouter } from 'next/navigation';
 
 export function UserDropDown({
   user,
@@ -18,6 +19,7 @@ export function UserDropDown({
   mobileNav: boolean;
   toggleMobileNav: () => void;
 }) {
+  const router = useRouter();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -34,6 +36,7 @@ export function UserDropDown({
             if (mobileNav) {
               toggleMobileNav();
             }
+            router.refresh();
           }}
         >
           <LogOutIcon strokeWidth={2} size={25} />

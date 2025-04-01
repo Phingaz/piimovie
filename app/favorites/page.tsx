@@ -41,13 +41,13 @@ const Page = () => {
         </div>
       </PageSection>
       {!user ? (
-        <div className="flex justify-center items-center flex-col border border-dashed py-20 rounded-md bg-gray-900">
+        <div className="flex h-[calc(100svh-225px)] border-gray-500/50 justify-center items-center flex-col border border-dashed py-20 rounded-md bg-gray-900">
           <SearchXIcon size={50} className="mb-5 text-gray-400" />
           <h3 className="text-lg font-medium text-white mb-1">Sign in to continue</h3>
           <p className="text-gray-400 max-w-md text-center">Please sign in to manage your favorite movies</p>
         </div>
       ) : filteredResults && filteredResults.length === 0 ? (
-        <div className="flex justify-center items-center flex-col border border-dashed py-20 rounded-md bg-gray-900">
+        <div className="flex h-[calc(100svh-225px)] border-gray-500/50 justify-center items-center flex-col border border-dashed py-20 rounded-md bg-gray-900">
           <SearchXIcon size={50} className="mb-5 text-gray-400" />
           <h3 className="text-lg font-medium text-white mb-1">No favorites</h3>
           <p className="text-gray-400 max-w-md text-center">Try adding a movie as favorite to add it to this list.</p>

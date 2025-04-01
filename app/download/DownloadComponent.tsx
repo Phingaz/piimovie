@@ -32,7 +32,7 @@ const DownloadComponent = async ({ page, q }: { page: string; q: string }) => {
             return <TorrentItem key={el.hash} torrent={el} />;
           })}
         </div>
-        <SimplePagination currentPage={Number(page)} />
+        <SimplePagination disabled={!q} currentPage={Number(page)} />
       </div>
     );
   } catch {
@@ -43,7 +43,7 @@ const DownloadComponent = async ({ page, q }: { page: string; q: string }) => {
           <SearchBar path="download" />
         </PageSection>
         <EmptySearch />
-        <SimplePagination currentPage={Number(page)} />
+        <SimplePagination disabled={!q} currentPage={Number(page)} />
       </div>
     );
   }
