@@ -9,6 +9,7 @@ import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
 import { getFavorites } from './queries/favorites';
 import { movie } from '@prisma/client';
+import Footer from '@/components/ui/Footer';
 
 const heading = Poppins({
   subsets: ['latin'],
@@ -57,6 +58,7 @@ export default async function RootLayout({
         <Providers value={{ user, fav }}>
           <Header />
           <main className="relative -mt-[80px]">{children}</main>
+          <Footer />
         </Providers>
         <Toaster richColors />
       </body>
