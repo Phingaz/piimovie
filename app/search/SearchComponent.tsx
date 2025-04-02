@@ -5,7 +5,7 @@ import SearchBar from '@/components/utils/SearchComponent';
 import { SearchXIcon } from 'lucide-react';
 import React from 'react';
 import { search } from '../queries/queries';
-import { movieGenreId } from '@/lib/constants';
+import { globalGenres } from '@/lib/constants';
 import { ListType } from '../types/utils';
 import PageTitle from '@/components/utils/texts/PageTitle';
 import PageSection from '@/components/utils/texts/PageSection';
@@ -34,9 +34,9 @@ const SearchComponent = async ({ q, type, page }: { q: string; type: ListType; p
           <>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:gap-x-8 md:gap-y-10 gap-3 mb-20">
               {movies?.map((movie) => {
-                const genres = movieGenreId
-                  .filter((genre) => movie.genre_ids?.includes(genre.id))
-                  .map((genre) => genre.name)
+                const genres = globalGenres
+                  .filter((genre) => movie.genre_ids?.includes(genre.value))
+                  .map((genre) => genre.label)
                   .join(', ');
 
                 return <ListingCard key={movie.id} type={type} genres={genres} movie={movie} />;
