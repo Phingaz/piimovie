@@ -1,5 +1,5 @@
-import { Star } from "lucide-react";
-import React from "react";
+import { Star } from 'lucide-react';
+import React from 'react';
 
 const Ratings = ({
   showBg,
@@ -13,16 +13,10 @@ const Ratings = ({
   vote_average: number;
 }) => {
   return (
-    <span
-      className={`flex gap-1 items-center p-1 ${
-        showBg ? "bg-black/70 px-2 rounded-md" : ""
-      }`}
-    >
+    <span className={`flex gap-1 items-center p-1 ${showBg ? 'bg-black/70 px-2 rounded-md' : ''}`}>
       <Star fill="yellow" size={isReview ? 15 : 20} className="text-amber-400" />
-      <p className={`${isReview ? "text-[12px]" : "text-sm"}`}>
-        {vote_average?.toFixed()}/10
-      </p>
-      {voteCount && <p className="text-sm">({voteCount ?? 0}) votes</p>}
+      <p className={`${isReview ? 'text-[12px]' : 'text-sm'}`}>{vote_average?.toFixed()}/10</p>
+      {voteCount && <p className={`${isReview ? 'text-[12px]' : 'text-sm'}`}>({voteCount ?? 0}) votes</p>}
     </span>
   );
 };
