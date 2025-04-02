@@ -4,9 +4,15 @@ import { Metadata } from 'next';
 import DownloadComponent from './DownloadComponent';
 import PageLoader from './loading';
 
-export function generateMetadata(): Metadata {
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ page: string; q: string }>;
+}): Promise<Metadata> {
+  const { q } = (await searchParams) as { q: keyof typeof MovieCategoryEnum };
+
   return {
-    title: `Movie Box | Download | Torrent`,
+    title: `Movie Box | Download | ${q}`,
     description: 'Find and torrent anything.',
   };
 }
