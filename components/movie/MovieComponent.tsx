@@ -28,7 +28,7 @@ const MovieComponent = async ({ id, type }: { id: string; type: ListType }) => {
           <Background movie={movie} />
           <Details type={type} movie={movie} />
         </div>
-        <div className="flex justify-center w-full mt-[100px] 3xl:mt-[150px]">
+        <div className="flex justify-center w-full mt-[100px] md:mt-[120px] 3xl:mt-[150px]">
           <div className="container flex md:flex-row flex-col md:grid grid-cols-3 gap-3 md:gap-8 mb-[70px]">
             <div className="flex-[7] flex flex-col md:gap-12 gap-6 col-span-2">
               <MoreInfo movie={movie} />

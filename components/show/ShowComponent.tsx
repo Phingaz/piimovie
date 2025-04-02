@@ -28,7 +28,7 @@ const ShowComponent = async ({ id, type }: { id: string; type: ListType }) => {
           <Background movie={show} />
           <ShowDetails show={show} />
         </div>
-        <div className="flex justify-center flex-col w-full mt-[100px] 3xl:mt-[150px] container gap-3 mx-auto md:gap-8">
+        <div className="flex justify-center flex-col w-full mt-[100px] md:mt-[120px] 3xl:mt-[150px] container gap-3 mx-auto md:gap-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-8">
             <MoreInfo show={show} />
             <VideoPlayer id={show.id} type={type} />

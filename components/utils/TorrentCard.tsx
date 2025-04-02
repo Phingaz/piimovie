@@ -39,7 +39,7 @@ export default function TorrentItem({ torrent }: { torrent: DownlodResult }) {
   };
 
   return (
-    <div className="bg-gray-900 rounded-lg p-3 hover:bg-gray-750 duration-200 border border-gray-900 shadow shadow-gray-500 hover:scale-[1.01] transition-all">
+    <div className="bg-gray-900 rounded-lg p-3 hover:bg-gray-750 duration-200 border border-gray-900 shadow shadow-gray-500 hover:scale-[1.005] transition-all">
       {/* Torrent Name */}
       <div className="flex items-start mb-2">
         <File className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
