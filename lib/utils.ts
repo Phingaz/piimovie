@@ -1,11 +1,12 @@
-import { Movie, MovieCategory, MovieCategoryEnum } from '@/app/types/movies';
-import { Show, ShowCategory, ShowCategoryEnum } from '@/app/types/show';
+import { Movie, MovieCategory } from '@/app/types/movies';
+import { Show, ShowCategory } from '@/app/types/show';
 import { movie } from '@prisma/client';
 import { type ClassValue, clsx } from 'clsx';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { TransitionStartFunction } from 'react';
 import { toast } from 'sonner';
 import { twMerge } from 'tailwind-merge';
+import { MovieCategoryEnum, ShowCategoryEnum } from './enums';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

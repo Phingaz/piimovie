@@ -1,9 +1,13 @@
 import React, { createContext, TransitionStartFunction, useTransition } from 'react';
 import { NavigationCtxProvider } from './Navigation';
 import { User } from 'better-auth';
+import { ListType } from '../types/utils';
+import useCookies from '../_hooks/useCookies';
 
 export type TMainCtx = {
   user?: User;
+  type: ListType;
+  isMovie: boolean;
   isLoading: boolean;
   startTransition: TransitionStartFunction;
 };
@@ -14,8 +18,10 @@ type MainCtxProviderProps = { user?: User } & React.PropsWithChildren<object>;
 
 export function MainCtxProvider({ user, children }: MainCtxProviderProps) {
   const [isLoading, startTransition] = useTransition();
-
-  const contextValue = { user, isLoading, startTransition };
+  const { getCookie } = useCookies();
+  const type = getCookie('t') as ListType;
+  const isMovie = type === 'movie';
+  const contextValue = { type, isMovie, user, isLoading, startTransition };
 
   return (
     <MainCtx.Provider value={contextValue}>

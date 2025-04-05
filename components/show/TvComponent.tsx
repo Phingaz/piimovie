@@ -9,7 +9,12 @@ import LandingListingWrapper from '../landing/LadingListingWrapper';
 
 const TvComponent = async ({ type }: { type: ListType }) => {
   try {
-    const result = await getListing({ page: getRandomNumber(10), category: getRandomShowCategory(), type });
+    const result = await getListing({
+      type,
+      fetchCategory: true,
+      category: getRandomShowCategory(),
+      page: getRandomNumber(10).toString(),
+    });
 
     if (!result.success) throw new Error(result.message);
 

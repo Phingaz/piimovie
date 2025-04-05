@@ -1,20 +1,20 @@
-import { MovieCategory, MovieCategoryEnum } from '@/app/types/movies';
+import { MovieCategory } from '@/app/types/movies';
 import React from 'react';
 import { ErrorSectionComponent } from '../helpers/Error';
 import CarouselWrapper from '../carousel/CarouselWrapper';
 import LandingCard from './LandingMovieCard';
-import { ShowCategory, ShowCategoryEnum } from '@/app/types/show';
+import { ShowCategory } from '@/app/types/show';
 import { getListing } from '@/app/queries/queries';
 import { ListType } from '@/app/types/utils';
 import SeeMore from './SeeMore';
+import { MovieCategoryEnum, ShowCategoryEnum } from '@/lib/enums';
 
 const LandingListing = async ({ type, category }: { type: ListType; category: MovieCategory | ShowCategory }) => {
   const title =
     type === 'movie' ? MovieCategoryEnum[category as MovieCategory] : ShowCategoryEnum[category as ShowCategory];
 
   try {
-    const response = await getListing({ category, page: 1, type });
-
+    const response = await getListing({ category, fetchCategory: true, type });
     const items = response.data?.results;
 
     if (!items || !response.success) {

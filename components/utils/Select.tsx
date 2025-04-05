@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { updateSearchParam } from '@/lib/utils';
 import { useMainCtx } from '@/app/_context/Main';
@@ -11,8 +11,15 @@ export interface SelectOption {
 }
 
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useUpdateSort } from '@/app/_hooks/useQueryParams';
 
-const SelectComponentUrl = ({ defaultValue, options }: { defaultValue: string | null; options: SelectOption[] }) => {
+const SelectComponentCategory = ({
+  defaultValue,
+  options,
+}: {
+  defaultValue: string | null;
+  options: SelectOption[];
+}) => {
   const { startTransition } = useMainCtx();
 
   const router = useRouter();
@@ -74,4 +81,27 @@ export const SelectComponent = ({
   );
 };
 
-export default SelectComponentUrl;
+export const SelectComponentUrl = ({ paramKey, options }: { paramKey: string; options: SelectOption[] }) => {
+  const searchParams = useSearchParams();
+  const [value, setValue] = useState(searchParams.get(paramKey) || options[0].value);
+
+  useUpdateSort({ key: paramKey, sortBy: value, scroll: true });
+
+  return (
+    <Select value={value} onValueChange={setValue}>
+      <SelectTrigger className="w-full">
+        <SelectValue placeholder="Select an option" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          {options.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  );
+};
+export default SelectComponentCategory;

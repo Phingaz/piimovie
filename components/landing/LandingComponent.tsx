@@ -11,8 +11,9 @@ const LandingComponent = async ({ type }: { type: ListType }) => {
   try {
     const result = await getListing({
       type,
-      page: getRandomNumber(10),
+      fetchCategory: true,
       category: getRandomMovieCategory(),
+      page: getRandomNumber(10).toString(),
     });
 
     if (!result.success) throw new Error(result.message);

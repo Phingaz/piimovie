@@ -1,8 +1,9 @@
 import React, { Suspense } from 'react';
-import { MovieCategoryEnum } from '../types/movies';
+
 import { Metadata } from 'next';
 import DownloadComponent from './DownloadComponent';
 import PageLoader from './loading';
+import { MovieCategoryEnum } from '@/lib/enums';
 
 export async function generateMetadata({
   searchParams,

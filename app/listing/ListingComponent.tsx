@@ -1,21 +1,20 @@
 import ErrorPageComponent from '@/components/helpers/Error';
-import { cookies } from 'next/headers';
 import React from 'react';
 import { getListing } from '../queries/queries';
-import { ListType } from '../types/utils';
-import { MovieCategory, MovieCategoryEnum } from '../types/movies';
-import SelectComponentUrl from '@/components/utils/Select';
+import { ListType, SortOption } from '../types/utils';
 import SearchBar from '@/components/utils/SearchComponent';
 import ListingCard from '@/components/utils/ListingCard';
-import { MovieCategoryOptions, movieGenreId, TvCategoryOptions } from '@/lib/constants';
+import { globalGenres } from '@/lib/arrys';
 import Pagination from '@/components/utils/buttons/Pagination';
 import PageSection from '@/components/utils/texts/PageSection';
 import PageTitle from '@/components/utils/texts/PageTitle';
+import { FilterSection } from '@/components/utils/Filter';
+import { MobileFilter } from '@/components/utils/FilterHelpers';
+import { SearchXIcon } from 'lucide-react';
 
-const ListingComponent = async ({ category, page }: { category: MovieCategory; page: string }) => {
+const ListingComponent = async ({ data, type }: { data: SortOption; type: ListType }) => {
   try {
-    const type = (await cookies()).get('t')?.value as ListType;
-    const result = await getListing({ category, page: Number(page) || 1, type });
+    const result = await getListing({ type, ...data });
 
     if (!result.data) throw new Error(result.message);
 
@@ -23,29 +22,34 @@ const ListingComponent = async ({ category, page }: { category: MovieCategory; p
     const currentPage = result.data?.page;
     const totalPages = result.data?.total_pages;
     const totalResults = result.data?.total_results;
-    const title = MovieCategoryEnum[category];
 
     return (
       <div className="container mx-auto mt-[100px] md-5 md:py-10 px-3 md:px-[2rem] relative">
-        <PageSection>
-          <PageTitle>{title}</PageTitle>
-          <div className="flex md:flex-row flex-col gap-2 md:items-center mt-5 md:mt-0">
-            <SelectComponentUrl
-              defaultValue={category}
-              options={type === 'movie' ? MovieCategoryOptions : TvCategoryOptions}
-            />
-            <SearchBar />
-          </div>
-        </PageSection>{' '}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:gap-x-8 md:gap-y-10 gap-3 mb-10 md:mb-20">
-          {movies?.map((movie) => {
-            const genres = movieGenreId
-              .filter((genre) => movie.genre_ids.includes(genre.id))
-              .map((genre) => genre.name)
-              .join(', ');
+        <div className="flex gap-8 mb-10 md:mb-20">
+          <FilterSection type={type} className="col-span-2 hidden lg:block min-w-[300px] max-w-[300px]" />
+          <div className="col-span-8 w-full">
+            <PageSection>
+              <PageTitle className="capitalize">{`${type} listing`}</PageTitle>
+              <div className="flex md:flex-row flex-col gap-2 md:items-center mt-5 md:mt-0">
+                <MobileFilter type={type} />
+                <SearchBar />
+              </div>
+            </PageSection>
+            {movies.length === 0 ? (
+              <EmptyResult />
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5 md:gap-x-8 md:gap-y-10 gap-3 mt-10">
+                {movies?.map((movie) => {
+                  const genres = globalGenres
+                    .filter((genre) => movie.genre_ids.includes(Number(genre.value)))
+                    .map((genre) => genre.label)
+                    .join(', ');
 
-            return <ListingCard key={movie.id} genres={genres} type={type} movie={movie} />;
-          })}
+                  return <ListingCard key={movie.id} genres={genres} type={type} movie={movie} />;
+                })}
+              </div>
+            )}
+          </div>
         </div>
         <Pagination currentPage={currentPage} totalPages={totalPages} totalResults={totalResults} />
       </div>
@@ -56,3 +60,15 @@ const ListingComponent = async ({ category, page }: { category: MovieCategory; p
 };
 
 export default ListingComponent;
+
+const EmptyResult = () => {
+  return (
+    <div className="h-[calc(100svh-250px)] flex justify-center items-center flex-col border border-gray-500/50 border-dashed py-20 rounded-md bg-gray-900">
+      <SearchXIcon size={70} className="mb-3 text-gray-400" />
+      <h3 className="text-lg font-medium text-white mb-1">Empty result</h3>
+      <p className="text-gray-400 max-w-md text-center">
+        No results found for your filter option(s). Please modify your filter options and try again.
+      </p>
+    </div>
+  );
+};

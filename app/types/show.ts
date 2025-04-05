@@ -11,13 +11,6 @@ import {
 
 export type ShowCategory = 'airing_today' | 'on_the_air' | 'popular' | 'top_rated';
 
-export enum ShowCategoryEnum {
-  airing_today = 'Airing Today',
-  popular = 'Popular',
-  on_the_air = 'On The Air',
-  top_rated = 'Top Rated',
-}
-
 export interface Show {
   backdrop_path: string;
   first_air_date: string;

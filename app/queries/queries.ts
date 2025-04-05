@@ -9,25 +9,59 @@ import {
   VideoApiResponse,
 } from '../types/api';
 import { fetchData } from './utils';
-import { ListType } from '../types/utils';
-import { Show, ShowCategory, ShowDetail } from '../types/show';
-import { MovieDetail, MovieCategory, Movie } from '../types/movies';
+import { ListType, SortOption } from '../types/utils';
+import { Show, ShowDetail } from '../types/show';
+import { MovieDetail, Movie } from '../types/movies';
 
 const tmdbUrl = ENV.TMDB_URL;
 
-export const getListing = async <T extends ListType>({
-  type,
-  category,
-  page = 1,
-}: {
-  page: number;
-  type: T;
-  category: T extends 'movie' ? MovieCategory : ShowCategory;
-}) => {
-  const url = `${tmdbUrl}/${type}/${category}?language=en-US&page=${page}`;
+export const getListing = async <T extends ListType>(
+  data: { fetchCategory?: boolean; type: ListType } & SortOption,
+) => {
+  const {
+    type,
+    fetchCategory,
+    category,
+    page = 1,
+    sort_by,
+    include_adult,
+    vote_average,
+    vote_count,
+    with_release_type,
+    genres,
+    release_date_gte,
+    release_date_lte,
+    air_date_gte,
+    air_date_lte,
+    with_origin_country,
+    with_original_language,
+    without_genres,
+  } = data;
+
+  const url = fetchCategory
+    ? `${tmdbUrl}/${type}/${category}?language=en-US&page=${page}&include_adult=false`
+    : `${tmdbUrl}/discover/${type}?` +
+      new URLSearchParams({
+        language: 'en-US',
+        page: page.toString(),
+        ...(sort_by && { sort_by }),
+        ...(include_adult && { include_adult: include_adult.toString() }),
+        ...(vote_average && { 'vote_average.gte': vote_average.toString() }),
+        ...(vote_count && { 'vote_count.gte': vote_count.toString() }),
+        ...(with_release_type && { with_release_type }),
+        ...(genres && { with_genres: genres }),
+        ...(release_date_gte && { 'release_date.gte': release_date_gte }),
+        ...(release_date_lte && { 'release_date.lte': release_date_lte }),
+        ...(air_date_gte && { 'first_air_date.gte': air_date_gte }),
+        ...(air_date_lte && { 'first_air_date.lte': air_date_lte }),
+        ...(with_origin_country && { with_origin_country }),
+        ...(with_original_language && { with_original_language }),
+        ...(without_genres && { without_genres }),
+      }).toString();
+
   return await fetchData<ListApiResponse<T extends 'movie' ? Movie : Show>>({
     url,
-    message: `Successfully fetched ${type}, page ${page} for category ${category}`,
+    message: `Successfully fetched ${url}`,
   });
 };
 

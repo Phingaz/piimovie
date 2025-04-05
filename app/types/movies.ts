@@ -2,13 +2,6 @@ import { Genre, Logo, Poster, ProductionCountry, SpokenLanguage } from './utils'
 
 export type MovieCategory = 'now_playing' | 'popular' | 'top_rated' | 'upcoming';
 
-export enum MovieCategoryEnum {
-  now_playing = 'Now Playing',
-  popular = 'Popular',
-  top_rated = 'Top Rated',
-  upcoming = 'Upcoming',
-}
-
 export interface Movie {
   adult: boolean;
   backdrop_path: string;

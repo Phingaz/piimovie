@@ -9,7 +9,7 @@ import { movie } from '@prisma/client';
 import { useMainCtx } from '../_context/Main';
 import { ListType } from '../types/utils';
 import { SelectComponent } from '@/components/utils/Select';
-import { FavOptions } from '@/lib/constants';
+import { FavOptions } from '@/lib/arrys';
 import PageTitle from '@/components/utils/texts/PageTitle';
 import PageSection from '@/components/utils/texts/PageSection';
 

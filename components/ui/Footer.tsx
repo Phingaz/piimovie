@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Github, Link2, Linkedin } from 'lucide-react';
-import { movieCat, tvShowsCat } from '@/lib/constants';
+import { movieCat, tvShowsCat } from '@/lib/arrys';
 import useCookies from '@/app/_hooks/useCookies';
 
 export default function Footer() {

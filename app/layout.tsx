@@ -1,4 +1,3 @@
-import { ReactScan } from '@/components/utils/ReactScan';
 import type { Metadata } from 'next';
 import { Poppins, Inter } from 'next/font/google';
 import './globals.css';
@@ -53,7 +52,6 @@ export default async function RootLayout({
       <head>
         <meta name="robots" content="noindex" />
       </head>
-      <ReactScan />
       <body className={`${heading.variable} ${body.variable} antialiased`}>
         <Providers value={{ user, fav }}>
           <Header />

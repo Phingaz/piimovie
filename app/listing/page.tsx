@@ -1,34 +1,25 @@
-import React, { Suspense } from 'react';
-import { MovieCategoryEnum } from '../types/movies';
+import React from 'react';
 import { Metadata } from 'next';
-import { ListType } from '../types/utils';
+import { ListType, SortOption } from '../types/utils';
 import { cookies } from 'next/headers';
 import ListingComponent from './ListingComponent';
-import PageLoader from './loading';
 
 export async function generateMetadata(): Promise<Metadata> {
   const type = (await cookies()).get('t')?.value as ListType;
 
   return {
-    title: `Movie Box | ${type.charAt(0).toLocaleUpperCase() + type.slice(1)}`,
-    description: `Movie listing`,
+    title: `Movie Box | ${type.charAt(0).toLocaleUpperCase() + type.slice(1)} Listing`,
+    description: `${type.charAt(0).toLocaleUpperCase() + type.slice(1)} listing`,
   };
 }
 
 const Page = async ({ searchParams }: { searchParams: Promise<{ page: string; category: string }> }) => {
-  let { page, category } = (await searchParams) as {
-    page: string;
-    category: keyof typeof MovieCategoryEnum;
-  };
+  const data = (await searchParams) as SortOption;
+  const type = (await cookies()).get('t')?.value as ListType;
 
-  if (!page) page = '1';
-  if (!category) category = 'popular';
+  if (!data.page) data.page = '1';
 
-  return (
-    <Suspense key={JSON.stringify({ page, category, l: 8 })} fallback={<PageLoader />}>
-      <ListingComponent category={category} page={page} />
-    </Suspense>
-  );
+  return <ListingComponent data={data} type={type} />;
 };
 
 export default Page;

@@ -1,3 +1,6 @@
+import { MovieCategory } from './movies';
+import { ShowCategory } from './show';
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface FetchDataArgs<T> {
   url?: string;
@@ -6,6 +9,26 @@ export interface FetchDataArgs<T> {
 }
 
 export type ListType = 'movie' | 'tv';
+
+export interface SortOption {
+  page?: string;
+  category?: MovieCategory | ShowCategory;
+  vote_count?: string;
+  vote_average?: string;
+  sort_by?: string;
+  genres?: string;
+  year?: string;
+  include_adult?: string;
+  with_release_type?: string;
+  release_date_gte?: string;
+  release_date_lte?: string;
+  air_date_gte?: string;
+  air_date_lte?: string;
+  with_original_language?: string;
+  with_origin_country?: string;
+  without_genres?: string;
+  fetchCategory?: boolean;
+}
 
 export interface UsePrevNextButtonsType {
   prevBtnDisabled: boolean;

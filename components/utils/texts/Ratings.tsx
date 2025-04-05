@@ -13,10 +13,12 @@ const Ratings = ({
   vote_average: number;
 }) => {
   return (
-    <span className={`flex gap-1 items-center p-1 ${showBg ? 'bg-black/70 px-2 rounded-md' : ''}`}>
-      <Star fill="yellow" size={isReview ? 15 : 20} className="text-amber-400" />
+    <span className={`flex flex-wrap gap-1 items-center p-1 ${showBg ? 'bg-black/70 px-2 rounded-md' : ''}`}>
+      <Star fill="yellow" size={isReview ? 12 : 20} className="text-amber-400" />
       <p className={`${isReview ? 'text-[12px]' : 'text-sm'}`}>{vote_average?.toFixed()}/10</p>
-      {voteCount && <p className={`${isReview ? 'text-[12px]' : 'text-sm'}`}>({voteCount ?? 0}) votes</p>}
+      {voteCount !== null && voteCount !== undefined && voteCount >= 1 && (
+        <p className={`${isReview ? 'text-[12px]' : 'text-sm'}`}>({voteCount}) votes</p>
+      )}
     </span>
   );
 };

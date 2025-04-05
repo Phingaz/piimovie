@@ -15,9 +15,9 @@ const LandingListingWrapper = ({ type }: { type: ListType }) => {
           { loader: 'Top Rated', category: 'top_rated', type: 'movie' },
         ]
       : [
-          { loader: 'Top Rated', category: 'top_rated', type: 'show' },
-          { loader: 'Airing Today', category: 'airing_today', type: 'show' },
           { loader: 'On The Air', category: 'on_the_air', type: 'show' },
+          { loader: 'Airing Today', category: 'airing_today', type: 'show' },
+          { loader: 'Top Rated', category: 'top_rated', type: 'show' },
           { loader: 'Popular', category: 'popular', type: 'show' },
         ];
 
