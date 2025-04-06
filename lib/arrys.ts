@@ -6,7 +6,7 @@ export const links = [
   { label: 'Tv Shows', href: '/tv-shows' },
 ];
 
-export const globalGenres: SelectOption[] = [
+export const movieGenres: SelectOption[] = [
   { value: (28).toString(), label: 'Action' },
   { value: (12).toString(), label: 'Adventure' },
   { value: (16).toString(), label: 'Animation' },
@@ -26,9 +26,19 @@ export const globalGenres: SelectOption[] = [
   { value: (53).toString(), label: 'Thriller' },
   { value: (10752).toString(), label: 'War' },
   { value: (37).toString(), label: 'Western' },
+];
+
+export const tvGenres: SelectOption[] = [
   { value: (10759).toString(), label: 'Action & Adventure' },
+  { value: (16).toString(), label: 'Animation' },
+  { value: (35).toString(), label: 'Comedy' },
+  { value: (80).toString(), label: 'Crime' },
+  { value: (99).toString(), label: 'Documentary' },
+  { value: (18).toString(), label: 'Drama' },
+  { value: (10751).toString(), label: 'Family' },
   { value: (10762).toString(), label: 'Kids' },
   { value: (10763).toString(), label: 'News' },
+  { value: (9648).toString(), label: 'Mystery' },
   { value: (10764).toString(), label: 'Reality' },
   { value: (10765).toString(), label: 'Sci-Fi & Fantasy' },
   { value: (10766).toString(), label: 'Soap' },
@@ -50,14 +60,20 @@ export const sortOptions = (t: ListType): SelectOption[] => {
   const isMovie = t === 'movie';
 
   return [
-    { label: 'Highest Vote Count', value: 'vote_count.desc' },
-    { label: 'Lowest Vote Count', value: 'vote_count.asc' },
-    { label: 'Highest Vote Average', value: 'vote_average.desc' },
-    { label: 'Lowest Vote Average', value: 'vote_average.asc' },
-    { label: 'Most Popular', value: 'popularity.desc' },
-    { label: 'Least Popular', value: 'popularity.asc' },
-    { label: 'Newest First', value: isMovie ? 'release_date.desc' : 'first_air_date.desc' },
-    { label: 'Oldest First', value: isMovie ? 'release_date.asc' : 'first_air_date.asc' },
+    { label: 'Vote Count ↓', value: 'vote_count.desc' },
+    { label: 'Vote Count ↑', value: 'vote_count.asc' },
+    { label: 'Vote Average ↓', value: 'vote_average.desc' },
+    { label: 'Vote Average ↑', value: 'vote_average.asc' },
+    { label: 'Popularity ↓', value: 'popularity.desc' },
+    { label: 'Popularity ↑', value: 'popularity.asc' },
+    {
+      label: isMovie ? 'Release Date ↓' : 'Release Date ↓',
+      value: isMovie ? 'primary_release_date.desc' : 'first_air_date.desc',
+    },
+    {
+      label: isMovie ? 'Release Date ↑' : 'Release Date ↑',
+      value: isMovie ? 'primary_release_date.asc' : 'first_air_date.asc',
+    },
   ];
 };
 

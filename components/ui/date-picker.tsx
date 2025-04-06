@@ -12,12 +12,49 @@ import { DateRange } from 'react-day-picker';
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
+  date: Date | undefined;
+  setDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
+}
+
+interface PropsRanged extends React.HTMLAttributes<HTMLDivElement> {
+  className?: string;
   date: DateRange | undefined;
   setDate: React.Dispatch<React.SetStateAction<DateRange | undefined>>;
 }
 
-export function DatePickerRanged({ date, setDate, className }: Props) {
-  console.log('date', date);
+export function DatePicker({ date, setDate, className }: Props) {
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <div className={cn('grid gap-2', className)}>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant={'outline'}
+            className={cn(
+              'w-full justify-start text-left text-[12px] font-normal text-gray-300',
+              !date && 'text-gray-400',
+            )}
+          >
+            <CalendarIcon className="mr size-4" />
+            {date ? format(date, 'do LLL y') : <span className="font-[300]">Pick a date</span>}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0 border border-gray-500" align="start">
+          <Calendar
+            initialFocus
+            mode="single"
+            onSelect={setDate}
+            defaultMonth={date}
+            onDayClick={() => setOpen(false)}
+          />
+        </PopoverContent>
+      </Popover>
+    </div>
+  );
+}
+
+export function DatePickerRanged({ date, setDate, className }: PropsRanged) {
   return (
     <div className={cn('grid gap-2', className)}>
       <Popover>

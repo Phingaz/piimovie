@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import useDebounce from './useDebounce';
-import { DateRange } from 'react-day-picker';
 import { format, parseISO } from 'date-fns';
 import { useMainCtx } from '../_context/Main';
+import { FilterEnum } from '@/lib/enums';
 
 const DEBOUNCE_TIMEOUT = 100;
 
@@ -41,96 +41,86 @@ export const useQueryParams = () => {
 };
 
 export const useFilterState = () => {
+  const { isMovie } = useMainCtx();
   const searchParams = useSearchParams();
   const updateQueryParams = useQueryParams();
 
-  const vc = Number(searchParams.get('vote_count'));
-  const va = Number(searchParams.get('vote_average'));
-  const cs = searchParams.get('with_origin_country')?.split('|') || [];
-  const gr = searchParams.get('with_genres')?.split('|') || [];
-  const egr = searchParams.get('without_genres')?.split('|') || [];
+  const vc = Number(searchParams.get(FilterEnum.VC_GTE));
+  const va = Number(searchParams.get(FilterEnum.VA_GTE));
+  const cs = searchParams.get(FilterEnum.WITH_ORIGIN_COUNTRY)?.split('|') || [];
+  const wg = searchParams.get(FilterEnum.WITH_GENRES)?.split('|') || [];
+  const egr = searchParams.get(FilterEnum.WITHOUT_GENRES)?.split('|') || [];
+
+  const dateGte = isMovie ? searchParams.get(FilterEnum.PRIMARY_RELEASE_DATE_GTE) : searchParams.get(FilterEnum.FIRST_AIR_DATE_GTE);
+  const dateLte = isMovie ? searchParams.get(FilterEnum.PRIMARY_RELEASE_DATE_LTE) : searchParams.get(FilterEnum.FIRST_AIR_DATE_LTE);
 
   const [voteCount, setVoteCount] = useState(vc);
   const [voteAverage, setVoteAverage] = useState(va);
   const [selectedCountries, setSelectedCountries] = useState<string[]>(cs);
-  const [genres, setGenres] = useState<string[]>(gr);
+  const [selectedGenres, setSelectedGenres] = useState<string[]>(wg);
   const [excludedGenres, setExcludedGenres] = useState<string[]>(egr);
+  const [fromDate, setFromDate] = useState<Date | undefined>(() => (dateGte ? parseISO(dateGte) : undefined));
+  const [toDate, setToDate] = useState<Date | undefined>(() => (dateLte ? parseISO(dateLte) : undefined));
 
+  const debouncedFromDate = useDebounce(fromDate, DEBOUNCE_TIMEOUT);
+  const debouncedToDate = useDebounce(toDate, DEBOUNCE_TIMEOUT);
   const debouncedVoteCount = useDebounce(voteCount, DEBOUNCE_TIMEOUT);
   const debouncedVoteAverage = useDebounce(voteAverage, DEBOUNCE_TIMEOUT);
   const debouncedSelectedCountries = useDebounce(selectedCountries, DEBOUNCE_TIMEOUT);
-  const debouncedGenres = useDebounce(genres, DEBOUNCE_TIMEOUT);
+  const debouncedSelectedGenres = useDebounce(selectedGenres, DEBOUNCE_TIMEOUT);
   const debouncedExcludedGenres = useDebounce(excludedGenres, DEBOUNCE_TIMEOUT);
 
   useEffect(() => {
-    updateQueryParams('vote_count', debouncedVoteCount);
+    updateQueryParams(FilterEnum.PRIMARY_RELEASE_DATE_GTE, debouncedFromDate ? format(debouncedFromDate, 'yyyy-MM-dd') : '');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedFromDate]);
+
+  useEffect(() => {
+    updateQueryParams(FilterEnum.PRIMARY_RELEASE_DATE_LTE, debouncedToDate ? format(debouncedToDate, 'yyyy-MM-dd') : '');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedToDate]);
+
+  useEffect(() => {
+    updateQueryParams(FilterEnum.VC_GTE, debouncedVoteCount);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedVoteCount]);
 
   useEffect(() => {
-    updateQueryParams('vote_average', debouncedVoteAverage);
+    updateQueryParams(FilterEnum.VA_GTE, debouncedVoteAverage);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedVoteAverage]);
 
   useEffect(() => {
-    updateQueryParams('with_origin_country', selectedCountries);
+    updateQueryParams(FilterEnum.WITH_ORIGIN_COUNTRY, selectedCountries);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSelectedCountries]);
 
   useEffect(() => {
-    updateQueryParams('with_genres', debouncedGenres);
+    updateQueryParams(FilterEnum.WITH_GENRES, debouncedSelectedGenres);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedGenres]);
+  }, [debouncedSelectedGenres]);
 
   useEffect(() => {
-    updateQueryParams('without_genres', debouncedExcludedGenres);
+    updateQueryParams(FilterEnum.WITHOUT_GENRES, debouncedExcludedGenres);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedExcludedGenres]);
 
   return {
+    fromDate,
+    setFromDate,
+    toDate,
+    setToDate,
     voteCount,
     setVoteCount,
     voteAverage,
     setVoteAverage,
     selectedCountries,
     setSelectedCountries,
-    genres,
-    setGenres,
+    selectedGenres,
+    setSelectedGenres,
     excludedGenres,
     setExcludedGenres,
   };
-};
-
-export const useFilterDate = () => {
-  const searchParams = useSearchParams();
-  const updateQueryParams = useQueryParams();
-  const { isMovie } = useMainCtx();
-
-  const dateLte = isMovie ? searchParams.get('release_date_lte') : searchParams.get('air_date_lte');
-  const dateGte = isMovie ? searchParams.get('release_date_gte') : searchParams.get('air_date_gte');
-
-  const [date, setDate] = useState<DateRange | undefined>(
-    dateLte && dateGte ? { from: parseISO(dateGte), to: parseISO(dateLte) } : undefined,
-  );
-
-  useEffect(() => {
-    if (!date) return;
-
-    const debounceTimeout = setTimeout(() => {
-      if (date.from) {
-        updateQueryParams(isMovie ? 'release_date_gte' : 'air_date_gte', format(date.from, 'yyyy-MM-dd'));
-      }
-
-      if (date.to) {
-        updateQueryParams(isMovie ? 'release_date_lte' : 'air_date_lte', format(date.to, 'yyyy-MM-dd'));
-      }
-    }, DEBOUNCE_TIMEOUT + 400);
-
-    return () => clearTimeout(debounceTimeout);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [date]);
-
-  return { date, setDate };
 };
 
 export const useUpdateSort = <T>({ key, sortBy, scroll = true }: { key: string; sortBy: T; scroll?: boolean }) => {

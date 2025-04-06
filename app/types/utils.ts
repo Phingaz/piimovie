@@ -10,23 +10,28 @@ export interface FetchDataArgs<T> {
 
 export type ListType = 'movie' | 'tv';
 
-export interface SortOption {
+export interface FilterOption {
   page?: string;
   category?: MovieCategory | ShowCategory;
-  vote_count?: string;
-  vote_average?: string;
+  'vote_count.gte'?: string;
+  'vote_average.gte'?: string;
   sort_by?: string;
-  genres?: string;
   year?: string;
   include_adult?: string;
   with_release_type?: string;
-  release_date_gte?: string;
-  release_date_lte?: string;
-  air_date_gte?: string;
-  air_date_lte?: string;
+  'release_date.gte'?: string;
+  'release_date.lte'?: string;
+  'primary_release_date.gte'?: string;
+  'primary_release_date.lte'?: string;
+  'air_date.gte'?: string;
+  'air_date.lte'?: string;
+  'first_air_date.gte'?: string;
+  'first_air_date.lte'?: string;
   with_original_language?: string;
   with_origin_country?: string;
   without_genres?: string;
+  with_genres?: string;
+  fetchUrl?: boolean;
   fetchCategory?: boolean;
 }
 

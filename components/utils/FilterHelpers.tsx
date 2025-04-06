@@ -15,7 +15,7 @@ import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
 
 export const FilterTitle = ({ children, className }: { children: string; className?: string }) => {
-  return <h4 className={cn('font-medium text-gray-300 text-[13px] mb-1', className)}>{children}</h4>;
+  return <p className={cn('font-medium text-gray-300 text-[12px] mb-1.5', className)}>{children}</p>;
 };
 
 export const CheckBoxes = ({
@@ -113,15 +113,7 @@ export const MultiComboBoxes = ({
     <div>
       <span className="flex justify-between items-end mb-2">
         <FilterTitle className="mb-0">{children}</FilterTitle>
-        {selectedValues.length > 0 && (
-          <Button
-            variant="outline"
-            className="h-fit w-fit p-0 px-2 py-1 text-[11px] text-gray-400 rounded-sm"
-            onClick={() => setSelectedValues([])}
-          >
-            Clear All
-          </Button>
-        )}
+        {selectedValues.length > 0 && <ResetButton onClick={() => setSelectedValues([])} />}
       </span>
       <MultiSelectCombobox
         title={label}
@@ -167,5 +159,17 @@ export const MobileFilter = ({ type }: { type: ListType }) => {
         </SheetContent>
       </Sheet>
     </div>
+  );
+};
+
+export const ResetButton = ({ onClick }: { onClick: () => void }) => {
+  return (
+    <Button
+      variant="outline"
+      className="h-fit w-fit p-0 px-2 py-1 text-[10px] text-gray-400 rounded-sm"
+      onClick={() => onClick()}
+    >
+      Clear
+    </Button>
   );
 };

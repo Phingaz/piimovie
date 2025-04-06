@@ -20,9 +20,7 @@ const ListingCard = ({ movie, genres, type }: { type: ListType; movie: Movie | S
             <p className="text-base text-gray-200 leading-5">{title}</p>
             <p className="text-[12px]">{genres}</p>
 
-            <div className="mt-2">
-              <p className="text-[12px]">{formatDate(date)}</p>
-            </div>
+            <div className="mt-2">{date && <p className="text-[12px]">{formatDate(date)}</p>}</div>
           </div>
         </div>
         <ImageComponent

@@ -26,13 +26,13 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: R
         nav_button_next: 'absolute right-1',
         table: 'w-full border-collapse space-x-1',
         head_row: 'flex',
-        head_cell: 'text-gray-400 rounded-md w-8 font-normal text-[0.8rem]',
+        head_cell: 'text-gray-400 rounded-xs w-8 font-normal text-[0.8rem]',
         row: 'flex w-full mt-2',
         cell: cn(
-          'relative p-0 text-center text-sm focus-within:relative text-gray-300 focus-within:z-20 [&:has([aria-selected])]:bg-gray-800 [&:has([aria-selected].day-range-end)]:rounded-r-md',
+          'relative p-0 text-center text-sm focus-within:relative text-gray-300 focus-within:z-20 [&:has([aria-selected])]:bg-gray-800 [&:has([aria-selected].day-range-end)]:rounded-r-xs',
           props.mode === 'range'
-            ? '[&:has(>.day-range-end)]:rounded-r-md [&:has(>.day-range-start)]:rounded-l-md first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md'
-            : '[&:has([aria-selected])]:rounded-md',
+            ? '[&:has(>.day-range-end)]:rounded-r-xs [&:has(>.day-range-start)]:rounded-l-xs first:[&:has([aria-selected])]:rounded-l-xs last:[&:has([aria-selected])]:rounded-r-xs'
+            : '[&:has([aria-selected])]:rounded-xs',
         ),
         day: cn(
           buttonVariants({ variant: 'ghost' }),
@@ -40,9 +40,8 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: R
         ),
         day_range_start: 'day-range-start aria-selected:bg-gray-500 aria-selected:text-gray-900',
         day_range_end: 'day-range-end aria-selected:bg-gray-500 aria-selected:text-gray-900',
-        day_selected:
-          'bg-primary text-gray-300 hover:bg-primary hover:text-gray-300 focus:bg-primary focus:text-gray-300',
-        day_today: 'bg-gray-700 text-gray-300',
+        day_selected: 'text-gray-300 bg-gray-700 hover:bg-gray-500 hover:text-gray-300 focus:bg-primary focus:text-gray-300',
+        day_today: 'bg-gray-800 text-gray-300',
         day_outside: 'day-outside text-gray-600 aria-selected:text-gray-500',
         day_disabled: 'text-gray-500 pointer-events-none',
         day_range_middle: 'aria-selected:bg-gray-800 aria-selected:text-gray-300',

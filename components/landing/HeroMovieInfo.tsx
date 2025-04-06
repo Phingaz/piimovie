@@ -14,7 +14,7 @@ import { ListType } from '@/app/types/utils';
 const HeroMovieInfo = ({ movie, type }: { type: ListType; movie?: Movie | Show }) => {
   const router = useRouter();
 
-  const title = useMemo(() => (movie ? (movie as Movie).title || (movie as Show).original_name : ''), [movie]);
+  const title = useMemo(() => (movie ? (movie as Movie).title || (movie as Show).name : ''), [movie]);
   const posterUrl = useMemo(() => imageUrl(movie?.poster_path), [movie]);
   const overview = useMemo(() => movie?.overview || 'No overview available.', [movie]);
   const movieId = useMemo(() => movie?.id, [movie]);

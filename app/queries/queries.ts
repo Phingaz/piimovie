@@ -9,55 +9,28 @@ import {
   VideoApiResponse,
 } from '../types/api';
 import { fetchData } from './utils';
-import { ListType, SortOption } from '../types/utils';
+import { ListType, FilterOption } from '../types/utils';
 import { Show, ShowDetail } from '../types/show';
 import { MovieDetail, Movie } from '../types/movies';
+import { getBaseParams } from '@/lib/utils';
 
 const tmdbUrl = ENV.TMDB_URL;
 
 export const getListing = async <T extends ListType>(
-  data: { fetchCategory?: boolean; type: ListType } & SortOption,
+  data: { fetchCategory?: boolean; type: ListType } & FilterOption,
 ) => {
-  const {
-    type,
-    fetchCategory,
-    category,
-    page = 1,
-    sort_by,
-    include_adult,
-    vote_average,
-    vote_count,
-    with_release_type,
-    genres,
-    release_date_gte,
-    release_date_lte,
-    air_date_gte,
-    air_date_lte,
-    with_origin_country,
-    with_original_language,
-    without_genres,
-  } = data;
+  const { fetchCategory, category, type, page = 1, fetchUrl } = data;
+  const baseParams = getBaseParams(data);
 
-  const url = fetchCategory
-    ? `${tmdbUrl}/${type}/${category}?language=en-US&page=${page}&include_adult=false`
-    : `${tmdbUrl}/discover/${type}?` +
-      new URLSearchParams({
-        language: 'en-US',
-        page: page.toString(),
-        ...(sort_by && { sort_by }),
-        ...(include_adult && { include_adult: include_adult.toString() }),
-        ...(vote_average && { 'vote_average.gte': vote_average.toString() }),
-        ...(vote_count && { 'vote_count.gte': vote_count.toString() }),
-        ...(with_release_type && { with_release_type }),
-        ...(genres && { with_genres: genres }),
-        ...(release_date_gte && { 'release_date.gte': release_date_gte }),
-        ...(release_date_lte && { 'release_date.lte': release_date_lte }),
-        ...(air_date_gte && { 'first_air_date.gte': air_date_gte }),
-        ...(air_date_lte && { 'first_air_date.lte': air_date_lte }),
-        ...(with_origin_country && { with_origin_country }),
-        ...(with_original_language && { with_original_language }),
-        ...(without_genres && { without_genres }),
-      }).toString();
+  let url: string;
+
+  if (fetchCategory) {
+    url = `${tmdbUrl}/${type}/${category}?language=en-US&page=${page}&include_adult=false`;
+  } else if (fetchUrl) {
+    url = `${tmdbUrl}/discover/${type}?${new URLSearchParams(baseParams).toString()}`;
+  } else {
+    url = `${tmdbUrl}/discover/${type}?${new URLSearchParams(baseParams).toString()}`;
+  }
 
   return await fetchData<ListApiResponse<T extends 'movie' ? Movie : Show>>({
     url,

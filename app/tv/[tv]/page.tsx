@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ tv: strin
     if (!response.data) throw new Error(response.message);
 
     return {
-      title: `${response.data.original_name} | Show Info`,
+      title: `${response.data.name} | Show Info`,
       description: response.data.overview || 'Find out more about this show.',
     };
   } catch {
