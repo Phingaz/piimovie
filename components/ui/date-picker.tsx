@@ -24,6 +24,7 @@ interface PropsRanged extends React.HTMLAttributes<HTMLDivElement> {
 
 export function DatePicker({ date, setDate, className }: Props) {
   const [open, setOpen] = React.useState(false);
+  const today = new Date();
 
   return (
     <div className={cn('grid gap-2', className)}>
@@ -40,14 +41,23 @@ export function DatePicker({ date, setDate, className }: Props) {
             {date ? format(date, 'do LLL y') : <span className="font-[300]">Pick a date</span>}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0 border border-gray-500" align="start">
+        <PopoverContent className="w-auto p-0 bg-gray-900 border-gray-500/50 border-2" align="start">
           <Calendar
             initialFocus
             mode="single"
+            month={date}
+            onMonthChange={setDate}
             onSelect={setDate}
             defaultMonth={date}
+            captionLayout="dropdown"
             onDayClick={() => setOpen(false)}
           />
+          <button
+            className="text-gray-400 text-center w-full text-xs py-2 cursor-pointer hover:bg-gray-800 hover:text-gray-300 rounded-br-sm rounded-bl-sm transition-all"
+            onClick={() => setDate(today)}
+          >
+            Select Today
+          </button>
         </PopoverContent>
       </Popover>
     </div>
