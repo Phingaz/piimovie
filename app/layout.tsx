@@ -8,7 +8,7 @@ import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
 import { getFavorites } from './queries/favorites';
 import { movie } from '@prisma/client';
-import Footer from '@/components/ui/Footer';
+import Footer from '@/components/general/Footer';
 
 const heading = Poppins({
   subsets: ['latin'],

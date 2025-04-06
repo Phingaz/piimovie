@@ -4,7 +4,7 @@ import { fetchDiscover } from '@/app/queries/queries';
 import { getQueryParams, getRandomNumber, getRandomShowCategory } from '@/lib/utils';
 import { Show } from '@/app/types/show';
 import ErrorPageComponent from '../helpers/Error';
-import LandingComponentClient from '../ui/LandingComponentClient';
+import LandingComponentClient from '../general/LandingComponentClient';
 import LandingListingWrapper from '../landing/LadingListingWrapper';
 import { Queries } from '@/lib/enums';
 

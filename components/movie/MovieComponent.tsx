@@ -1,13 +1,13 @@
 import React, { Suspense } from 'react';
-import Details from '../ui/Details';
-import Background from '../ui/Background';
-import { VideoPlayer } from '../ui/VideoPlayer';
-import Credits from '../ui/Credits';
+import Details from '../general/Details';
+import Background from '../general/Background';
+import { VideoPlayer } from '../general/VideoPlayer';
+import Credits from '../general/Credits';
 import { CarouselCardsLoader } from '../helpers/Loaders';
 import Images from './Images';
 import Keywords from './Keywords';
 import Similar from '../ui/Similar';
-import Recommended from '../ui/Recommended';
+import Recommended from '../general/Recommended';
 import MoreInfo from './MoreInfo';
 import Reviews from './Reviews';
 import { ListType } from '@/app/types/utils';
