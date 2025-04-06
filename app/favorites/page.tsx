@@ -9,7 +9,7 @@ import { movie } from '@prisma/client';
 import { useMainCtx } from '../_context/Main';
 import { ListType } from '../types/utils';
 import { SelectComponent } from '@/components/utils/Select';
-import { FavOptions } from '@/lib/arrys';
+import { filterType } from '@/lib/arrys';
 import PageTitle from '@/components/utils/texts/PageTitle';
 import PageSection from '@/components/utils/texts/PageSection';
 
@@ -36,7 +36,7 @@ const Page = () => {
       <PageSection>
         <PageTitle>Favorite</PageTitle>
         <div className="flex md:flex-row flex-col gap-2 md:items-center">
-          <SelectComponent value={value} setValue={setValue} options={FavOptions} />
+          <SelectComponent value={value} setValue={setValue} options={filterType} />
           <LocalSearch data={movies} setFilteredResults={setSearchResults} />
         </div>
       </PageSection>
