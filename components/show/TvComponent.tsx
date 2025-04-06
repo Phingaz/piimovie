@@ -1,21 +1,19 @@
 import React from 'react';
 import { ListType } from '@/app/types/utils';
-import { getListing } from '@/app/queries/queries';
-import { getRandomNumber, getRandomShowCategory } from '@/lib/utils';
+import { fetchDiscover } from '@/app/queries/queries';
+import { getQueryParams, getRandomNumber, getRandomShowCategory } from '@/lib/utils';
 import { Show } from '@/app/types/show';
 import ErrorPageComponent from '../helpers/Error';
 import LandingComponentClient from '../ui/LandingComponentClient';
 import LandingListingWrapper from '../landing/LadingListingWrapper';
+import { Queries } from '@/lib/enums';
 
 const TvComponent = async ({ type }: { type: ListType }) => {
   try {
-    const result = await getListing({
-      type,
-      fetchCategory: true,
-      category: getRandomShowCategory(),
-      page: getRandomNumber(10).toString(),
-    });
+    const q = Queries(getRandomShowCategory(), type);
+    const baseParams = getQueryParams({ ...q, page: getRandomNumber(2).toString() });
 
+    const result = await fetchDiscover({ type, ...baseParams });
     if (!result.success) throw new Error(result.message);
 
     const movies = result.data?.results as Show[];

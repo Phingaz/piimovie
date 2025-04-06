@@ -4,7 +4,7 @@ import { ErrorSectionComponent } from '../helpers/Error';
 import CarouselWrapper from '../carousel/CarouselWrapper';
 import LandingCard from './LandingMovieCard';
 import { ShowCategory } from '@/app/types/show';
-import { getListing } from '@/app/queries/queries';
+import { fetchDiscover } from '@/app/queries/queries';
 import { ListType } from '@/app/types/utils';
 import SeeMore from './SeeMore';
 import { MovieCategoryEnum, Queries, ShowCategoryEnum } from '@/lib/enums';
@@ -15,7 +15,7 @@ const LandingListing = async ({ type, category }: { type: ListType; category: Mo
 
   try {
     const options = Queries(category, type)[category];
-    const response = await getListing({ fetchUrl: true, type, ...options });
+    const response = await fetchDiscover({ type, ...options });
     const items = response.data?.results;
 
     if (!items || !response.success) {

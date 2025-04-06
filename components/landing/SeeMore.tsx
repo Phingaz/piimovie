@@ -4,14 +4,14 @@ import { MovieCategory } from '@/app/types/movies';
 import { ShowCategory } from '@/app/types/show';
 import { FilterOption } from '@/app/types/utils';
 import { Queries } from '@/lib/enums';
-import { getBaseParams } from '@/lib/utils';
+import { getQueryParams } from '@/lib/utils';
 import Link from 'next/link';
 import React from 'react';
 
 const SeeMore = ({ category }: { category: MovieCategory | ShowCategory }) => {
   const { type } = useMainCtx();
   const query = Queries(category, type)[category];
-  const baseParams = getBaseParams(query as FilterOption);
+  const baseParams = getQueryParams(query as FilterOption);
 
   return (
     <Link

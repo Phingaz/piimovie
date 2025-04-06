@@ -1,6 +1,6 @@
 import ErrorPageComponent from '@/components/helpers/Error';
 import React from 'react';
-import { getListing } from '../queries/queries';
+import { fetchDiscover } from '../queries/queries';
 import { ListType, FilterOption } from '../types/utils';
 import SearchBar from '@/components/utils/SearchComponent';
 import ListingCard from '@/components/utils/ListingCard';
@@ -11,12 +11,12 @@ import PageTitle from '@/components/utils/texts/PageTitle';
 import { FilterSection } from '@/components/utils/Filter';
 import { MobileFilter } from '@/components/utils/FilterHelpers';
 import { SearchXIcon } from 'lucide-react';
-import { getBaseParams } from '@/lib/utils';
+import { getQueryParams } from '@/lib/utils';
 
 const ListingComponent = async ({ data, type }: { data: FilterOption; type: ListType }) => {
   try {
-    const baseParams = getBaseParams(data);
-    const result = await getListing({ type, ...baseParams });
+    const baseParams = getQueryParams(data);
+    const result = await fetchDiscover({ type, ...baseParams });
 
     if (!result.data) throw new Error(result.message);
 

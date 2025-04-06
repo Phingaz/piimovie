@@ -31,8 +31,6 @@ export interface FilterOption {
   with_origin_country?: string;
   without_genres?: string;
   with_genres?: string;
-  fetchUrl?: boolean;
-  fetchCategory?: boolean;
 }
 
 export interface UsePrevNextButtonsType {
