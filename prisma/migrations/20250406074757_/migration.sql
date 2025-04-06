@@ -4,6 +4,7 @@ CREATE TABLE "movie" (
     "poster_path" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "vote_average" INTEGER NOT NULL,
+    "type" TEXT NOT NULL DEFAULT 'movie',
     "userId" TEXT NOT NULL,
 
     CONSTRAINT "movie_pkey" PRIMARY KEY ("id")
