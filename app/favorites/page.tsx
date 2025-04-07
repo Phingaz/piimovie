@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { LocalSearch } from '@/components/utils/SearchComponent';
-import { useFavoriteCtx } from '../_context/Favorite';
+import { useDbPropsCtx } from '../_context/DbProps';
 import LandingCard from '@/components/landing/LandingMovieCard';
 import { SearchXIcon } from 'lucide-react';
 import { Movie } from '../types/movies';
@@ -9,13 +9,13 @@ import { movie } from '@prisma/client';
 import { useMainCtx } from '../_context/Main';
 import { ListType } from '../types/utils';
 import { SelectComponent } from '@/components/utils/Select';
-import { FavOptions } from '@/lib/arrys';
+import { filterType } from '@/lib/arrys';
 import PageTitle from '@/components/utils/texts/PageTitle';
 import PageSection from '@/components/utils/texts/PageSection';
 
 const Page = () => {
   const { user } = useMainCtx();
-  const { fav: movies } = useFavoriteCtx();
+  const { fav: movies } = useDbPropsCtx();
 
   const [value, setValue] = useState('all');
   const [searchResults, setSearchResults] = useState<movie[] | null>(movies);
@@ -36,7 +36,7 @@ const Page = () => {
       <PageSection>
         <PageTitle>Favorite</PageTitle>
         <div className="flex md:flex-row flex-col gap-2 md:items-center">
-          <SelectComponent value={value} setValue={setValue} options={FavOptions} />
+          <SelectComponent value={value} setValue={setValue} options={filterType} />
           <LocalSearch data={movies} setFilteredResults={setSearchResults} />
         </div>
       </PageSection>

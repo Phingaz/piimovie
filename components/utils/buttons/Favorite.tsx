@@ -1,5 +1,5 @@
 'use client';
-import { useFavoriteCtx } from '@/app/_context/Favorite';
+import { useDbPropsCtx } from '@/app/_context/DbProps';
 import { useMainCtx } from '@/app/_context/Main';
 import { ListType } from '@/app/types/utils';
 import { clientToastError, isFav } from '@/lib/utils';
@@ -10,7 +10,7 @@ import React from 'react';
 import { toast } from 'sonner';
 
 const Favorite = ({ type, movie, isLarge = false }: { type: ListType; isLarge?: boolean; movie: movie }) => {
-  const { fav, manageFav } = useFavoriteCtx();
+  const { fav, manageFav } = useDbPropsCtx();
   const isFavorite = fav ? isFav(fav, movie.id) : false;
 
   const { user } = useMainCtx();

@@ -5,7 +5,7 @@ import { fetchDiscover } from '@/app/queries/queries';
 import { getQueryParams, getRandomMovieCategory, getRandomNumber } from '@/lib/utils';
 import { Movie } from '@/app/types/movies';
 import ErrorPageComponent from '../helpers/Error';
-import LandingComponentClient from '../ui/LandingComponentClient';
+import LandingComponentClient from '../general/LandingComponentClient';
 import { Queries } from '@/lib/enums';
 
 const LandingComponent = async ({ type }: { type: ListType }) => {

@@ -77,8 +77,8 @@ export const sortOptions = (t: ListType): SelectOption[] => {
   ];
 };
 
-export const FavOptions: SelectOption[] = [
-  { label: 'All', value: 'all' },
+export const filterType: SelectOption[] = [
+  { label: 'All Types', value: 'all' },
   { label: 'Tv Shows', value: 'tv' },
   { label: 'Movies', value: 'movie' },
 ];

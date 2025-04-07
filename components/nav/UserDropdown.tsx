@@ -9,6 +9,7 @@ import { User } from 'better-auth';
 import { LogOutIcon } from 'lucide-react';
 import { authClient } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
+import UserFilterModal from './UserFilterModal';
 
 export function UserDropDown({
   user,
@@ -29,6 +30,9 @@ export function UserDropDown({
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-fit rounded-sm bg-black text-gray-200 border-none">
+        <DropdownMenuItem className="cursor-pointer bg-black hover:bg-gray-800" onSelect={(e) => e.preventDefault()}>
+          <UserFilterModal />
+        </DropdownMenuItem>
         <DropdownMenuItem
           className="cursor-pointer bg-black hover:bg-gray-800"
           onClick={async () => {

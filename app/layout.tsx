@@ -6,9 +6,9 @@ import Header from '@/components/nav/Header';
 import { Toaster } from '@/components/ui/sonner';
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
-import { getFavorites } from './queries/favorites';
-import { movie } from '@prisma/client';
-import Footer from '@/components/ui/Footer';
+import { getFavorites, getFilters } from './queries/dbProps';
+import { filter, movie } from '@prisma/client';
+import Footer from '@/components/general/Footer';
 
 const heading = Poppins({
   subsets: ['latin'],
@@ -42,9 +42,11 @@ export default async function RootLayout({
   const user = session?.user;
 
   let fav: movie[] | null = null;
+  let filters: filter[] | null = null;
 
   if (session && session.user) {
     fav = await getFavorites(session.user);
+    filters = await getFilters(session.user);
   }
 
   return (
@@ -53,7 +55,7 @@ export default async function RootLayout({
         <meta name="robots" content="noindex" />
       </head>
       <body className={`${heading.variable} ${body.variable} antialiased`}>
-        <Providers value={{ user, fav }}>
+        <Providers value={{ user, fav, filters }}>
           <Header />
           <main className="relative -mt-[80px]">{children}</main>
           <Footer />

@@ -43,7 +43,7 @@ const ListingComponent = async ({ data, type }: { data: FilterOption; type: List
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5 md:gap-x-8 md:gap-y-10 gap-3 mt-10">
                 {movies?.map((movie) => {
                   const genres = movieGenres
-                    .filter((genre) => movie.genre_ids.includes(Number(genre.value)))
+                    .filter((genre) => movie.genre_ids?.includes(Number(genre.value)))
                     .map((genre) => genre.label)
                     .join(', ');
 

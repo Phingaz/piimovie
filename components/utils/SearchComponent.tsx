@@ -1,5 +1,5 @@
 'use client';
-import { movie } from '@prisma/client';
+import { cn } from '@/lib/utils';
 import { Search } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
@@ -51,13 +51,19 @@ export default function SearchBar({ path = 'search', placeholder = 'Search...' }
   );
 }
 
-interface LocalSearchProps {
-  data: movie[] | null;
+interface LocalSearchProps<T> {
+  data: T[] | null;
+  className?: string;
   placeholder?: string;
-  setFilteredResults: React.Dispatch<React.SetStateAction<movie[] | null>>;
+  setFilteredResults: React.Dispatch<React.SetStateAction<T[] | null>>;
 }
 
-export const LocalSearch = ({ data, placeholder = 'Search...', setFilteredResults }: LocalSearchProps) => {
+export const LocalSearch = <T extends { title: string }>({
+  data,
+  className,
+  placeholder = 'Search...',
+  setFilteredResults,
+}: LocalSearchProps<T>) => {
   const [query, setQuery] = useState('');
 
   useEffect(() => {
@@ -66,13 +72,18 @@ export const LocalSearch = ({ data, placeholder = 'Search...', setFilteredResult
     } else {
       if (!data) return;
       const lowerQuery = query.toLowerCase();
-      const filtered = data.filter((item) => String(item.title).toLowerCase().includes(lowerQuery));
+      const filtered = data.filter((item) => String(item?.title).toLowerCase().includes(lowerQuery));
       setFilteredResults(filtered);
     }
   }, [query, data, setFilteredResults]);
 
   return (
-    <div className="flex items-center gap-2 py-2 px-3 border border-gray-500 rounded-[7px] h-[45px] w-[82svw] md:w-[400px]">
+    <div
+      className={cn(
+        'flex items-center gap-2 py-2 px-3 border border-gray-500 rounded-[7px] h-[45px] w-[82svw] md:w-[400px]',
+        className,
+      )}
+    >
       <input
         type="text"
         value={query}
