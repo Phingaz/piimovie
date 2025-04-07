@@ -16,7 +16,7 @@ import {
   Check,
   ExternalLink,
 } from 'lucide-react';
-import { formatDate } from '@/lib/utils';
+import { formatDownloadDate } from '@/lib/utils';
 import { DownlodResult } from '@/app/types/utils';
 
 export default function TorrentItem({ torrent }: { torrent: DownlodResult }) {
@@ -84,7 +84,7 @@ export default function TorrentItem({ torrent }: { torrent: DownlodResult }) {
 
           <div className="flex items-center text-gray-400">
             <Calendar size={16} />
-            <span className="ml-1 text-[13px]">{formatDate(torrent.date)}</span>
+            <span className="ml-1 text-[13px]">{formatDownloadDate(torrent.date)}</span>
           </div>
 
           <div className="flex items-center">
