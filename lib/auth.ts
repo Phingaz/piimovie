@@ -6,6 +6,7 @@ import db from './prisma';
 
 export const auth = betterAuth({
   appName: 'Pii Movie',
+  secret: ENV.BETTER_AUTH_SECRET,
   advanced: { cookiePrefix: ENV.COOKIE_PREFIX },
   account: { accountLinking: { trustedProviders: ['google'] } },
   trustedOrigins: [ENV.BASEURL],
