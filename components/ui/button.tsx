@@ -16,6 +16,7 @@ const buttonVariants = cva(
         secondary: 'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80',
         ghost: 'text-gray-300/90 text-[12.5px] hover:bg-gray-800 hover:text-gray-800-foreground dark:hover:bg-gray-800/50',
         dropdown: 'text-gray-300/90 text-[12.5px] hover:bg-gray-800 hover:text-gray-800-foreground dark:hover:bg-gray-800/50 p-0',
+        link: 'text-primary underline-offset-4 hover:underline',
       },
       size: {
         default: 'h-[45px] px-2 py-2 has-[>svg]:px-3',
