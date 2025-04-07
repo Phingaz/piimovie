@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { LocalSearch } from '@/components/utils/SearchComponent';
-import { useFavoriteCtx } from '../_context/Favorite';
+import { useDbPropsCtx } from '../_context/DbProps';
 import LandingCard from '@/components/landing/LandingMovieCard';
 import { SearchXIcon } from 'lucide-react';
 import { Movie } from '../types/movies';
@@ -15,7 +15,7 @@ import PageSection from '@/components/utils/texts/PageSection';
 
 const Page = () => {
   const { user } = useMainCtx();
-  const { fav: movies } = useFavoriteCtx();
+  const { fav: movies } = useDbPropsCtx();
 
   const [value, setValue] = useState('all');
   const [searchResults, setSearchResults] = useState<movie[] | null>(movies);

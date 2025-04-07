@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 import { twMerge } from 'tailwind-merge';
 import { MovieCategoryEnum, ShowCategoryEnum } from './enums';
 import { FilterOption } from '@/app/types/utils';
-import { format, parseISO } from 'date-fns';
+import { format, formatDistanceToNow, parseISO } from 'date-fns';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -53,6 +53,11 @@ export const getRandomShowCategory = (): ShowCategory => {
 
 export const cleanDate = (date: string) => format(parseISO(date), 'MMMM d, yyyy');
 export const formatDate = (release_date: string) => format(parseISO(release_date), 'MMM d, yyyy');
+
+export function getLastUsedText(date: Date) {
+  if (!date || !(date instanceof Date)) return 'Unknown';
+  return `${formatDistanceToNow(new Date(date), { addSuffix: true })}`;
+}
 
 export const runTimeInHourAndMin = (runtime: number) => {
   const hours = Math.floor(runtime / 60);

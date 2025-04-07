@@ -12,12 +12,18 @@ import { CheckBoxes, FilterTitle, MultiComboBoxes, ResetButton, Sliders } from '
 import { FilterEnum } from '@/lib/enums';
 import { useMainCtx } from '@/app/_context/Main';
 import { DatePicker } from '../ui/date-picker';
+import { Button } from '../ui/button';
+import { useDbPropsCtx } from '@/app/_context/DbProps';
+import ModalComponent from '../general/Modal';
+import { filter } from '@prisma/client';
+import { toast } from 'sonner';
 
 export const FilterSection = ({ className, type }: { className?: string; type: ListType }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const updateQueryParams = useQueryParams();
   const { isMovie } = useMainCtx();
+  const { addToFilter } = useDbPropsCtx();
 
   const includeAdult = searchParams.get(FilterEnum.INCLUDE_ADULT) === 'true';
 
@@ -37,6 +43,49 @@ export const FilterSection = ({ className, type }: { className?: string; type: L
     selectedGenres,
     setSelectedGenres,
   } = useFilterState();
+
+  const [filterName, setFilterName] = React.useState('');
+  const [open, setOpen] = React.useState(false);
+
+  const handleAddToFilter = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!filterName || filterName.trim() === '') {
+      toast.error('Please enter a filter name');
+      return;
+    }
+
+    const filterData = Object.values(FilterEnum).reduce(
+      (acc, k) => {
+        const key = k.toLowerCase();
+        const value = searchParams.get(key);
+        if (value) {
+          acc[key] = value;
+        }
+        return acc;
+      },
+      {} as Record<string, string | number | boolean>,
+    );
+
+    if (fromDate) filterData.fromDate = fromDate.toString();
+    if (toDate) filterData.toDate = toDate.toString();
+
+    if (Object.keys(filterData).length === 0) {
+      toast.error('Please select at least one filter option');
+      return;
+    }
+
+    const filter = {
+      title: filterName,
+      type: type,
+      isFavorite: false,
+      params: JSON.stringify(filterData),
+    } as filter;
+
+    await addToFilter(filter);
+    setOpen(false);
+    setFilterName('');
+  };
 
   return (
     <div
@@ -132,6 +181,45 @@ export const FilterSection = ({ className, type }: { className?: string; type: L
           Release type
         </CheckBoxes>
       )}
+
+      <ModalComponent
+        open={open}
+        setOpen={setOpen}
+        title="Save filter"
+        description="Save this filter as a new filter"
+        trigger={
+          <Button
+            onClick={async () => {}}
+            className="w-full bg-gray-800/30 border border-gray-500/50 hover:bg-gray-800"
+          >
+            Save as a new filter
+          </Button>
+        }
+      >
+        <form>
+          <div className="flex flex-col gap-2 mb-8">
+            <label htmlFor="filter-name" className="text-gray-300 text-sm">
+              Filter name
+            </label>
+            <input
+              type="text"
+              id="filter-name"
+              value={filterName}
+              autoComplete="off"
+              onChange={(e) => setFilterName(e.target.value)}
+              className="bg-gray-800/50 border border-gray-500/50 rounded-md p-2 placeholder:text-gray-400 text-gray-300 placeholder:text-sm px-3 outline-none"
+              placeholder="Enter filter name"
+            />
+          </div>
+          <Button
+            type="submit"
+            onClick={handleAddToFilter}
+            className="w-full bg-gray-800/30 border border-gray-500/50 hover:bg-gray-800"
+          >
+            Save filter
+          </Button>
+        </form>
+      </ModalComponent>
     </div>
   );
 };
