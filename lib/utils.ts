@@ -70,11 +70,6 @@ export function getLastUsedText(date: Date) {
   return `${formatDistanceToNow(new Date(date), { addSuffix: true })}`;
 }
 
-export function getLastUsedText(date: Date) {
-  if (!date || !(date instanceof Date)) return 'Unknown';
-  return `${formatDistanceToNow(new Date(date), { addSuffix: true })}`;
-}
-
 export const runTimeInHourAndMin = (runtime: number) => {
   const hours = Math.floor(runtime / 60);
   const minutes = runtime % 60;
