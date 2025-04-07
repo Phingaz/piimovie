@@ -4,6 +4,7 @@ import {
   addFilter,
   addToFavorites,
   addToFilterFavorites,
+  deleteFilter,
   removeFromFavorites,
   removeFromFilterFavorites,
   updateFilterLastUsedTime,
@@ -91,7 +92,7 @@ export function DbPropsCtxProvider({ children, data }: DbPropsCtxProviderProps) 
       return;
     }
 
-    await removeFromFilterFavorites(filter.id, user);
+    await deleteFilter(filter.id, user);
     toast.success('Filter removed successfully');
     router.refresh();
   };
