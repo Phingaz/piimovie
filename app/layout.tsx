@@ -57,7 +57,7 @@ export default async function RootLayout({
       <body className={`${heading.variable} ${body.variable} antialiased`}>
         <Providers value={{ user, fav, filters }}>
           <Header />
-          <main className="relative -mt-[80px]">{children}</main>
+          <main className="relative -mt-[80px] min-h-[calc(100svh-200px)]">{children}</main>
           <Footer />
         </Providers>
         <Toaster richColors />
