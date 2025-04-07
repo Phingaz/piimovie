@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 import { twMerge } from 'tailwind-merge';
 import { MovieCategoryEnum, ShowCategoryEnum } from './enums';
 import { FilterOption } from '@/app/types/utils';
-import { format, formatDistanceToNow, parseISO } from 'date-fns';
+import { format, formatDistanceToNow } from 'date-fns';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -51,8 +51,19 @@ export const getRandomShowCategory = (): ShowCategory => {
   return MovieCategorys[Math.floor(Math.random() * MovieCategorys.length)] as unknown as ShowCategory;
 };
 
-export const cleanDate = (date: string) => format(parseISO(date), 'MMMM d, yyyy');
-export const formatDate = (release_date: string) => format(parseISO(release_date), 'MMM d, yyyy');
+export const formatDate = (release_date: string) => {
+  if (!release_date) return 'Unknown';
+
+  const match = release_date.match(/^(\d{2})-(\d{2})\s+(\d{4})$/);
+  if (!match) return 'Unknown';
+
+  const [, month, day, year] = match;
+  const date = new Date(Number(year), Number(month) - 1, Number(day));
+
+  if (isNaN(date.getTime())) return 'Unknown';
+
+  return format(date, 'MMM d, yyyy');
+};
 
 export function getLastUsedText(date: Date) {
   if (!date || !(date instanceof Date)) return 'Unknown';
