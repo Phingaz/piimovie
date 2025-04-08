@@ -3,7 +3,7 @@ import React from 'react';
 
 const HamBurger = ({ mobileNav, toggleMobileNav }: { mobileNav: boolean; toggleMobileNav: () => void }) => {
   return (
-    <div className="relative z-5 content lg:hidden">
+    <div className="relative z-5 content md:hidden">
       <motion.button
         animate={mobileNav ? 'open' : 'closed'}
         className="flex flex-col justify-center items-center rounded-lg p-2 py-3 gap-[7px] cursor-pointer"

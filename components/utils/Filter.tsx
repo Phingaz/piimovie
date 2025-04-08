@@ -45,7 +45,7 @@ export const FilterSection = ({ className, type }: { className?: string; type: L
   return (
     <div
       className={cn(
-        'flex flex-col gap-4 text-gray-300 border border-dashed border-gray-500/50 rounded-md p-5 bg-gray-800/50 h-fit space-y-6',
+        'flex flex-col gap-4 text-gray-300 border border-dashed border-gray-500/50 rounded-3xl md:rounded-md p-5 pt-10 md:p-5 bg-gray-800/50 h-fit space-y-6',
         className,
       )}
     >

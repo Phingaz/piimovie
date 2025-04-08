@@ -152,8 +152,8 @@ export const MobileFilter = ({ type }: { type: ListType }) => {
             Filters
           </button>
         </SheetTrigger>
-        <SheetContent side="bottom" className="h-[60svh] rounded-tl-3xl rounded-tr-3xl">
-          <div className="overflow-y-auto h-[calc(80svh-80px)] hidden-scrollbar pt-5">
+        <SheetContent side="bottom" className="h-[60svh] rounded-tl-3xl rounded-tr-3xl border-gray-500/50 border-2">
+          <div className="overflow-y-auto h-[calc(80svh-80px)] hidden-scrollbar">
             <FilterSection type={type} />
           </div>
         </SheetContent>

@@ -36,7 +36,7 @@ const Header = () => {
 
     window.addEventListener('resize', handleWindowResize);
 
-    if (width > 1023 && mobileNav) {
+    if (width > 768 && mobileNav) {
       toggleMobileNav();
     }
 
@@ -51,7 +51,7 @@ const Header = () => {
         active ? 'bg-black/90 backdrop-blur-sm bg-opacity-10' : ''
       } sticky top-0 left-0 h-[80px] z-[49] flex justify-between items-center overflow-x-clip text-gray-100`}
     >
-      <div className="w-[1350px] 3xl:w-[1750px] px-4 md:px-8 mx-auto">
+      <div className="container">
         <div className="w-full mx-auto flex justify-between items-center">
           <Link href="/">
             <Image
@@ -66,9 +66,9 @@ const Header = () => {
           </Link>
 
           <nav
-            className={`lg:flex justify-between items-center w-[62%] ${mobileNav ? ' fixed top-0 right-0 bg-black h-[100vh] w-[270px] pt-10' : 'hidden'}`}
+            className={`md:flex justify-between items-center md:w-[80%] lg:w-[62%] ${mobileNav ? ' fixed top-0 right-0 bg-black h-[100vh] w-[270px] pt-10' : 'hidden'}`}
           >
-            <div className="flex lg:justify-between gap-5 font-[300] lg:flex-row flex-col pt-20 lg:pt-0 items-center w-full h-full">
+            <div className="flex md:justify-between gap-5 font-[300] md:flex-row flex-col pt-20 md:pt-0 items-center w-full h-full">
               <div className="items-center flex gap-3 flex-col md:flex-row">
                 <LinkSwitcher mobileNav={mobileNav} toggleMobileNav={toggleMobileNav} />
                 <Link
@@ -85,7 +85,7 @@ const Header = () => {
                 </Link>
               </div>
 
-              <div className="flex items-center flex-col lg:flex-row gap-4 min-w-fit">
+              <div className="flex items-center flex-col md:flex-row gap-4 min-w-fit">
                 <div className="flex gap-3 items-center flex-row">
                   <Link
                     href="/search"
