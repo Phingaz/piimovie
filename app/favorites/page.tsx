@@ -17,7 +17,7 @@ const Page = () => {
   const { user } = useMainCtx();
   const { fav: movies } = useDbPropsCtx();
 
-  const [value, setValue] = useState('all');
+  const [value, setValue] = useState<string | null>('all');
   const [searchResults, setSearchResults] = useState<movie[] | null>(movies);
   const [filteredResults, setFilteredResults] = useState<movie[] | null>(movies);
 
