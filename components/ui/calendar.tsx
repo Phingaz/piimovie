@@ -72,12 +72,11 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
         ),
         day: cn(
           buttonVariants({ variant: 'ghost' }),
-          'h-9 w-9 p-0 font-normal aria-selected:bg-red-900 aria-selected:text-white mx-auto',
+          'h-9 w-9 p-0 font-normal aria-selected:bg-gray-600 aria-selected:text-white mx-auto',
         ),
         day_range_start: 'day-range-start',
         day_range_end: 'day-range-end',
-        day_selected:
-          'bg-primary text-gray-300 hover:bg-primary hover:text-gray-300 focus:bg-primary focus:text-gray-300',
+        day_selected: 'text-gray-300 hover:bg-primary hover:text-gray-300 focus:bg-primary focus:text-gray-300',
         day_today: 'border border-gray-300/70',
         day_outside: 'day-outside text-gray-500 aria-selected:bg-gray-300/50 aria-selected:text-gray-500',
         day_disabled: 'text-gray-500 opacity-50',

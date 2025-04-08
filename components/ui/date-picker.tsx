@@ -46,6 +46,7 @@ export function DatePicker({ date, setDate, className }: Props) {
             initialFocus
             mode="single"
             month={date}
+            selected={date}
             onMonthChange={setDate}
             onSelect={setDate}
             defaultMonth={date}
