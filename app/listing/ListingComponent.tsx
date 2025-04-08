@@ -15,8 +15,8 @@ import { getQueryParams } from '@/lib/utils';
 
 const ListingComponent = async ({ data, type }: { data: FilterOption; type: ListType }) => {
   try {
-    const baseParams = getQueryParams(data);
-    const result = await fetchDiscover({ type, ...baseParams });
+    const params = getQueryParams(data);
+    const result = await fetchDiscover({ type, params });
 
     if (!result.data) throw new Error(result.message);
 

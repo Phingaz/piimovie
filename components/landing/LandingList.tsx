@@ -8,14 +8,16 @@ import { fetchDiscover } from '@/app/queries/queries';
 import { ListType } from '@/app/types/utils';
 import SeeMore from './SeeMore';
 import { MovieCategoryEnum, Queries, ShowCategoryEnum } from '@/lib/enums';
+import { getQueryParams } from '@/lib/utils';
 
 const LandingListing = async ({ type, category }: { type: ListType; category: MovieCategory | ShowCategory }) => {
   const title =
     type === 'movie' ? MovieCategoryEnum[category as MovieCategory] : ShowCategoryEnum[category as ShowCategory];
 
   try {
-    const options = Queries(category, type)[category];
-    const response = await fetchDiscover({ type, ...options });
+    const q = Queries(category, type)[category];
+    const params = getQueryParams(q);
+    const response = await fetchDiscover({ type, params });
     const items = response.data?.results;
 
     if (!items || !response.success) {
@@ -26,8 +28,7 @@ const LandingListing = async ({ type, category }: { type: ListType; category: Mo
       <div className="w-full mb-15">
         <div className="flex justify-between items-center mb-[17px]">
           <h2 className="text-xl md:text-2xl font-[600] text-gray-300">{title}</h2>
-
-          <SeeMore category={category} />
+          <SeeMore category={category} type={type} />
         </div>
         <CarouselWrapper isLanding>
           {items.map((item) => (

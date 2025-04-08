@@ -169,5 +169,5 @@ export const getQueryParams = (data: FilterOption) => {
     ...(with_genres && { with_genres }),
   };
 
-  return baseParams;
+  return new URLSearchParams(baseParams).toString();
 };

@@ -3,26 +3,31 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import React from 'react';
 
 import { Switch } from '@/components/ui/switch';
-import { SelectComponentUrl } from './Select';
+import { SelectComponent } from './Select';
 import { countries, movieGenres, releaseType, sortOptions, tvGenres } from '@/lib/arrys';
 import { cn } from '@/lib/utils';
 import { useFilterName, useFilterState, useQueryParams } from '@/app/_hooks/useQueryParams';
 import { CheckBoxes, FilterTitle, MultiComboBoxes, ResetButton, Sliders } from './FilterHelpers';
 import { FilterEnum } from '@/lib/enums';
-import { useMainCtx } from '@/app/_context/Main';
 import { DatePicker } from '../ui/date-picker';
 import { Button } from '../ui/button';
 import ModalComponent from '../general/Modal';
+import useCookies from '@/app/_hooks/useCookies';
+import { ListType } from '@/app/types/utils';
 
 export const FilterSection = ({ className }: { className?: string }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const updateQueryParams = useQueryParams();
-  const { type, isMovie } = useMainCtx();
+  const { getCookie } = useCookies();
+  const type = getCookie('t') as ListType;
+  const isMovie = type === 'movie';
 
   const includeAdult = searchParams.get(FilterEnum.INCLUDE_ADULT) === 'true';
 
   const {
+    sortBy,
+    setSortBy,
     fromDate,
     setFromDate,
     toDate,
@@ -84,7 +89,7 @@ export const FilterSection = ({ className }: { className?: string }) => {
 
       <div>
         <FilterTitle>Sort by</FilterTitle>
-        <SelectComponentUrl paramKey={'sort_by'} options={sortOptions(type)} />
+        <SelectComponent className="w-full" value={sortBy} setValue={setSortBy} options={sortOptions(type)} />
       </div>
 
       <MultiComboBoxes
