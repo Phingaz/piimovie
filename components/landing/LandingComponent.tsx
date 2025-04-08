@@ -11,9 +11,9 @@ import { Queries } from '@/lib/enums';
 const LandingComponent = async ({ type }: { type: ListType }) => {
   try {
     const q = Queries(getRandomMovieCategory(), type);
-    const baseParams = getQueryParams({ ...q, page: getRandomNumber(2).toString() });
+    const params = getQueryParams({ ...q, page: getRandomNumber(2).toString() });
 
-    const result = await fetchDiscover({ type, ...baseParams });
+    const result = await fetchDiscover({ type, params });
     if (!result.success) throw new Error(result.message);
 
     const movies = result.data?.results as Movie[];

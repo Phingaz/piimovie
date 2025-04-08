@@ -1,17 +1,15 @@
 'use client';
-import { useMainCtx } from '@/app/_context/Main';
 import { MovieCategory } from '@/app/types/movies';
 import { ShowCategory } from '@/app/types/show';
-import { FilterOption } from '@/app/types/utils';
+import { FilterOption, ListType } from '@/app/types/utils';
 import { Queries } from '@/lib/enums';
 import { getQueryParams } from '@/lib/utils';
 import Link from 'next/link';
 import React from 'react';
 
-const SeeMore = ({ category }: { category: MovieCategory | ShowCategory }) => {
-  const { type } = useMainCtx();
+const SeeMore = ({ type, category }: { type: ListType; category: MovieCategory | ShowCategory }) => {
   const query = Queries(category, type)[category];
-  const baseParams = getQueryParams(query as FilterOption);
+  const params = getQueryParams(query as FilterOption);
 
   return (
     <Link
@@ -20,7 +18,7 @@ const SeeMore = ({ category }: { category: MovieCategory | ShowCategory }) => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }}
       className="text-sm font-[600] transition hover:text-blue-500 hover:scale-105"
-      href={`/listing?category=${category}&${new URLSearchParams(baseParams).toString()}`}
+      href={`/listing?category=${category}&${params}`}
     >
       See more
     </Link>
