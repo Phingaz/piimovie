@@ -30,17 +30,17 @@ const ListingComponent = async ({ data, type }: { data: FilterOption; type: List
         <div className="flex gap-8 mb-10 md:mb-20">
           <FilterSection type={type} className="col-span-2 hidden lg:block min-w-[300px] max-w-[300px]" />
           <div className="col-span-8 w-full">
-            <PageSection>
-              <PageTitle className="capitalize">{`${type} listing`}</PageTitle>
-              <div className="flex md:flex-row flex-col gap-2 md:items-center mt-5 md:mt-0">
+            <PageSection className="lg:justify-between lg:items-center gap-5 lg:flex-row flex-col mb-0 md:mb-0">
+              <PageTitle className="capitalize shrink-0">{`${type} listing`}</PageTitle>
+              <div className="flex flex-row justify-between gap-2 items-end lg:items-center">
                 <MobileFilter type={type} />
-                <SearchBar />
+                <SearchBar className="md:min-w-[410px] w-[400px]" />
               </div>
             </PageSection>
             {movies.length === 0 ? (
               <EmptyResult />
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5 md:gap-x-8 md:gap-y-10 gap-3 mt-10">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5 md:gap-x-8 md:gap-y-10 gap-3 mt-5">
                 {movies?.map((movie) => {
                   const genres = movieGenres
                     .filter((genre) => movie.genre_ids?.includes(Number(genre.value)))

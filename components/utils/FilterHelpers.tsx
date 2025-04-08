@@ -144,7 +144,7 @@ export const MobileFilter = ({ type }: { type: ListType }) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (
-    <div className="mb-4 md:hidden">
+    <div className="lg:hidden">
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
           <button className="px-3 h-[45px] rounded-md w-fit bg-gray-800/50 text-gray-300 hover:bg-gray-700/50 transition-colors duration-200 flex items-center gap-2">
