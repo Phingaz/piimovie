@@ -18,7 +18,7 @@ export default function UserFilterModal() {
   const { filters, toggleFilterFavorite } = useDbPropsCtx();
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState<filter[] | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState<string | null>('all');
 
   const hasFilters = (filters?.length ?? 0) > 0 || (searchQuery?.length ?? 0) > 0;
 
