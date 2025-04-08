@@ -76,7 +76,7 @@ export const useFilterState = () => {
   useEffect(() => {
     updateQueryParams(FilterEnum.SORT_BY, sortBy ?? '');
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedFromDate, isMovie]);
+  }, [sortBy]);
 
   useEffect(() => {
     updateQueryParams(dateGteParam, debouncedFromDate ? format(debouncedFromDate, 'yyyy-MM-dd') : '');
