@@ -41,7 +41,6 @@ export const useFilterState = () => {
   const { isMovie } = useMainCtx();
   const searchParams = useSearchParams();
   const updateQueryParams = useQueryParams();
-
   const vc = Number(searchParams.get(FilterEnum.VC_GTE));
   const va = Number(searchParams.get(FilterEnum.VA_GTE));
   const cs = searchParams.get(FilterEnum.WITH_ORIGIN_COUNTRY)?.split('|') || [];
