@@ -6,7 +6,7 @@ import { Clock, ExternalLink, Film, FilterIcon, Star, Trash2Icon, Tv } from 'luc
 import { LocalSearch } from '../utils/SearchComponent';
 import { SelectComponent } from '../utils/Select';
 import { filterType } from '@/lib/arrys';
-import { getLastUsedText, getQueryParams } from '@/lib/utils';
+import { getLastUsedText, getQueryString } from '@/lib/utils';
 import { useDbPropsCtx } from '@/app/_context/DbProps';
 import { filter } from '@prisma/client';
 import ENV from '@/lib/env';
@@ -73,7 +73,7 @@ function FilterItem({
   onToggleFavorite: (filter: filter) => void;
 }) {
   const { removeFromFilter, updateFilterLastUsed } = useDbPropsCtx();
-  const q = getQueryParams(JSON.parse(filter.params));
+  const q = getQueryString(JSON.parse(filter.params));
   const { setCookie } = useCookies();
   const params = new URLSearchParams(q).toString();
   const url = `${ENV.NEXT_PUBLIC_URL}/listing?${params}`;

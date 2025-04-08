@@ -123,7 +123,7 @@ export const updateSearchParam = ({
   startTransition(() => router.push(`?${params.toString()}`, { scroll: false }));
 };
 
-export const getQueryParams = (data: FilterOption) => {
+export const getQueryString = (data: FilterOption) => {
   const {
     page = 1,
     sort_by,

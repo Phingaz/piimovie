@@ -11,11 +11,11 @@ import PageTitle from '@/components/utils/texts/PageTitle';
 import { FilterSection } from '@/components/utils/Filter';
 import { MobileFilter } from '@/components/utils/FilterHelpers';
 import { SearchXIcon } from 'lucide-react';
-import { getQueryParams } from '@/lib/utils';
+import { getQueryString } from '@/lib/utils';
 
 const ListingComponent = async ({ data, type }: { data: FilterOption; type: ListType }) => {
   try {
-    const params = getQueryParams(data);
+    const params = getQueryString(data);
     const result = await fetchDiscover({ type, params });
 
     if (!result.data) throw new Error(result.message);

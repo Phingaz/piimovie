@@ -8,7 +8,7 @@ import { fetchDiscover } from '@/app/queries/queries';
 import { ListType } from '@/app/types/utils';
 import SeeMore from './SeeMore';
 import { MovieCategoryEnum, Queries, ShowCategoryEnum } from '@/lib/enums';
-import { getQueryParams } from '@/lib/utils';
+import { getQueryString } from '@/lib/utils';
 
 const LandingListing = async ({ type, category }: { type: ListType; category: MovieCategory | ShowCategory }) => {
   const title =
@@ -16,7 +16,7 @@ const LandingListing = async ({ type, category }: { type: ListType; category: Mo
 
   try {
     const q = Queries(category, type)[category];
-    const params = getQueryParams(q);
+    const params = getQueryString(q);
     const response = await fetchDiscover({ type, params });
     const items = response.data?.results;
 

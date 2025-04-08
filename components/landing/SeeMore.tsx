@@ -3,13 +3,13 @@ import { MovieCategory } from '@/app/types/movies';
 import { ShowCategory } from '@/app/types/show';
 import { FilterOption, ListType } from '@/app/types/utils';
 import { Queries } from '@/lib/enums';
-import { getQueryParams } from '@/lib/utils';
+import { getQueryString } from '@/lib/utils';
 import Link from 'next/link';
 import React from 'react';
 
 const SeeMore = ({ type, category }: { type: ListType; category: MovieCategory | ShowCategory }) => {
   const query = Queries(category, type)[category];
-  const params = getQueryParams(query as FilterOption);
+  const params = getQueryString(query as FilterOption);
 
   return (
     <Link
