@@ -53,7 +53,9 @@ const ListingComponent = async ({ data, type }: { data: FilterOption; type: List
             )}
           </div>
         </div>
-        <Pagination currentPage={currentPage} totalPages={totalPages} totalResults={totalResults} />
+        {movies.length >= 1 && (
+          <Pagination currentPage={currentPage} totalPages={totalPages} totalResults={totalResults} />
+        )}
       </div>
     );
   } catch (error) {
@@ -65,7 +67,7 @@ export default ListingComponent;
 
 const EmptyResult = () => {
   return (
-    <div className="h-[calc(100svh-250px)] flex justify-center items-center flex-col border border-gray-500/50 border-dashed py-20 rounded-md bg-gray-900">
+    <div className="h-[calc(100svh-250px)] flex justify-center items-center flex-col border border-gray-500/50 border-dashed py-20 rounded-md bg-gray-900 mt-5">
       <SearchXIcon size={70} className="mb-3 text-gray-400" />
       <h3 className="text-lg font-medium text-white mb-2">Empty result</h3>
       <p className="text-gray-400 max-w-md text-center">
