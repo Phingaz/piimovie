@@ -6,7 +6,6 @@ import { Switch } from '@/components/ui/switch';
 import { SelectComponentUrl } from './Select';
 import { countries, movieGenres, releaseType, sortOptions, tvGenres } from '@/lib/arrys';
 import { cn } from '@/lib/utils';
-import { ListType } from '@/app/types/utils';
 import { useFilterName, useFilterState, useQueryParams } from '@/app/_hooks/useQueryParams';
 import { CheckBoxes, FilterTitle, MultiComboBoxes, ResetButton, Sliders } from './FilterHelpers';
 import { FilterEnum } from '@/lib/enums';
@@ -15,11 +14,11 @@ import { DatePicker } from '../ui/date-picker';
 import { Button } from '../ui/button';
 import ModalComponent from '../general/Modal';
 
-export const FilterSection = ({ className, type }: { className?: string; type: ListType }) => {
+export const FilterSection = ({ className }: { className?: string }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const updateQueryParams = useQueryParams();
-  const { isMovie } = useMainCtx();
+  const { type, isMovie } = useMainCtx();
 
   const includeAdult = searchParams.get(FilterEnum.INCLUDE_ADULT) === 'true';
 
@@ -45,7 +44,7 @@ export const FilterSection = ({ className, type }: { className?: string; type: L
   return (
     <div
       className={cn(
-        'flex flex-col gap-4 text-gray-300 border border-dashed border-gray-500/50 rounded-md p-5 bg-gray-800/50 h-fit space-y-6',
+        'flex flex-col gap-4 text-gray-300 border border-dashed border-gray-500/50 rounded-3xl md:rounded-md p-5 pt-10 md:p-5 bg-gray-800/50 h-fit space-y-6',
         className,
       )}
     >
