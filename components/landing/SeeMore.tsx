@@ -14,7 +14,7 @@ const SeeMore = ({ type, category }: { type: ListType; category: MovieCategory |
   return (
     <Link
       onClick={() => {
-        if (!window) return;
+        if (typeof window === "undefined") return;
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }}
       className="text-sm font-[600] transition hover:text-blue-500 hover:scale-105"
