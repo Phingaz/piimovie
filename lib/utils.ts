@@ -42,13 +42,13 @@ export function getRandomMovie(movies: Movie[] | Show[] | undefined) {
 export const getRandomNumber = (range: number) => Math.floor(Math.random() * range) + 1;
 
 export const getRandomMovieCategory = (): MovieCategory => {
-  const MovieCategorys = Object.keys(MovieCategoryEnum);
-  return MovieCategorys[Math.floor(Math.random() * MovieCategorys.length)] as unknown as MovieCategory;
+  const movieCategories = Object.keys(MovieCategoryEnum);
+  return movieCategories[Math.floor(Math.random() * movieCategories.length)] as unknown as MovieCategory;
 };
 
 export const getRandomShowCategory = (): ShowCategory => {
-  const MovieCategorys = Object.keys(ShowCategoryEnum);
-  return MovieCategorys[Math.floor(Math.random() * MovieCategorys.length)] as unknown as ShowCategory;
+  const showCategories = Object.keys(ShowCategoryEnum);
+  return showCategories[Math.floor(Math.random() * showCategories.length)] as unknown as ShowCategory;
 };
 
 export const formatDownloadDate = (release_date: string) => {
@@ -123,7 +123,7 @@ export const updateSearchParam = ({
   startTransition(() => router.push(`?${params.toString()}`, { scroll: false }));
 };
 
-export const getQueryParams = (data: FilterOption) => {
+export const getQueryString = (data: FilterOption) => {
   const {
     page = 1,
     sort_by,
@@ -169,5 +169,5 @@ export const getQueryParams = (data: FilterOption) => {
     ...(with_genres && { with_genres }),
   };
 
-  return baseParams;
+  return new URLSearchParams(baseParams).toString();
 };

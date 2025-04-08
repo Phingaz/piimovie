@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { updateSearchParam } from '@/lib/utils';
+import { cn, updateSearchParam } from '@/lib/utils';
 import { useMainCtx } from '@/app/_context/Main';
 
 export interface SelectOption {
@@ -11,7 +11,6 @@ export interface SelectOption {
 }
 
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useUpdateSort } from '@/app/_hooks/useQueryParams';
 
 const SelectComponentCategory = ({
   defaultValue,
@@ -56,16 +55,18 @@ export const SelectComponent = ({
   value,
   setValue,
   options,
+  className,
 }: {
-  value: string;
-  setValue: React.Dispatch<React.SetStateAction<string>>;
+  className?: string;
+  value: string | null;
+  setValue: React.Dispatch<React.SetStateAction<string | null>>;
   options: SelectOption[];
 }) => {
   const handleSelect = (el: string) => setValue(el);
 
   return (
-    <Select onValueChange={handleSelect} defaultValue={value}>
-      <SelectTrigger className="w-fit">
+    <Select onValueChange={handleSelect} defaultValue={value ?? options[0].value}>
+      <SelectTrigger className={cn('w-fit', className)}>
         <SelectValue placeholder="Select an option" />
       </SelectTrigger>
       <SelectContent>
@@ -81,27 +82,4 @@ export const SelectComponent = ({
   );
 };
 
-export const SelectComponentUrl = ({ paramKey, options }: { paramKey: string; options: SelectOption[] }) => {
-  const searchParams = useSearchParams();
-  const [value, setValue] = useState(searchParams.get(paramKey) || options[0].value);
-
-  useUpdateSort({ key: paramKey, sortBy: value, scroll: true });
-
-  return (
-    <Select value={value} onValueChange={setValue}>
-      <SelectTrigger className="w-full">
-        <SelectValue placeholder="Select an option" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          {options.map((option) => (
-            <SelectItem key={option.value} value={option.value}>
-              {option.label}
-            </SelectItem>
-          ))}
-        </SelectGroup>
-      </SelectContent>
-    </Select>
-  );
-};
 export default SelectComponentCategory;

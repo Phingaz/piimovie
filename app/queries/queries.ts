@@ -9,19 +9,14 @@ import {
   VideoApiResponse,
 } from '../types/api';
 import { fetchData } from './utils';
-import { ListType, FilterOption } from '../types/utils';
+import { ListType } from '../types/utils';
 import { Show, ShowDetail } from '../types/show';
 import { MovieDetail, Movie } from '../types/movies';
-import { getQueryParams } from '@/lib/utils';
 
 const tmdbUrl = ENV.TMDB_URL;
 
-export const fetchDiscover = async <T extends ListType>(data: { type: ListType } & FilterOption) => {
-  const { type } = data;
-  const baseParams = getQueryParams(data);
-
-  const url = `${tmdbUrl}/discover/${type}?${new URLSearchParams(baseParams).toString()}`;
-
+export const fetchDiscover = async <T extends ListType>({ type, params }: { type: ListType; params: string }) => {
+  const url = `${tmdbUrl}/discover/${type}?${params}`;
   return await fetchData<ListApiResponse<T extends 'movie' ? Movie : Show>>({
     url,
     message: `Successfully fetched ${url}`,

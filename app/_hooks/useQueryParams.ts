@@ -2,11 +2,11 @@ import { useCallback, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import useDebounce from './useDebounce';
 import { format, parseISO } from 'date-fns';
-import { useMainCtx } from '../_context/Main';
 import { FilterEnum } from '@/lib/enums';
 import { toast } from 'sonner';
 import { useDbPropsCtx } from '../_context/DbProps';
 import { filter } from '@prisma/client';
+import useCookies from './useCookies';
 
 const DEBOUNCE_TIMEOUT = 100;
 
@@ -38,7 +38,9 @@ export const useQueryParams = () => {
 };
 
 export const useFilterState = () => {
-  const { isMovie } = useMainCtx();
+  const { getCookie } = useCookies();
+  const isMovie = getCookie('t') === 'movie';
+
   const searchParams = useSearchParams();
   const updateQueryParams = useQueryParams();
   const vc = Number(searchParams.get(FilterEnum.VC_GTE));
@@ -46,6 +48,7 @@ export const useFilterState = () => {
   const cs = searchParams.get(FilterEnum.WITH_ORIGIN_COUNTRY)?.split('|') || [];
   const wg = searchParams.get(FilterEnum.WITH_GENRES)?.split('|') || [];
   const egr = searchParams.get(FilterEnum.WITHOUT_GENRES)?.split('|') || [];
+  const sb = searchParams.get(FilterEnum.SORT_BY);
 
   const dateGteParam = isMovie ? FilterEnum.PRIMARY_RELEASE_DATE_GTE : FilterEnum.FIRST_AIR_DATE_GTE;
   const dateLteParam = isMovie ? FilterEnum.PRIMARY_RELEASE_DATE_LTE : FilterEnum.FIRST_AIR_DATE_LTE;
@@ -60,6 +63,7 @@ export const useFilterState = () => {
   const [excludedGenres, setExcludedGenres] = useState<string[]>(egr);
   const [fromDate, setFromDate] = useState<Date | undefined>(() => (dateGte ? parseISO(dateGte) : undefined));
   const [toDate, setToDate] = useState<Date | undefined>(() => (dateLte ? parseISO(dateLte) : undefined));
+  const [sortBy, setSortBy] = useState<string | null>(sb);
 
   const debouncedFromDate = useDebounce(fromDate, DEBOUNCE_TIMEOUT);
   const debouncedToDate = useDebounce(toDate, DEBOUNCE_TIMEOUT);
@@ -68,6 +72,11 @@ export const useFilterState = () => {
   const debouncedSelectedCountries = useDebounce(selectedCountries, DEBOUNCE_TIMEOUT);
   const debouncedSelectedGenres = useDebounce(selectedGenres, DEBOUNCE_TIMEOUT);
   const debouncedExcludedGenres = useDebounce(excludedGenres, DEBOUNCE_TIMEOUT);
+
+  useEffect(() => {
+    updateQueryParams(FilterEnum.SORT_BY, sortBy ?? '');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortBy]);
 
   useEffect(() => {
     updateQueryParams(dateGteParam, debouncedFromDate ? format(debouncedFromDate, 'yyyy-MM-dd') : '');
@@ -105,6 +114,8 @@ export const useFilterState = () => {
   }, [debouncedExcludedGenres]);
 
   return {
+    sortBy,
+    setSortBy,
     fromDate,
     setFromDate,
     toDate,
@@ -125,7 +136,8 @@ export const useFilterState = () => {
 export const useFilterName = (fromDate: Date | undefined, toDate: Date | undefined) => {
   const searchParams = useSearchParams();
   const { addToFilter } = useDbPropsCtx();
-  const { type } = useMainCtx();
+  const { getCookie } = useCookies();
+  const type = getCookie('t');
 
   const [filterName, setFilterName] = useState('');
   const [open, setOpen] = useState(false);
