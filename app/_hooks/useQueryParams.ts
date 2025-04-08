@@ -4,6 +4,9 @@ import useDebounce from './useDebounce';
 import { format, parseISO } from 'date-fns';
 import { useMainCtx } from '../_context/Main';
 import { FilterEnum } from '@/lib/enums';
+import { toast } from 'sonner';
+import { useDbPropsCtx } from '../_context/DbProps';
+import { filter } from '@prisma/client';
 
 const DEBOUNCE_TIMEOUT = 100;
 
@@ -51,8 +54,12 @@ export const useFilterState = () => {
   const wg = searchParams.get(FilterEnum.WITH_GENRES)?.split('|') || [];
   const egr = searchParams.get(FilterEnum.WITHOUT_GENRES)?.split('|') || [];
 
-  const dateGte = isMovie ? searchParams.get(FilterEnum.PRIMARY_RELEASE_DATE_GTE) : searchParams.get(FilterEnum.FIRST_AIR_DATE_GTE);
-  const dateLte = isMovie ? searchParams.get(FilterEnum.PRIMARY_RELEASE_DATE_LTE) : searchParams.get(FilterEnum.FIRST_AIR_DATE_LTE);
+  const dateGte = isMovie
+    ? searchParams.get(FilterEnum.PRIMARY_RELEASE_DATE_GTE)
+    : searchParams.get(FilterEnum.FIRST_AIR_DATE_GTE);
+  const dateLte = isMovie
+    ? searchParams.get(FilterEnum.PRIMARY_RELEASE_DATE_LTE)
+    : searchParams.get(FilterEnum.FIRST_AIR_DATE_LTE);
 
   const [voteCount, setVoteCount] = useState(vc);
   const [voteAverage, setVoteAverage] = useState(va);
@@ -71,12 +78,18 @@ export const useFilterState = () => {
   const debouncedExcludedGenres = useDebounce(excludedGenres, DEBOUNCE_TIMEOUT);
 
   useEffect(() => {
-    updateQueryParams(FilterEnum.PRIMARY_RELEASE_DATE_GTE, debouncedFromDate ? format(debouncedFromDate, 'yyyy-MM-dd') : '');
+    updateQueryParams(
+      FilterEnum.PRIMARY_RELEASE_DATE_GTE,
+      debouncedFromDate ? format(debouncedFromDate, 'yyyy-MM-dd') : '',
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedFromDate]);
 
   useEffect(() => {
-    updateQueryParams(FilterEnum.PRIMARY_RELEASE_DATE_LTE, debouncedToDate ? format(debouncedToDate, 'yyyy-MM-dd') : '');
+    updateQueryParams(
+      FilterEnum.PRIMARY_RELEASE_DATE_LTE,
+      debouncedToDate ? format(debouncedToDate, 'yyyy-MM-dd') : '',
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedToDate]);
 
@@ -121,6 +134,57 @@ export const useFilterState = () => {
     excludedGenres,
     setExcludedGenres,
   };
+};
+
+export const useFilterName = (fromDate: Date | undefined, toDate: Date | undefined) => {
+  const searchParams = useSearchParams();
+  const { addToFilter } = useDbPropsCtx();
+  const { type } = useMainCtx();
+
+  const [filterName, setFilterName] = useState('');
+  const [open, setOpen] = useState(false);
+
+  const handleAddToFilter = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!filterName || filterName.trim() === '') {
+      toast.error('Please enter a filter name');
+      return;
+    }
+
+    const filterData = Object.values(FilterEnum).reduce(
+      (acc, k) => {
+        const key = k.toLowerCase();
+        const value = searchParams.get(key);
+        if (value) {
+          acc[key] = value;
+        }
+        return acc;
+      },
+      {} as Record<string, string | number | boolean>,
+    );
+
+    if (fromDate) filterData.fromDate = fromDate.toString();
+    if (toDate) filterData.toDate = toDate.toString();
+
+    if (Object.keys(filterData).length === 0) {
+      toast.error('Please select at least one filter option');
+      return;
+    }
+
+    const filter = {
+      title: filterName,
+      type: type,
+      isFavorite: false,
+      params: JSON.stringify(filterData),
+    } as filter;
+
+    await addToFilter(filter);
+    setOpen(false);
+    setFilterName('');
+  };
+
+  return { open, setOpen, filterName, setFilterName, handleAddToFilter };
 };
 
 export const useUpdateSort = <T>({ key, sortBy, scroll = true }: { key: string; sortBy: T; scroll?: boolean }) => {
