@@ -47,19 +47,17 @@ export const useFilterState = () => {
   const { isMovie } = useMainCtx();
   const searchParams = useSearchParams();
   const updateQueryParams = useQueryParams();
-
   const vc = Number(searchParams.get(FilterEnum.VC_GTE));
   const va = Number(searchParams.get(FilterEnum.VA_GTE));
   const cs = searchParams.get(FilterEnum.WITH_ORIGIN_COUNTRY)?.split('|') || [];
   const wg = searchParams.get(FilterEnum.WITH_GENRES)?.split('|') || [];
   const egr = searchParams.get(FilterEnum.WITHOUT_GENRES)?.split('|') || [];
 
-  const dateGte = isMovie
-    ? searchParams.get(FilterEnum.PRIMARY_RELEASE_DATE_GTE)
-    : searchParams.get(FilterEnum.FIRST_AIR_DATE_GTE);
-  const dateLte = isMovie
-    ? searchParams.get(FilterEnum.PRIMARY_RELEASE_DATE_LTE)
-    : searchParams.get(FilterEnum.FIRST_AIR_DATE_LTE);
+  const dateGteParam = isMovie ? FilterEnum.PRIMARY_RELEASE_DATE_GTE : FilterEnum.FIRST_AIR_DATE_GTE;
+  const dateLteParam = isMovie ? FilterEnum.PRIMARY_RELEASE_DATE_LTE : FilterEnum.FIRST_AIR_DATE_LTE;
+
+  const dateGte = searchParams.get(dateGteParam);
+  const dateLte = searchParams.get(dateLteParam);
 
   const [voteCount, setVoteCount] = useState(vc);
   const [voteAverage, setVoteAverage] = useState(va);
@@ -78,20 +76,14 @@ export const useFilterState = () => {
   const debouncedExcludedGenres = useDebounce(excludedGenres, DEBOUNCE_TIMEOUT);
 
   useEffect(() => {
-    updateQueryParams(
-      FilterEnum.PRIMARY_RELEASE_DATE_GTE,
-      debouncedFromDate ? format(debouncedFromDate, 'yyyy-MM-dd') : '',
-    );
+    updateQueryParams(dateGteParam, debouncedFromDate ? format(debouncedFromDate, 'yyyy-MM-dd') : '');
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedFromDate]);
+  }, [debouncedFromDate, isMovie]);
 
   useEffect(() => {
-    updateQueryParams(
-      FilterEnum.PRIMARY_RELEASE_DATE_LTE,
-      debouncedToDate ? format(debouncedToDate, 'yyyy-MM-dd') : '',
-    );
+    updateQueryParams(dateLteParam, debouncedToDate ? format(debouncedToDate, 'yyyy-MM-dd') : '');
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedToDate]);
+  }, [debouncedToDate, isMovie]);
 
   useEffect(() => {
     updateQueryParams(FilterEnum.VC_GTE, debouncedVoteCount);
