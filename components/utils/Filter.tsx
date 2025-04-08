@@ -7,23 +7,19 @@ import { SelectComponentUrl } from './Select';
 import { countries, movieGenres, releaseType, sortOptions, tvGenres } from '@/lib/arrys';
 import { cn } from '@/lib/utils';
 import { ListType } from '@/app/types/utils';
-import { useFilterState, useQueryParams } from '@/app/_hooks/useQueryParams';
+import { useFilterName, useFilterState, useQueryParams } from '@/app/_hooks/useQueryParams';
 import { CheckBoxes, FilterTitle, MultiComboBoxes, ResetButton, Sliders } from './FilterHelpers';
 import { FilterEnum } from '@/lib/enums';
 import { useMainCtx } from '@/app/_context/Main';
 import { DatePicker } from '../ui/date-picker';
 import { Button } from '../ui/button';
-import { useDbPropsCtx } from '@/app/_context/DbProps';
 import ModalComponent from '../general/Modal';
-import { filter } from '@prisma/client';
-import { toast } from 'sonner';
 
 export const FilterSection = ({ className, type }: { className?: string; type: ListType }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const updateQueryParams = useQueryParams();
   const { isMovie } = useMainCtx();
-  const { addToFilter } = useDbPropsCtx();
 
   const includeAdult = searchParams.get(FilterEnum.INCLUDE_ADULT) === 'true';
 
@@ -44,48 +40,7 @@ export const FilterSection = ({ className, type }: { className?: string; type: L
     setSelectedGenres,
   } = useFilterState();
 
-  const [filterName, setFilterName] = React.useState('');
-  const [open, setOpen] = React.useState(false);
-
-  const handleAddToFilter = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!filterName || filterName.trim() === '') {
-      toast.error('Please enter a filter name');
-      return;
-    }
-
-    const filterData = Object.values(FilterEnum).reduce(
-      (acc, k) => {
-        const key = k.toLowerCase();
-        const value = searchParams.get(key);
-        if (value) {
-          acc[key] = value;
-        }
-        return acc;
-      },
-      {} as Record<string, string | number | boolean>,
-    );
-
-    if (fromDate) filterData.fromDate = fromDate.toString();
-    if (toDate) filterData.toDate = toDate.toString();
-
-    if (Object.keys(filterData).length === 0) {
-      toast.error('Please select at least one filter option');
-      return;
-    }
-
-    const filter = {
-      title: filterName,
-      type: type,
-      isFavorite: false,
-      params: JSON.stringify(filterData),
-    } as filter;
-
-    await addToFilter(filter);
-    setOpen(false);
-    setFilterName('');
-  };
+  const { open, setOpen, filterName, handleAddToFilter, setFilterName } = useFilterName(fromDate, toDate);
 
   return (
     <div
