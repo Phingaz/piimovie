@@ -49,7 +49,6 @@ export function DatePicker({ date, setDate, className }: Props) {
             onMonthChange={setDate}
             onSelect={setDate}
             defaultMonth={date}
-            captionLayout="dropdown"
             onDayClick={() => setOpen(false)}
           />
           <button
