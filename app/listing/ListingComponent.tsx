@@ -28,12 +28,12 @@ const ListingComponent = async ({ data, type }: { data: FilterOption; type: List
     return (
       <div className="container mx-auto mt-[100px] md-5 md:py-10 px-3 md:px-[2rem] relative">
         <div className="flex gap-8 mb-10 md:mb-20">
-          <FilterSection type={type} className="col-span-2 hidden lg:block min-w-[300px] max-w-[300px]" />
+          <FilterSection className="col-span-2 hidden lg:block min-w-[300px] max-w-[300px]" />
           <div className="col-span-8 w-full">
             <PageSection className="lg:justify-between lg:items-center gap-5 lg:flex-row flex-col mb-0 md:mb-0">
               <PageTitle className="capitalize shrink-0">{`${type} listing`}</PageTitle>
               <div className="flex flex-row justify-between gap-2 items-end lg:items-center">
-                <MobileFilter type={type} />
+                <MobileFilter />
                 <SearchBar className="md:min-w-[410px] w-[400px]" />
               </div>
             </PageSection>

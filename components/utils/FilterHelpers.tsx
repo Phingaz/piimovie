@@ -8,7 +8,6 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Slider } from '@/components/ui/slider';
 import { SelectOption } from './Select';
 import { useQueryParams } from '@/app/_hooks/useQueryParams';
-import { ListType } from '@/app/types/utils';
 import { FilterSection } from './Filter';
 import { MultiSelectCombobox } from '../ui/combo-box';
 import { Button } from '../ui/button';
@@ -140,7 +139,7 @@ export const MultiComboBoxes = ({
   );
 };
 
-export const MobileFilter = ({ type }: { type: ListType }) => {
+export const MobileFilter = () => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (
@@ -154,7 +153,7 @@ export const MobileFilter = ({ type }: { type: ListType }) => {
         </SheetTrigger>
         <SheetContent side="bottom" className="h-[60svh] rounded-tl-3xl rounded-tr-3xl border-gray-500/50 border-2">
           <div className="overflow-y-auto h-[calc(80svh-80px)] hidden-scrollbar">
-            <FilterSection type={type} />
+            <FilterSection />
           </div>
         </SheetContent>
       </Sheet>
