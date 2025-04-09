@@ -10,14 +10,16 @@ import {
   updateFilterLastUsedTime,
 } from '../queries/dbProps';
 import { toast } from 'sonner';
-import { filter, movie } from '@prisma/client';
+import { feature_flags, filter, movie } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { useMainCtx } from './Main';
-import { ListType } from '../types/utils';
+import { ListType, ProviderProps } from '../types/utils';
 
 export type TDbPropsCtx = {
   fav: movie[] | null;
+  isSuperAdmin: boolean;
   filters: filter[] | null;
+  featureFlags: feature_flags[] | null;
   manageFav: (movie: movie, type: ListType) => Promise<void>;
   addToFilter: (filter: filter) => Promise<void>;
   removeFromFilter: (filter: filter) => Promise<void>;
@@ -29,11 +31,11 @@ const DbPropsCtx = createContext<TDbPropsCtx | undefined>(undefined);
 
 export type DbPropsCtxProviderProps = {
   children: React.ReactNode;
-  data: { fav: movie[] | null; filters: filter[] | null };
+  value: ProviderProps;
 };
 
-export function DbPropsCtxProvider({ children, data }: DbPropsCtxProviderProps) {
-  const { fav, filters } = data;
+export function DbPropsCtxProvider({ children, value }: DbPropsCtxProviderProps) {
+  const { fav, filters } = value;
   const { user } = useMainCtx();
   const router = useRouter();
 
@@ -108,6 +110,7 @@ export function DbPropsCtxProvider({ children, data }: DbPropsCtxProviderProps) 
   };
 
   const contextValue = {
+    ...value,
     fav,
     filters,
     manageFav,
