@@ -45,6 +45,7 @@ export default function SearchBar({ path = 'search', placeholder = 'Search...', 
         </button>
       )}
       <button
+        aria-label="search"
         type="submit"
         className="h-full px-1 bg-blue-500 text-white rounded-[4px] hover:bg-blue-600 cursor-pointer"
       >
@@ -96,6 +97,7 @@ export const LocalSearch = <T extends { title: string }>({
       />
       {query && (
         <button
+          aria-label="clear search"
           type="button"
           onClick={() => setQuery('')}
           className="text-gray-400 hover:text-white h-full cursor-pointer"

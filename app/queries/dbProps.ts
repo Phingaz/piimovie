@@ -83,7 +83,7 @@ export const getFeatureFlags = async () => {
 export const addFeatureFlag = async (name: string) => {
   if (!name) return null;
   return await db.feature_flags.create({
-    data: { name: name.replace(/\s+/g, '').toLowerCase() },
+    data: { name: name.replace(/\s+/g, '') },
   });
 };
 

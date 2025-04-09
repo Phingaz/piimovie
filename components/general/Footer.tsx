@@ -58,7 +58,7 @@ export default function Footer() {
 
           <div className="flex-[6] flex justify-between flex-wrap gap-8">
             <div className="space-y-4">
-              <h3 className="font-bold text-lg text-gray-300">Quick Links</h3>
+              <h2 className="font-bold text-lg text-gray-300">Quick Links</h2>
               <ul className="space-y-2 text-sm">
                 <li>
                   <Link
@@ -100,7 +100,7 @@ export default function Footer() {
             </div>
 
             <div className="space-y-4">
-              <h3 className="font-bold text-lg text-gray-300">Movies</h3>
+              <h2 className="font-bold text-lg text-gray-300">Movies</h2>
               <ul className="space-y-2 text-sm">
                 {movieCat.map((el) => {
                   return (
@@ -122,7 +122,7 @@ export default function Footer() {
             </div>
 
             <div className="space-y-4">
-              <h3 className="font-bold text-lg text-gray-300">Tv Shows</h3>
+              <p className="font-bold text-lg text-gray-300">Tv Shows</p>
               <ul className="space-y-2 text-sm">
                 {tvShowsCat.map((el) => {
                   return (
