@@ -9,7 +9,9 @@ import { User } from 'better-auth';
 import { LogOutIcon } from 'lucide-react';
 import { authClient } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
-import UserFilterModal from './UserFilterModal';
+import UserFilterModal from '../modals/UserFilterModal';
+import FeatureFlag from '../modals/FeatureFlag';
+import { useDbPropsCtx } from '@/app/_context/DbProps';
 
 export function UserDropDown({
   user,
@@ -21,6 +23,8 @@ export function UserDropDown({
   toggleMobileNav: () => void;
 }) {
   const router = useRouter();
+  const { isSuperAdmin } = useDbPropsCtx();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -33,6 +37,11 @@ export function UserDropDown({
         <DropdownMenuItem className="cursor-pointer bg-black hover:bg-gray-800" onSelect={(e) => e.preventDefault()}>
           <UserFilterModal />
         </DropdownMenuItem>
+        {isSuperAdmin && (
+          <DropdownMenuItem className="cursor-pointer bg-black hover:bg-gray-800" onSelect={(e) => e.preventDefault()}>
+            <FeatureFlag />
+          </DropdownMenuItem>
+        )}
         <DropdownMenuItem
           className="cursor-pointer bg-black hover:bg-gray-800"
           onClick={async () => {

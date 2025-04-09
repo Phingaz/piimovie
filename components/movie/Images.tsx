@@ -3,7 +3,7 @@ import CarouselWrapper from '../carousel/CarouselWrapper';
 import CarouselItem from '../carousel/CarouselItem';
 import SectionTitle from '../utils/texts/SectionTitle';
 import { ErrorMovieSection } from '../helpers/Error';
-import ImageModalCard from '../utils/ImageModalCard';
+import ImageModalCard from '../modals/ImageModalCard';
 import { getImages } from '@/app/queries/queries';
 import { ListType } from '@/app/types/utils';
 
@@ -20,7 +20,7 @@ const Images = async ({ id, type }: { id: number; type: ListType }) => {
         <SectionTitle>
           <>Images</>
         </SectionTitle>
-        <CarouselWrapper hideButtons isLanding={false}>
+        <CarouselWrapper isLanding={false}>
           {images.map((el) => {
             return (
               <CarouselItem

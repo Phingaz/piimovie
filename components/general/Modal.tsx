@@ -8,6 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { cn } from '@/lib/utils';
 import React from 'react';
 
 export default function ModalComponent({
@@ -17,21 +18,23 @@ export default function ModalComponent({
   title,
   description,
   children,
+  className,
 }: {
   open?: boolean;
   setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   trigger: React.ReactNode;
-  title: string;
+  title?: string;
   description?: string;
   children: React.ReactNode;
+  className?: string;
 }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] sm:max-h-[90svh] overflow-y-auto tiny-scrollbar">
+      <DialogContent className={cn('sm:max-w-[600px] sm:max-h-[90svh] overflow-y-auto tiny-scrollbar', className)}>
         <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>{description}</DialogDescription>
+          {title && <DialogTitle>{title}</DialogTitle>}
+          {description && <DialogDescription>{description}</DialogDescription>}
         </DialogHeader>
         {children}
       </DialogContent>
