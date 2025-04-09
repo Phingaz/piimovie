@@ -88,6 +88,7 @@ const Header = () => {
               <div className="flex items-center flex-col md:flex-row gap-4 min-w-fit">
                 <div className="flex gap-3 items-center flex-row">
                   <Link
+                    aria-label="search"
                     href="/search"
                     onClick={() => mobileNav && toggleMobileNav()}
                     className="text-gray-300 bg-gray-700/50 p-[6px] rounded-md w-fit"
@@ -95,6 +96,7 @@ const Header = () => {
                     <Search size={25} />
                   </Link>
                   <Link
+                    aria-label="favorites"
                     href="/favorites"
                     onClick={() => mobileNav && toggleMobileNav()}
                     className="text-gray-300 bg-gray-700/50 p-[6px] rounded-md w-fit"
@@ -102,6 +104,7 @@ const Header = () => {
                     <Heart size={25} />
                   </Link>
                   <Link
+                    aria-label="download"
                     href="/download"
                     onClick={() => mobileNav && toggleMobileNav()}
                     className="text-gray-300 bg-gray-700/50 p-[6px] rounded-md w-fit"
