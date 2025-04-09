@@ -75,3 +75,30 @@ export const updateFilterLastUsedTime = async (id: filter['id'], user: User) => 
     data: { lastUsed: new Date() },
   });
 };
+
+export const getFeatureFlags = async () => {
+  return await db.feature_flags.findMany();
+};
+
+export const addFeatureFlag = async (name: string) => {
+  if (!name) return null;
+  return await db.feature_flags.create({
+    data: { name: name.replace(/\s+/g, '').toLowerCase() },
+  });
+};
+
+export const toggleFeatureFlag = async (id: string) => {
+  if (!id) return null;
+  const featureFlag = await db.feature_flags.findFirst({ where: { id } });
+  if (!featureFlag) return null;
+
+  return await db.feature_flags.update({
+    where: { id: featureFlag.id },
+    data: { enabled: !featureFlag.enabled },
+  });
+};
+
+export const deleteFeatureFlag = async (id: string) => {
+  if (!id) return null;
+  return await db.feature_flags.delete({ where: { id } });
+};

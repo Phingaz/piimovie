@@ -11,8 +11,10 @@ const SignInBtn = () => {
   const googleAuthSignIn = async () => {
     if (loading) return;
     try {
+      const currentUrl = window.location.href;
+      const redirectUrl = new URL(currentUrl);
       setLoading(true);
-      await authClient.signIn.social({ provider: 'google' });
+      await authClient.signIn.social({ provider: 'google', callbackURL: redirectUrl.toString() });
     } catch (error: unknown) {
       clientToastError(error);
     } finally {

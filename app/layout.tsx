@@ -6,9 +6,11 @@ import Header from '@/components/nav/Header';
 import { Toaster } from '@/components/ui/sonner';
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
-import { getFavorites, getFilters } from './queries/dbProps';
-import { filter, movie } from '@prisma/client';
+import { getFavorites, getFeatureFlags, getFilters } from './queries/dbProps';
+import { feature_flags, filter, movie } from '@prisma/client';
 import Footer from '@/components/general/Footer';
+import db from '@/lib/prisma';
+import ENV from '@/lib/env';
 
 const heading = Poppins({
   subsets: ['latin'],
@@ -24,11 +26,18 @@ const body = Inter({
   variable: '--font-body',
 });
 
-export const metadata: Metadata = {
-  title: 'Movie Box | Home',
-  description:
-    'Discover, search, and download your favorite movies with ease. Our app lets you find the latest releases, timeless classics, and hidden gems—all in one place. With powerful search, seamless torrenting, and a personalized favorites list, your movie collection is just a tap away.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const allowBot = await db.feature_flags.findFirst({
+    where: { name: 'allowBots' },
+  });
+
+  return {
+    title: 'Movie Box | Home',
+    description:
+      'Discover, search, and download your favorite movies with ease. Our app lets you find the latest releases, timeless classics, and hidden gems—all in one place. With powerful search, seamless torrenting, and a personalized favorites list, your movie collection is just a tap away.',
+    robots: allowBot ? 'index, follow' : 'noindex',
+  };
+}
 
 export default async function RootLayout({
   children,
@@ -43,11 +52,17 @@ export default async function RootLayout({
 
   let fav: movie[] | null = null;
   let filters: filter[] | null = null;
+  let featureFlags: feature_flags[] | null = null;
 
   if (session && session.user) {
     fav = await getFavorites(session.user);
     filters = await getFilters(session.user);
+    featureFlags = await getFeatureFlags();
   }
+
+  const isSuperAdmin = (ENV.SUPER_ADMINS || '')
+    .split(',')
+    .includes(user?.email || '');
 
   return (
     <html lang="en">
@@ -55,7 +70,7 @@ export default async function RootLayout({
         <meta name="robots" content="noindex" />
       </head>
       <body className={`${heading.variable} ${body.variable} antialiased`}>
-        <Providers value={{ user, fav, filters }}>
+        <Providers value={{ user, fav, filters, featureFlags, isSuperAdmin }}>
           <Header />
           <main className="relative -mt-[80px] min-h-[calc(100svh-200px)]">{children}</main>
           <Footer />

@@ -6,14 +6,13 @@ import { Switch } from '@/components/ui/switch';
 import { SelectComponent } from './Select';
 import { countries, movieGenres, releaseType, sortOptions, tvGenres } from '@/lib/arrys';
 import { cn } from '@/lib/utils';
-import { useFilterName, useFilterState, useQueryParams } from '@/app/_hooks/useQueryParams';
+import { useFilterState, useQueryParams } from '@/app/_hooks/useQueryParams';
 import { CheckBoxes, FilterTitle, MultiComboBoxes, ResetButton, Sliders } from './FilterHelpers';
 import { FilterEnum } from '@/lib/enums';
 import { DatePicker } from '../ui/date-picker';
-import { Button } from '../ui/button';
-import ModalComponent from '../general/Modal';
 import useCookies from '@/app/_hooks/useCookies';
 import { ListType } from '@/app/types/utils';
+import FilterModal from '../modals/FilterModal';
 
 export const FilterSection = ({ className }: { className?: string }) => {
   const router = useRouter();
@@ -43,8 +42,6 @@ export const FilterSection = ({ className }: { className?: string }) => {
     selectedGenres,
     setSelectedGenres,
   } = useFilterState();
-
-  const { open, setOpen, filterName, handleAddToFilter, setFilterName } = useFilterName(fromDate, toDate);
 
   return (
     <div
@@ -141,44 +138,7 @@ export const FilterSection = ({ className }: { className?: string }) => {
         </CheckBoxes>
       )}
 
-      <ModalComponent
-        open={open}
-        setOpen={setOpen}
-        title="Save filter"
-        description="Save this filter as a new filter"
-        trigger={
-          <Button
-            onClick={async () => {}}
-            className="w-full bg-gray-800/30 border border-gray-500/50 hover:bg-gray-800"
-          >
-            Save as a new filter
-          </Button>
-        }
-      >
-        <form>
-          <div className="flex flex-col gap-2 mb-8">
-            <label htmlFor="filter-name" className="text-gray-300 text-sm">
-              Filter name
-            </label>
-            <input
-              type="text"
-              id="filter-name"
-              value={filterName}
-              autoComplete="off"
-              onChange={(e) => setFilterName(e.target.value)}
-              className="bg-gray-800/50 border border-gray-500/50 rounded-md p-2 placeholder:text-gray-400 text-gray-300 placeholder:text-sm px-3 outline-none"
-              placeholder="Enter filter name"
-            />
-          </div>
-          <Button
-            type="submit"
-            onClick={handleAddToFilter}
-            className="w-full bg-gray-800/30 border border-gray-500/50 hover:bg-gray-800"
-          >
-            Save filter
-          </Button>
-        </form>
-      </ModalComponent>
+      <FilterModal fromDate={fromDate} toDate={toDate} />
     </div>
   );
 };

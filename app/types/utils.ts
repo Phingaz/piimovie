@@ -1,5 +1,15 @@
+import { feature_flags, filter, movie } from '@prisma/client';
 import { MovieCategory } from './movies';
 import { ShowCategory } from './show';
+import { User } from 'better-auth';
+
+export type ProviderProps = {
+  user?: User;
+  fav: movie[] | null;
+  filters: filter[] | null;
+  featureFlags: feature_flags[] | null;
+  isSuperAdmin: boolean;
+};
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface FetchDataArgs<T> {

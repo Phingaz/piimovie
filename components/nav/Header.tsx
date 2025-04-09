@@ -66,7 +66,7 @@ const Header = () => {
           </Link>
 
           <nav
-            className={`md:flex justify-between items-center md:w-[80%] lg:w-[62%] ${mobileNav ? ' fixed top-0 right-0 bg-black h-[100vh] w-[270px] pt-10' : 'hidden'}`}
+            className={`md:flex justify-between items-center md:w-[90%] lg:w-[62%] ${mobileNav ? ' fixed top-0 right-0 bg-black h-[100vh] w-[270px] pt-10' : 'hidden'}`}
           >
             <div className="flex md:justify-between gap-5 font-[300] md:flex-row flex-col pt-20 md:pt-0 items-center w-full h-full">
               <div className="items-center flex gap-3 flex-col md:flex-row">
@@ -88,6 +88,7 @@ const Header = () => {
               <div className="flex items-center flex-col md:flex-row gap-4 min-w-fit">
                 <div className="flex gap-3 items-center flex-row">
                   <Link
+                    aria-label="search"
                     href="/search"
                     onClick={() => mobileNav && toggleMobileNav()}
                     className="text-gray-300 bg-gray-700/50 p-[6px] rounded-md w-fit"
@@ -95,6 +96,7 @@ const Header = () => {
                     <Search size={25} />
                   </Link>
                   <Link
+                    aria-label="favorites"
                     href="/favorites"
                     onClick={() => mobileNav && toggleMobileNav()}
                     className="text-gray-300 bg-gray-700/50 p-[6px] rounded-md w-fit"
@@ -102,6 +104,7 @@ const Header = () => {
                     <Heart size={25} />
                   </Link>
                   <Link
+                    aria-label="download"
                     href="/download"
                     onClick={() => mobileNav && toggleMobileNav()}
                     className="text-gray-300 bg-gray-700/50 p-[6px] rounded-md w-fit"

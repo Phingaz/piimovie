@@ -13,5 +13,6 @@ const ENV = {
   BASEURL: process.env.BASEURL!,
   NEXT_PUBLIC_URL: process.env.NEXT_PUBLIC_URL!,
   DATABASE_URL: process.env.DATABASE_URL!,
+  SUPER_ADMINS: process.env.SUPER_ADMINS!,
 };
 export default ENV;

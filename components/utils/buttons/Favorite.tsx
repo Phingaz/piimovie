@@ -38,6 +38,8 @@ const Favorite = ({ type, movie, isLarge = false }: { type: ListType; isLarge?: 
 
   return (
     <motion.button
+      aria-label="Add to favorites"
+      disabled={isLoading}
       whileTap={{ scale: 0.8 }}
       onClick={handleClick}
       className={`p-[6px] rounded-[6px] w-fit ${isFavorite ? 'bg-red-100' : 'bg-gray-700/50'} ${

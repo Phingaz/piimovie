@@ -157,7 +157,7 @@ export default function Footer() {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
             >
-              <span className="text-[10px] text-gray-500">
+              <span className="text-[10px] text-gray-400">
                 This product uses the TMDB API but is not endorsed or certified by TMDB.
               </span>
             </Link>
