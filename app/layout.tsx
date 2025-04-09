@@ -35,7 +35,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: 'Movie Box | Home',
     description:
       'Discover, search, and download your favorite movies with ease. Our app lets you find the latest releases, timeless classics, and hidden gems—all in one place. With powerful search, seamless torrenting, and a personalized favorites list, your movie collection is just a tap away.',
-    robots: allowBot ? 'noindex' : 'index, follow',
+    robots: allowBot ? 'index, follow' : 'noindex',
   };
 }
 
@@ -60,7 +60,9 @@ export default async function RootLayout({
     featureFlags = await getFeatureFlags();
   }
 
-  const isSuperAdmin = ENV.SUPER_ADMINS.split(',').includes(user?.email || '');
+  const isSuperAdmin = (ENV.SUPER_ADMINS || '')
+    .split(',')
+    .includes(user?.email || '');
 
   return (
     <html lang="en">

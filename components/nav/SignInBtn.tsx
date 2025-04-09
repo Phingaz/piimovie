@@ -13,7 +13,6 @@ const SignInBtn = () => {
     try {
       const currentUrl = window.location.href;
       const redirectUrl = new URL(currentUrl);
-      console.log({currentUrl, redirectUrl})
       setLoading(true);
       await authClient.signIn.social({ provider: 'google', callbackURL: redirectUrl.toString() });
     } catch (error: unknown) {
