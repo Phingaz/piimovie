@@ -29,7 +29,7 @@ export function UserDropDown({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className="cursor-pointer">
-          <AvatarImage src={user.image ?? ''} alt={user.name} />
+          <AvatarImage aria-label={user.name} src={user.image ?? ''} alt={user.name} />
           <AvatarFallback>{user.name}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
