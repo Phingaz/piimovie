@@ -58,7 +58,7 @@ export default function Footer() {
 
           <div className="flex-[6] flex justify-between flex-wrap gap-8">
             <div className="space-y-4">
-              <h2 className="font-bold text-lg text-gray-300">Quick Links</h2>
+              <h3 className="font-bold text-lg text-gray-300">Quick Links</h3>
               <ul className="space-y-2 text-sm">
                 <li>
                   <Link
