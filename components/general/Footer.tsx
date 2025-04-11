@@ -101,6 +101,7 @@ export default function Footer() {
 
             <div className="space-y-4">
               <h2 className="font-bold text-lg text-gray-300">Movies</h2>
+              <h2 className="font-bold text-lg text-gray-300">Movies</h2>
               <ul className="space-y-2 text-sm">
                 {movieCat.map((el) => {
                   return (
@@ -122,7 +123,7 @@ export default function Footer() {
             </div>
 
             <div className="space-y-4">
-              <p className="font-bold text-lg text-gray-300">Tv Shows</p>
+              <h2 className="font-bold text-lg text-gray-300">Tv Shows</h2>
               <ul className="space-y-2 text-sm">
                 {tvShowsCat.map((el) => {
                   return (
