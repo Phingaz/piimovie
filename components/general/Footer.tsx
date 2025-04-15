@@ -101,7 +101,6 @@ export default function Footer() {
 
             <div className="space-y-4">
               <h2 className="font-bold text-lg text-gray-300">Movies</h2>
-              <h2 className="font-bold text-lg text-gray-300">Movies</h2>
               <ul className="space-y-2 text-sm">
                 {movieCat.map((el) => {
                   return (
