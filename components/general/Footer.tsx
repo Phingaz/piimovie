@@ -17,7 +17,7 @@ export default function Footer() {
             <Link
               href="/"
               onClick={() => {
-                if (!window) return;
+                if (typeof window === "undefined") return;
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
               className="font-bold text-lg text-gray-300 flex gap-3 items-start"
