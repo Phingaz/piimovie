@@ -1,9 +1,9 @@
 import React, { Suspense } from 'react';
 import LandingListing from './LandingList';
 import { CarouselCardsLoader } from '../helpers/Loaders';
-import { MovieCategory } from '@/app/types/movies';
-import { ShowCategory } from '@/app/types/show';
-import { ListType } from '@/app/types/utils';
+import { MovieCategory } from '@/app/_types/movies';
+import { ShowCategory } from '@/app/_types/show';
+import { ListType } from '@/app/_types/utils';
 
 const LandingListingWrapper = ({ type }: { type: ListType }) => {
   const categories: { type: string; loader: string; category: MovieCategory | ShowCategory }[] =
@@ -15,9 +15,9 @@ const LandingListingWrapper = ({ type }: { type: ListType }) => {
           { loader: 'Top Rated', category: 'top_rated', type: 'movie' },
         ]
       : [
-        { loader: 'Airing Today', category: 'airing_today', type: 'show' },
-        { loader: 'Popular', category: 'popular', type: 'show' },
-        { loader: 'Top Rated', category: 'top_rated', type: 'show' },
+          { loader: 'Airing Today', category: 'airing_today', type: 'show' },
+          { loader: 'Popular', category: 'popular', type: 'show' },
+          { loader: 'Top Rated', category: 'top_rated', type: 'show' },
           { loader: 'On The Air', category: 'on_the_air', type: 'show' },
         ];
 

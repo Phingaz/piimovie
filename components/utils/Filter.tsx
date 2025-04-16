@@ -11,7 +11,7 @@ import { CheckBoxes, FilterTitle, MultiComboBoxes, ResetButton, Sliders } from '
 import { FilterEnum } from '@/lib/enums';
 import { DatePicker } from '../ui/date-picker';
 import useCookies from '@/app/_hooks/useCookies';
-import { ListType } from '@/app/types/utils';
+import { ListType } from '@/app/_types/utils';
 import FilterModal from '../modals/FilterModal';
 
 export const FilterSection = ({ className }: { className?: string }) => {

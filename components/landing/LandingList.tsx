@@ -1,11 +1,11 @@
-import { MovieCategory } from '@/app/types/movies';
+import { MovieCategory } from '@/app/_types/movies';
 import React from 'react';
 import { ErrorSectionComponent } from '../helpers/Error';
 import CarouselWrapper from '../carousel/CarouselWrapper';
 import LandingCard from './LandingMovieCard';
-import { ShowCategory } from '@/app/types/show';
-import { fetchDiscover } from '@/app/queries/queries';
-import { ListType } from '@/app/types/utils';
+import { ShowCategory } from '@/app/_types/show';
+import { fetchDiscover } from '@/app/_queries/queries';
+import { ListType } from '@/app/_types/utils';
 import SeeMore from './SeeMore';
 import { MovieCategoryEnum, Queries, ShowCategoryEnum } from '@/lib/enums';
 import { getQueryString } from '@/lib/utils';

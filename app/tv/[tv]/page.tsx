@@ -1,4 +1,4 @@
-import { getDetails } from '@/app/queries/queries';
+import { getDetails } from '@/app/_queries/queries';
 import { PageLoader } from '@/components/helpers/Loaders';
 import ShowComponent from '@/components/show/ShowComponent';
 import { Metadata } from 'next';

@@ -2,7 +2,7 @@
 import db from '@/lib/prisma';
 import { User } from 'better-auth';
 import { filter, movie } from '@prisma/client';
-import { ListType } from '../types/utils';
+import { ListType } from '../_types/utils';
 
 export const getFavorites = async (user: User) => {
   if (!user) return null;

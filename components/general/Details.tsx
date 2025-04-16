@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { MovieDetail } from '@/app/types/movies';
+import { MovieDetail } from '@/app/_types/movies';
 import Image from 'next/image';
 import { imageUrl } from '@/lib/utils';
 import Ratings from '../utils/texts/Ratings';
@@ -12,7 +12,7 @@ import Favorite from '../utils/buttons/Favorite';
 import Download from '../utils/buttons/Download';
 import GoBack from '../utils/buttons/GoBack';
 import { movie } from '@prisma/client';
-import { ListType } from '@/app/types/utils';
+import { ListType } from '@/app/_types/utils';
 
 const Details = ({ movie }: { type: ListType; movie: MovieDetail }) => {
   return (

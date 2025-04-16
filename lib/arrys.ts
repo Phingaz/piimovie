@@ -1,4 +1,4 @@
-import { ListType } from '@/app/types/utils';
+import { ListType } from '@/app/_types/utils';
 import { SelectOption } from '@/components/utils/Select';
 
 export const links = [

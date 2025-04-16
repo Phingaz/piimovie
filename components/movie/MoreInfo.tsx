@@ -1,4 +1,4 @@
-import { MovieDetail } from '@/app/types/movies';
+import { MovieDetail } from '@/app/_types/movies';
 import {
   Flag,
   Globe,

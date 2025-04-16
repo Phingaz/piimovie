@@ -2,9 +2,9 @@
 import React from 'react';
 import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Movie } from '@/app/types/movies';
+import { Movie } from '@/app/_types/movies';
 import { imageUrl } from '@/lib/utils';
-import { Show } from '@/app/types/show';
+import { Show } from '@/app/_types/show';
 
 const HeroMovieImg = ({
   movie,

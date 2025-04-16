@@ -1,6 +1,6 @@
 import { Flag, Globe, CircleCheck, MessageCircle, Building, MapPin, FileType } from 'lucide-react';
 import SectionTitle from '../utils/texts/SectionTitle';
-import { ShowDetail } from '@/app/types/show';
+import { ShowDetail } from '@/app/_types/show';
 import CreatorCard from './CreatorCard';
 import NetworkBadge from './Networks';
 

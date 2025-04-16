@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { imageCardUrl } from '@/lib/utils';
-import { Network } from '@/app/types/utils';
+import { Network } from '@/app/_types/utils';
 
 export default function NetworkBadge({ network }: { network: Network }) {
   return (

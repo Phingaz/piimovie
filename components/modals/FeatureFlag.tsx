@@ -4,7 +4,7 @@ import { Button } from '../ui/button';
 import { Switch } from '../ui/switch';
 import { FlagIcon, Trash2Icon } from 'lucide-react';
 import { useDbPropsCtx } from '@/app/_context/DbProps';
-import { addFeatureFlag, deleteFeatureFlag, toggleFeatureFlag } from '@/app/queries/dbProps';
+import { addFeatureFlag, deleteFeatureFlag, toggleFeatureFlag } from '@/app/_queries/dbProps';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 

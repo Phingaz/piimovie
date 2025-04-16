@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import Background from '../general/Background';
-import { ShowDetail } from '@/app/types/show';
+import { ShowDetail } from '@/app/_types/show';
 import ShowDetails from './ShowDetail';
 import { CarouselCardsLoader } from '../helpers/Loaders';
 import MoreInfo from './MoreInfo';
@@ -11,8 +11,8 @@ import Seasons from './Seasons';
 import { VideoPlayer } from '../general/VideoPlayer';
 import Images from '../movie/Images';
 import Reviews from '../movie/Reviews';
-import { ListType } from '@/app/types/utils';
-import { getDetails } from '@/app/queries/queries';
+import { ListType } from '@/app/_types/utils';
+import { getDetails } from '@/app/_queries/queries';
 import ErrorPageComponent from '../helpers/Error';
 
 const ShowComponent = async ({ id, type }: { id: string; type: ListType }) => {

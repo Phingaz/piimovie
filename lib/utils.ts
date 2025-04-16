@@ -1,5 +1,5 @@
-import { Movie, MovieCategory } from '@/app/types/movies';
-import { Show, ShowCategory } from '@/app/types/show';
+import { Movie, MovieCategory } from '@/app/_types/movies';
+import { Show, ShowCategory } from '@/app/_types/show';
 import { movie } from '@prisma/client';
 import { type ClassValue, clsx } from 'clsx';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
@@ -7,7 +7,7 @@ import { TransitionStartFunction } from 'react';
 import { toast } from 'sonner';
 import { twMerge } from 'tailwind-merge';
 import { MovieCategoryEnum, ShowCategoryEnum } from './enums';
-import { FilterOption } from '@/app/types/utils';
+import { FilterOption } from '@/app/_types/utils';
 import { format, formatDistanceToNow, parseISO } from 'date-fns';
 
 export function cn(...inputs: ClassValue[]) {

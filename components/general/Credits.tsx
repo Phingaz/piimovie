@@ -7,8 +7,8 @@ import SectionTitle from '../utils/texts/SectionTitle';
 import { ErrorMovieSection } from '../helpers/Error';
 import EmptyList from '../utils/EmptyList';
 import Link from 'next/link';
-import { getCredits } from '../../app/queries/queries';
-import { ListType } from '@/app/types/utils';
+import { getCredits } from '../../app/_queries/queries';
+import { ListType } from '@/app/_types/utils';
 
 const Credits = async ({ id, type }: { id: number; type: ListType }) => {
   try {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Metadata } from 'next';
-import { ListType, FilterOption } from '../types/utils';
+import { ListType, FilterOption } from '../_types/utils';
 import { cookies } from 'next/headers';
 import ListingComponent from './ListingComponent';
 

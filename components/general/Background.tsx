@@ -2,9 +2,9 @@
 import React from 'react';
 import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
-import { MovieDetail } from '@/app/types/movies';
+import { MovieDetail } from '@/app/_types/movies';
 import { imageUrl } from '@/lib/utils';
-import { ShowDetail } from '@/app/types/show';
+import { ShowDetail } from '@/app/_types/show';
 
 const Background = ({ movie }: { movie: MovieDetail | ShowDetail }) => {
   const title = React.useMemo(() => (movie as MovieDetail).title || (movie as ShowDetail).original_name, [movie]);

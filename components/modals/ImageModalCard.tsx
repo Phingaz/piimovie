@@ -2,7 +2,7 @@
 import React, { useCallback } from 'react';
 import ImageComponent from '../utils/ImageComponent';
 import { imageCardUrl, imageUrl } from '@/lib/utils';
-import { Poster } from '@/app/types/utils';
+import { Poster } from '@/app/_types/utils';
 import { Button } from '../ui/button';
 import ModalComponent from '../general/Modal';
 import NextImage from 'next/image';

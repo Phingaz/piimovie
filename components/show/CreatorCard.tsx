@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { imageCardUrl } from '@/lib/utils';
-import { CreatedBy } from '@/app/types/utils';
+import { CreatedBy } from '@/app/_types/utils';
 
 export default function CreatorCard({ creator }: { creator: CreatedBy }) {
   return (

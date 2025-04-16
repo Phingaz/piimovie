@@ -1,9 +1,9 @@
 import React from 'react';
 import LandingListingWrapper from './LadingListingWrapper';
-import { ListType } from '@/app/types/utils';
-import { fetchDiscover } from '@/app/queries/queries';
+import { ListType } from '@/app/_types/utils';
+import { fetchDiscover } from '@/app/_queries/queries';
 import { getQueryString, getRandomMovieCategory, getRandomNumber } from '@/lib/utils';
-import { Movie } from '@/app/types/movies';
+import { Movie } from '@/app/_types/movies';
 import ErrorPageComponent from '../helpers/Error';
 import LandingComponentClient from '../general/LandingComponentClient';
 import { Queries } from '@/lib/enums';

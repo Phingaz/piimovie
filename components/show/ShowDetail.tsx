@@ -8,7 +8,7 @@ import Genres from '../utils/texts/Genres';
 import Favorite from '../utils/buttons/Favorite';
 import Download from '../utils/buttons/Download';
 import GoBack from '../utils/buttons/GoBack';
-import { ShowDetail } from '@/app/types/show';
+import { ShowDetail } from '@/app/_types/show';
 import { movie } from '@prisma/client';
 import ShowRunTime from './ShowRunTime';
 import NumberOfEpisodes from './NumberOfEpisodes';
