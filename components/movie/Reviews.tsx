@@ -6,8 +6,8 @@ import Image from 'next/image';
 import { formatDate, imageCardUrl } from '@/lib/utils';
 import Ratings from '../utils/texts/Ratings';
 import Comment from './Comment';
-import { getReviews } from '@/app/queries/queries';
-import { ListType } from '@/app/types/utils';
+import { getReviews } from '@/app/_queries/queries';
+import { ListType } from '@/app/_types/utils';
 
 const Reviews = async ({ id, type }: { id: number; type: ListType }) => {
   try {

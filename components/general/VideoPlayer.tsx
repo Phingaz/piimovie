@@ -1,7 +1,7 @@
 import React from 'react';
 import { MovieDetailError } from '../helpers/Error';
-import { getVideos } from '@/app/queries/queries';
-import { ListType } from '@/app/types/utils';
+import { getVideos } from '@/app/_queries/queries';
+import { ListType } from '@/app/_types/utils';
 
 export const VideoPlayer = async ({ id, type }: { id: number; type: ListType }) => {
   try {

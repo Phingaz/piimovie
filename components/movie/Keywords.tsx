@@ -1,7 +1,7 @@
 import React from 'react';
 import SectionTitle from '../utils/texts/SectionTitle';
-import { getKeyWords } from '@/app/queries/queries';
-import { ListType } from '@/app/types/utils';
+import { getKeyWords } from '@/app/_queries/queries';
+import { ListType } from '@/app/_types/utils';
 
 const Keywords = async ({ id, type }: { id: number; type: ListType }) => {
   try {

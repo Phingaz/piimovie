@@ -1,7 +1,7 @@
 'use client';
 import { useDbPropsCtx } from '@/app/_context/DbProps';
 import { useMainCtx } from '@/app/_context/Main';
-import { ListType } from '@/app/types/utils';
+import { ListType } from '@/app/_types/utils';
 import { clientToastError, isFav } from '@/lib/utils';
 import { movie } from '@prisma/client';
 import { motion } from 'framer-motion';

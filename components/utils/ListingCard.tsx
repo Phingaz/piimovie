@@ -1,11 +1,11 @@
-import { Movie } from '@/app/types/movies';
+import { Movie } from '@/app/_types/movies';
 import Link from 'next/link';
 import React from 'react';
 import { formatDate, imageCardUrl } from '@/lib/utils';
 import ImageComponent from './ImageComponent';
 import FavAndReview from './buttons/FavAndReview';
-import { ListType } from '@/app/types/utils';
-import { Show } from '@/app/types/show';
+import { ListType } from '@/app/_types/utils';
+import { Show } from '@/app/_types/show';
 
 const ListingCard = ({ movie, genres, type }: { type: ListType; movie: Movie | Show; genres: string }) => {
   const title = type === 'movie' ? (movie as Movie).title : (movie as Show).name;

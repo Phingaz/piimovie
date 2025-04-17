@@ -1,8 +1,8 @@
 import React from 'react';
-import { ListType } from '@/app/types/utils';
-import { fetchDiscover } from '@/app/queries/queries';
+import { ListType } from '@/app/_types/utils';
+import { fetchDiscover } from '@/app/_queries/queries';
 import { getQueryString, getRandomNumber, getRandomShowCategory } from '@/lib/utils';
-import { Show } from '@/app/types/show';
+import { Show } from '@/app/_types/show';
 import ErrorPageComponent from '../helpers/Error';
 import LandingComponentClient from '../general/LandingComponentClient';
 import LandingListingWrapper from '../landing/LadingListingWrapper';

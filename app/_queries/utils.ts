@@ -1,5 +1,5 @@
 import ENV from '@/lib/env';
-import { FetchDataArgs } from '../types/utils';
+import { FetchDataArgs } from '../_types/utils';
 
 const token = ENV.TMDB_API_KEY;
 

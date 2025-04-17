@@ -1,7 +1,7 @@
 import ErrorPageComponent from '@/components/helpers/Error';
 import React from 'react';
-import { fetchDiscover } from '../queries/queries';
-import { ListType, FilterOption } from '../types/utils';
+import { fetchDiscover } from '../_queries/queries';
+import { ListType, FilterOption } from '../_types/utils';
 import SearchBar from '@/components/utils/SearchComponent';
 import ListingCard from '@/components/utils/ListingCard';
 import { movieGenres } from '@/lib/arrys';

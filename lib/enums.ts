@@ -1,6 +1,6 @@
-import { MovieCategory } from '@/app/types/movies';
-import { ShowCategory } from '@/app/types/show';
-import { ListType } from '@/app/types/utils';
+import { MovieCategory } from '@/app/_types/movies';
+import { ShowCategory } from '@/app/_types/show';
+import { ListType } from '@/app/_types/utils';
 import { formatISO } from 'date-fns';
 
 export const SortOptionsEnum = (type: ListType) => ({

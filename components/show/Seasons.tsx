@@ -10,7 +10,7 @@ import NumberOfSeasons from './NumberOfSeasons';
 import NumberOfEpisodes from './NumberOfEpisodes';
 import Ratings from '../utils/texts/Ratings';
 import ReleaseDate from '../utils/texts/ReleaseDate';
-import { Season } from '@/app/types/utils';
+import { Season } from '@/app/_types/utils';
 
 const Seasons = async ({ seasons }: { seasons: Season[] }) => {
   try {

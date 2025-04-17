@@ -7,11 +7,11 @@ import {
   ListApiResponse,
   ReviewsApiResponse,
   VideoApiResponse,
-} from '../types/api';
+} from '../_types/api';
 import { fetchData } from './utils';
-import { ListType } from '../types/utils';
-import { Show, ShowDetail } from '../types/show';
-import { MovieDetail, Movie } from '../types/movies';
+import { ListType } from '../_types/utils';
+import { Show, ShowDetail } from '../_types/show';
+import { MovieDetail, Movie } from '../_types/movies';
 
 const tmdbUrl = ENV.TMDB_URL;
 

@@ -4,9 +4,9 @@ import ListingCard from '@/components/utils/ListingCard';
 import SearchBar from '@/components/utils/SearchComponent';
 import { SearchXIcon } from 'lucide-react';
 import React from 'react';
-import { search } from '../queries/queries';
+import { search } from '../_queries/queries';
 import { movieGenres } from '@/lib/arrys';
-import { ListType } from '../types/utils';
+import { ListType } from '../_types/utils';
 import PageTitle from '@/components/utils/texts/PageTitle';
 import PageSection from '@/components/utils/texts/PageSection';
 

@@ -2,14 +2,14 @@
 import { PlayCircleIcon } from 'lucide-react';
 import React, { useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Movie } from '@/app/types/movies';
+import { Movie } from '@/app/_types/movies';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { imageUrl } from '@/lib/utils';
 import Ratings from '../utils/texts/Ratings';
 import ReleaseDate from '../utils/texts/ReleaseDate';
-import { Show } from '@/app/types/show';
-import { ListType } from '@/app/types/utils';
+import { Show } from '@/app/_types/show';
+import { ListType } from '@/app/_types/utils';
 
 const HeroMovieInfo = ({ movie, type }: { type: ListType; movie?: Movie | Show }) => {
   const router = useRouter();

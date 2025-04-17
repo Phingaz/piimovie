@@ -6,7 +6,7 @@ import Header from '@/components/nav/Header';
 import { Toaster } from '@/components/ui/sonner';
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
-import { getFavorites, getFeatureFlags, getFilters } from './queries/dbProps';
+import { getFavorites, getFeatureFlags, getFilters } from './_queries/dbProps';
 import { feature_flags, filter, movie } from '@prisma/client';
 import Footer from '@/components/general/Footer';
 import db from '@/lib/prisma';

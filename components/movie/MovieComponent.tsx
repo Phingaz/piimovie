@@ -10,9 +10,9 @@ import Similar from '../ui/Similar';
 import Recommended from '../general/Recommended';
 import MoreInfo from './MoreInfo';
 import Reviews from './Reviews';
-import { ListType } from '@/app/types/utils';
-import { getDetails } from '@/app/queries/queries';
-import { MovieDetail } from '@/app/types/movies';
+import { ListType } from '@/app/_types/utils';
+import { getDetails } from '@/app/_queries/queries';
+import { MovieDetail } from '@/app/_types/movies';
 import ErrorPageComponent from '../helpers/Error';
 
 const MovieComponent = async ({ id, type }: { id: string; type: ListType }) => {

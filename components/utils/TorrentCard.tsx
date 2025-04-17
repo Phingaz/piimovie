@@ -17,7 +17,7 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { formatDownloadDate } from '@/lib/utils';
-import { DownlodResult } from '@/app/types/utils';
+import { DownlodResult } from '@/app/_types/utils';
 
 export default function TorrentItem({ torrent }: { torrent: DownlodResult }) {
   const [copiedHash, setCopiedHash] = useState(false);
@@ -38,7 +38,7 @@ export default function TorrentItem({ torrent }: { torrent: DownlodResult }) {
     }
   };
 
-  console.log(torrent.date)
+  console.log(torrent.date);
 
   return (
     <div className="bg-gray-900 rounded-lg p-3 hover:bg-gray-750 duration-200 border border-gray-900 shadow shadow-gray-500 hover:scale-[1.005] transition-all">

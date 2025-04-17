@@ -3,7 +3,7 @@ import posthog from 'posthog-js';
 import { PostHogProvider } from 'posthog-js/react';
 import { MainCtxProvider } from './_context/Main';
 import { DbPropsCtxProvider } from './_context/DbProps';
-import { ProviderProps } from './types/utils';
+import { ProviderProps } from './_types/utils';
 
 const Providers = ({ children, value }: { children: React.ReactNode; value: ProviderProps }) => {
   if (typeof window !== 'undefined' && process.env.NODE_ENV === 'production') {

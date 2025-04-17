@@ -1,7 +1,7 @@
 'use client';
-import { MovieCategory } from '@/app/types/movies';
-import { ShowCategory } from '@/app/types/show';
-import { FilterOption, ListType } from '@/app/types/utils';
+import { MovieCategory } from '@/app/_types/movies';
+import { ShowCategory } from '@/app/_types/show';
+import { FilterOption, ListType } from '@/app/_types/utils';
 import { Queries } from '@/lib/enums';
 import { getQueryString } from '@/lib/utils';
 import Link from 'next/link';

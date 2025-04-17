@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import { Metadata } from 'next';
 import { cookies } from 'next/headers';
-import { ListType } from '../types/utils';
+import { ListType } from '../_types/utils';
 import SearchComponent from './SearchComponent';
 import PageLoader from './loading';
 import { MovieCategoryEnum } from '@/lib/enums';

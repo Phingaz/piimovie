@@ -1,5 +1,5 @@
 import React from 'react';
-import { searchMoviesForDownload } from '../queries/queries';
+import { searchMoviesForDownload } from '../_queries/queries';
 import SearchBar from '@/components/utils/SearchComponent';
 import TorrentItem from '@/components/utils/TorrentCard';
 import SimplePagination from '@/components/utils/buttons/SimplePagination';

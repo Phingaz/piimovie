@@ -4,8 +4,8 @@ import SectionTitle from '../utils/texts/SectionTitle';
 import { ErrorMovieSection } from '../helpers/Error';
 import LandingCard from '../landing/LandingMovieCard';
 import EmptyList from '../utils/EmptyList';
-import { getSimilar } from '@/app/queries/queries';
-import { ListType } from '@/app/types/utils';
+import { getSimilar } from '@/app/_queries/queries';
+import { ListType } from '@/app/_types/utils';
 
 const Similar = async ({ id, type }: { id: number; type: ListType }) => {
   try {

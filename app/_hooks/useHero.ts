@@ -1,8 +1,8 @@
 'use client';
 import { getRandomMovie, imageUrl, preloadImage } from '@/lib/utils';
 import { useEffect, useState } from 'react';
-import { Movie } from '../types/movies';
-import { Show } from '../types/show';
+import { Movie } from '../_types/movies';
+import { Show } from '../_types/show';
 
 const time = 20;
 const intervalTime = 500;

@@ -8,12 +8,12 @@ import {
   removeFromFavorites,
   removeFromFilterFavorites,
   updateFilterLastUsedTime,
-} from '../queries/dbProps';
+} from '../_queries/dbProps';
 import { toast } from 'sonner';
 import { feature_flags, filter, movie } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { useMainCtx } from './Main';
-import { ListType, ProviderProps } from '../types/utils';
+import { ListType, ProviderProps } from '../_types/utils';
 
 export type TDbPropsCtx = {
   fav: movie[] | null;
