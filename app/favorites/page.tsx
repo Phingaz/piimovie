@@ -9,34 +9,41 @@ import { movie } from '@prisma/client';
 import { useMainCtx } from '../_context/Main';
 import { ListType } from '../_types/utils';
 import { SelectComponent } from '@/components/utils/Select';
-import { filterType } from '@/lib/arrys';
+import { favSortOptions, favFilterType } from '@/lib/arrays';
 import PageTitle from '@/components/utils/texts/PageTitle';
 import PageSection from '@/components/utils/texts/PageSection';
+import useLocalStorage from '../_hooks/useLocalStorage';
 
 const Page = () => {
   const { user } = useMainCtx();
   const { fav: movies } = useDbPropsCtx();
 
-  const [value, setValue] = useState<string | null>('all');
+  const [filterType, setFilterType] = useState<string | null>('all');
   const [searchResults, setSearchResults] = useState<movie[] | null>(movies);
   const [filteredResults, setFilteredResults] = useState<movie[] | null>(movies);
+  const [sortOrder, setSortOrder] = useLocalStorage<string | null>('favSortOrder', 'desc');
 
   useEffect(() => {
     if (searchResults) {
-      if (value === 'all') {
-        setFilteredResults(searchResults);
-      } else {
-        setFilteredResults(searchResults.filter((el) => el.type === value));
-      }
+      let results = filterType === 'all' ? searchResults : searchResults.filter((el) => el.type === filterType);
+
+      results = [...results].sort((a, b) => {
+        if (sortOrder === 'desc') {
+          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+        }
+        return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+      });
+      setFilteredResults(results);
     }
-  }, [searchResults, value]);
+  }, [searchResults, sortOrder, filterType]);
 
   return (
     <div className="container mx-auto py-10 mt-[70px] px-3 md:px-[2rem]">
       <PageSection>
         <PageTitle>Favorite</PageTitle>
         <div className="flex md:flex-row flex-col gap-2 md:items-center">
-          <SelectComponent value={value} setValue={setValue} options={filterType} />
+          <SelectComponent value={sortOrder} setValue={setSortOrder} options={favSortOptions} />
+          <SelectComponent value={filterType} setValue={setFilterType} options={favFilterType} />
           <LocalSearch data={movies} setFilteredResults={setSearchResults} />
         </div>
       </PageSection>

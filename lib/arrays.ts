@@ -67,17 +67,22 @@ export const sortOptions = (t: ListType): SelectOption[] => {
     { label: 'Popularity ↓', value: 'popularity.desc' },
     { label: 'Popularity ↑', value: 'popularity.asc' },
     {
-      label: isMovie ? 'Release Date ↓' : 'Release Date ↓',
+      label: isMovie ? 'Release Date ↓' : 'First Air Date ↓',
       value: isMovie ? 'primary_release_date.desc' : 'first_air_date.desc',
     },
     {
-      label: isMovie ? 'Release Date ↑' : 'Release Date ↑',
+      label: isMovie ? 'Release Date ↑' : 'First Air Date ↑',
       value: isMovie ? 'primary_release_date.asc' : 'first_air_date.asc',
     },
   ];
 };
 
-export const filterType: SelectOption[] = [
+export const favSortOptions: SelectOption[] = [
+  { label: 'Date Added ↑', value: 'asc' },
+  { label: 'Date Added ↓', value: 'desc' },
+];
+
+export const favFilterType: SelectOption[] = [
   { label: 'All Types', value: 'all' },
   { label: 'Tv Shows', value: 'tv' },
   { label: 'Movies', value: 'movie' },

@@ -5,7 +5,7 @@ import SearchBar from '@/components/utils/SearchComponent';
 import { SearchXIcon } from 'lucide-react';
 import React from 'react';
 import { search } from '../_queries/queries';
-import { movieGenres } from '@/lib/arrys';
+import { movieGenres } from '@/lib/arrays';
 import { ListType } from '../_types/utils';
 import PageTitle from '@/components/utils/texts/PageTitle';
 import PageSection from '@/components/utils/texts/PageSection';
