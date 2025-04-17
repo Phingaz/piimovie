@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Clock, ExternalLink, Film, FilterIcon, Star, Trash2Icon, Tv } from 'lucide-react';
 import { LocalSearch } from '../utils/SearchComponent';
 import { SelectComponent } from '../utils/Select';
-import { filterType } from '@/lib/arrys';
+import { filterType } from '@/lib/arrays';
 import { getLastUsedText, getQueryString } from '@/lib/utils';
 import { useDbPropsCtx } from '@/app/_context/DbProps';
 import { filter } from '@prisma/client';

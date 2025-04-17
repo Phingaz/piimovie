@@ -4,7 +4,7 @@ import { fetchDiscover } from '../_queries/queries';
 import { ListType, FilterOption } from '../_types/utils';
 import SearchBar from '@/components/utils/SearchComponent';
 import ListingCard from '@/components/utils/ListingCard';
-import { movieGenres } from '@/lib/arrys';
+import { movieGenres } from '@/lib/arrays';
 import Pagination from '@/components/utils/buttons/Pagination';
 import PageSection from '@/components/utils/texts/PageSection';
 import PageTitle from '@/components/utils/texts/PageTitle';

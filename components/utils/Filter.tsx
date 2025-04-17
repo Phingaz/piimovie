@@ -4,7 +4,7 @@ import React from 'react';
 
 import { Switch } from '@/components/ui/switch';
 import { SelectComponent } from './Select';
-import { countries, movieGenres, releaseType, sortOptions, tvGenres } from '@/lib/arrys';
+import { countries, movieGenres, releaseType, sortOptions, tvGenres } from '@/lib/arrays';
 import { cn } from '@/lib/utils';
 import { useFilterState, useQueryParams } from '@/app/_hooks/useQueryParams';
 import { CheckBoxes, FilterTitle, MultiComboBoxes, ResetButton, Sliders } from './FilterHelpers';
