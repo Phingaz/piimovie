@@ -67,11 +67,11 @@ export const sortOptions = (t: ListType): SelectOption[] => {
     { label: 'Popularity ↓', value: 'popularity.desc' },
     { label: 'Popularity ↑', value: 'popularity.asc' },
     {
-      label: isMovie ? 'Release Date ↓' : 'Release Date ↓',
+      label: isMovie ? 'Release Date ↓' : 'First Air Date ↓',
       value: isMovie ? 'primary_release_date.desc' : 'first_air_date.desc',
     },
     {
-      label: isMovie ? 'Release Date ↑' : 'Release Date ↑',
+      label: isMovie ? 'Release Date ↑' : 'First Air Date ↑',
       value: isMovie ? 'primary_release_date.asc' : 'first_air_date.asc',
     },
   ];
