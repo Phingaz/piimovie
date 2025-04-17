@@ -77,7 +77,12 @@ export const sortOptions = (t: ListType): SelectOption[] => {
   ];
 };
 
-export const filterType: SelectOption[] = [
+export const favSortOptions: SelectOption[] = [
+  { label: 'Date Added ↑', value: 'asc' },
+  { label: 'Date Added ↓', value: 'desc' },
+];
+
+export const favFilterType: SelectOption[] = [
   { label: 'All Types', value: 'all' },
   { label: 'Tv Shows', value: 'tv' },
   { label: 'Movies', value: 'movie' },
