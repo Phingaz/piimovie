@@ -52,7 +52,6 @@ const SelectComponentCategory = ({
 };
 
 export const SelectComponent = ({
-  value,
   setValue,
   options,
   className,
@@ -65,7 +64,7 @@ export const SelectComponent = ({
   const handleSelect = (el: string) => setValue(el);
 
   return (
-    <Select onValueChange={handleSelect} defaultValue={value ?? options[0].value}>
+    <Select onValueChange={handleSelect}>
       <SelectTrigger className={cn('w-fit', className)}>
         <SelectValue placeholder="Select an option" />
       </SelectTrigger>

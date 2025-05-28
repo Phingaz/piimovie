@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import useDebounce from './useDebounce';
@@ -38,6 +39,7 @@ export const useQueryParams = () => {
 };
 
 export const useFilterState = () => {
+  const router = useRouter();
   const { getCookie } = useCookies();
   const isMovie = getCookie('t') === 'movie';
 
@@ -75,43 +77,59 @@ export const useFilterState = () => {
 
   useEffect(() => {
     updateQueryParams(FilterEnum.SORT_BY, sortBy ?? '');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortBy]);
 
   useEffect(() => {
     updateQueryParams(dateGteParam, debouncedFromDate ? format(debouncedFromDate, 'yyyy-MM-dd') : '');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedFromDate, isMovie]);
 
   useEffect(() => {
     updateQueryParams(dateLteParam, debouncedToDate ? format(debouncedToDate, 'yyyy-MM-dd') : '');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedToDate, isMovie]);
 
   useEffect(() => {
     updateQueryParams(FilterEnum.VC_GTE, debouncedVoteCount ?? '');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedVoteCount]);
 
   useEffect(() => {
     updateQueryParams(FilterEnum.VA_GTE, debouncedVoteAverage ?? '');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedVoteAverage]);
 
   useEffect(() => {
     updateQueryParams(FilterEnum.WITH_ORIGIN_COUNTRY, debouncedSelectedCountries);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSelectedCountries]);
 
   useEffect(() => {
     updateQueryParams(FilterEnum.WITH_GENRES, debouncedSelectedGenres);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSelectedGenres]);
 
   useEffect(() => {
     updateQueryParams(FilterEnum.WITHOUT_GENRES, debouncedExcludedGenres);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedExcludedGenres]);
+
+  const resetFilters = () => {
+    setSortBy(null);
+    setFromDate(undefined);
+    setToDate(undefined);
+    setVoteCount(0);
+    setVoteAverage(0);
+    setSelectedCountries([]);
+    setSelectedGenres([]);
+    setExcludedGenres([]);
+
+    // Clear all search params
+    const params = new URLSearchParams(searchParams);
+    params.delete(FilterEnum.SORT_BY);
+    params.delete(dateGteParam);
+    params.delete(dateLteParam);
+    params.delete(FilterEnum.VC_GTE);
+    params.delete(FilterEnum.VA_GTE);
+    params.delete(FilterEnum.WITH_ORIGIN_COUNTRY);
+    params.delete(FilterEnum.WITH_GENRES);
+    params.delete(FilterEnum.WITHOUT_GENRES);
+
+    router.push(window.location.pathname);
+  };
 
   return {
     sortBy,
@@ -130,6 +148,7 @@ export const useFilterState = () => {
     setSelectedGenres,
     excludedGenres,
     setExcludedGenres,
+    resetFilters,
   };
 };
 
