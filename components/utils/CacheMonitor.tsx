@@ -3,14 +3,25 @@
 import React from 'react';
 import { useCache } from '@/app/_hooks/useCache';
 import { Button } from '@/components/ui/button';
-import { RefreshCw, Trash2, Sparkles, BarChart3 } from 'lucide-react';
+import { RefreshCw, Trash2, Sparkles, BarChart3, X } from 'lucide-react';
 
 interface CacheMonitorProps {
   className?: string;
 }
 
 export const CacheMonitor: React.FC<CacheMonitorProps> = ({ className }) => {
-  const { stats, isLoading, error, refresh, clearCache, cleanup, resetStats } = useCache();
+  const {
+    stats,
+    debugInfo,
+    isLoading,
+    error,
+    refresh,
+    clearCache,
+    clearByPattern,
+    cleanup,
+    resetStats,
+    fetchDebugInfo,
+  } = useCache();
 
   const handleClearCache = async () => {
     if (confirm('Are you sure you want to clear all cache entries?')) {
@@ -29,6 +40,16 @@ export const CacheMonitor: React.FC<CacheMonitorProps> = ({ className }) => {
       alert(`Cleaned up ${cleanedCount} expired entries`);
     } catch {
       alert('Failed to cleanup cache');
+    }
+  };
+
+  const handleClearItem = async (pattern: string) => {
+    try {
+      const deletedCount = await clearByPattern(pattern);
+      alert(`Cleared ${deletedCount} cache entries`);
+      fetchDebugInfo(); 
+    } catch {
+      alert('Failed to clear cache item');
     }
   };
 
@@ -138,6 +159,88 @@ export const CacheMonitor: React.FC<CacheMonitorProps> = ({ className }) => {
               </Button>
             </div>
           </div>
+
+          {/* Cached Items List */}
+          {debugInfo && debugInfo.keys.length > 0 && (
+            <div className="border-t border-gray-600 pt-4">
+              <h3 className="text-sm font-medium mb-3 text-gray-300">Cached Items ({debugInfo.totalKeys})</h3>
+              <div className="space-y-2 max-h-64 overflow-y-auto">
+                {debugInfo.keys.map((key, index) => {
+                  // Extract meaningful parts from the cache key
+                  const isApiUrl = key.startsWith('https://');
+                  let displayName = key;
+                  let details = '';
+
+                  if (isApiUrl) {
+                    try {
+                      const url = new URL(key.split(':')[0]);
+                      const pathname = url.pathname;
+                      const params = url.searchParams;
+
+                      // Extract meaningful API endpoint info
+                      if (pathname.includes('/discover/movie')) {
+                        displayName = 'Movie Discovery';
+                        const page = params.get('page') || '1';
+                        const sortBy = params.get('sort_by') || 'popularity.desc';
+                        details = `Page ${page}, Sort: ${sortBy.replace('.desc', ' ↓').replace('.asc', ' ↑')}`;
+                      } else if (pathname.includes('/movie/')) {
+                        displayName = 'Movie Details';
+                        details = pathname.split('/').pop() || '';
+                      } else if (pathname.includes('/tv/')) {
+                        displayName = 'TV Show Details';
+                        details = pathname.split('/').pop() || '';
+                      } else {
+                        displayName = pathname.split('/').pop() || 'API Request';
+                        details = url.hostname;
+                      }
+                    } catch {
+                      displayName = key.length > 50 ? key.substring(0, 50) + '...' : key;
+                    }
+                  } else {
+                    displayName = key.length > 50 ? key.substring(0, 50) + '...' : key;
+                  }
+
+                  // Find matching top accessed entry for this key
+                  const topAccessedEntry = debugInfo.topAccessed.find((entry) => entry.key === key);
+
+                  return (
+                    <div key={index} className="bg-gray-700 rounded p-3 text-sm">
+                      <div className="flex justify-between items-start mb-1">
+                        <div className="flex-1 min-w-0">
+                          <div className="font-medium text-gray-200 truncate">{displayName}</div>
+                          {details && <div className="text-xs text-gray-400 mt-1">{details}</div>}
+                        </div>
+                        <div className="flex items-start gap-2 ml-2 flex-shrink-0">
+                          {topAccessedEntry && (
+                            <div className="text-xs text-gray-400 text-right">
+                              <div>Hits: {topAccessedEntry.accessCount}</div>
+                              <div>Last: {new Date(topAccessedEntry.lastAccessed).toLocaleTimeString()}</div>
+                            </div>
+                          )}
+                          <button
+                            title="Clear this cache entry"
+                            onClick={() => handleClearItem(key)}
+                            className="p-1 border border-gray-500 hover:bg-gray-600 cursor-pointer rounded text-gray-400 hover:text-red-400 transition-colors"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        </div>
+                      </div>
+                      {key.length > 50 && <div className="text-xs text-gray-500 mt-2 break-all">{key}</div>}
+                    </div>
+                  );
+                })}
+
+                {debugInfo.totalKeys > debugInfo.keys.length && (
+                  <div className="text-center py-2">
+                    <span className="text-xs text-gray-500">
+                      Showing {debugInfo.keys.length} of {debugInfo.totalKeys} cached items
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Performance Recommendations */}
           {stats.totalRequests > 50 && (

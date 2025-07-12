@@ -1,6 +1,18 @@
 import { useState, useEffect, useCallback } from 'react';
 import { CacheStats } from '@/lib/cache';
 
+interface CacheDebugInfo {
+  stats: CacheStats;
+  size: number;
+  totalKeys: number;
+  keys: string[];
+  topAccessed: Array<{
+    key: string;
+    accessCount: number;
+    lastAccessed: string;
+  }>;
+}
+
 interface UseCacheReturn {
   stats: CacheStats | null;
   isLoading: boolean;
@@ -10,10 +22,13 @@ interface UseCacheReturn {
   clearByPattern: (pattern: string) => Promise<number>;
   cleanup: () => Promise<number>;
   resetStats: () => Promise<void>;
+  debugInfo: CacheDebugInfo | null;
+  fetchDebugInfo: () => Promise<void>;
 }
 
 export const useCache = (): UseCacheReturn => {
   const [stats, setStats] = useState<CacheStats | null>(null);
+  const [debugInfo, setDebugInfo] = useState<CacheDebugInfo | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -126,14 +141,35 @@ export const useCache = (): UseCacheReturn => {
     }
   }, [fetchStats]);
 
+  const fetchDebugInfo = useCallback(async () => {
+    try {
+      setError(null);
+      const response = await fetch('/api/cache?action=debug');
+      const result = await response.json();
+
+      if (result.success) {
+        setDebugInfo(result.data);
+      } else {
+        setError(result.message || 'Failed to fetch debug info');
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch debug info');
+    }
+  }, []);
+
   useEffect(() => {
     fetchStats();
-    const interval = setInterval(fetchStats, 20000); // Refresh every 20 seconds
+    fetchDebugInfo();
+    const interval = setInterval(() => {
+      fetchStats();
+      fetchDebugInfo();
+    }, 30000);
     return () => clearInterval(interval);
-  }, [fetchStats]);
+  }, [fetchStats, fetchDebugInfo]);
 
   return {
     stats,
+    debugInfo,
     isLoading,
     error,
     refresh: fetchStats,
@@ -141,6 +177,7 @@ export const useCache = (): UseCacheReturn => {
     clearByPattern,
     cleanup,
     resetStats,
+    fetchDebugInfo,
   };
 };
 
