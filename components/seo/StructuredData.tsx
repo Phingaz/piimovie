@@ -14,7 +14,7 @@ interface MovieStructuredDataProps {
     vote_count?: number;
     runtime?: number;
     genres?: Array<{ id: number; name: string }>;
-    production_companies?: Array<{ id: number; name: string }>;
+    production_companies?: Array<{ id?: number; name: string }>;
     production_countries?: Array<{ iso_3166_1: string; name: string }>;
     spoken_languages?: Array<{ iso_639_1: string; name: string }>;
   };
@@ -48,10 +48,10 @@ interface TVShowStructuredDataProps {
     number_of_episodes?: number;
     number_of_seasons?: number;
     genres?: Array<{ id: number; name: string }>;
-    production_companies?: Array<{ id: number; name: string }>;
+    production_companies?: Array<{ id?: number; name: string }>;
     production_countries?: Array<{ iso_3166_1: string; name: string }>;
     spoken_languages?: Array<{ iso_639_1: string; name: string }>;
-    networks?: Array<{ id: number; name: string }>;
+    networks?: Array<{ id?: number; name: string }>;
   };
   credits?: {
     cast?: Array<{

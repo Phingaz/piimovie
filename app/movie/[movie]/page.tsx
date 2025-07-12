@@ -2,6 +2,7 @@ import { getDetails } from '@/app/_queries/queries';
 import { PageLoader } from '@/components/helpers/Loaders';
 import MovieComponent from '@/components/movie/MovieComponent';
 import { ErrorBoundary } from '@/components/helpers/ErrorBoundary';
+import { MovieStructuredData } from '@/components/seo/StructuredData';
 import { Metadata } from 'next';
 import React, { Suspense } from 'react';
 
@@ -82,8 +83,20 @@ export async function generateMetadata({ params }: { params: Promise<{ movie: st
 const Page = async ({ params }: { params: Promise<{ movie: string }> }) => {
   const id = (await params).movie;
 
+  let movieData = null;
+
+  try {
+    const response = await getDetails({ id, type });
+    if (response.data) {
+      movieData = response.data;
+    }
+  } catch (error) {
+    console.error('Error fetching movie data for structured data:', error);
+  }
+
   return (
     <ErrorBoundary>
+      {movieData && <MovieStructuredData movie={movieData} credits={undefined} />}
       <Suspense key={id} fallback={<PageLoader />}>
         <MovieComponent type={type} id={id} />
       </Suspense>

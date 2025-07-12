@@ -2,6 +2,7 @@ import { getDetails } from '@/app/_queries/queries';
 import { PageLoader } from '@/components/helpers/Loaders';
 import ShowComponent from '@/components/show/ShowComponent';
 import { ErrorBoundary } from '@/components/helpers/ErrorBoundary';
+import { TVShowStructuredData } from '@/components/seo/StructuredData';
 import { Metadata } from 'next';
 import React, { Suspense } from 'react';
 
@@ -84,8 +85,21 @@ export async function generateMetadata({ params }: { params: Promise<{ tv: strin
 const Page = async ({ params }: { params: Promise<{ tv: string }> }) => {
   const id = (await params).tv;
 
+  // Get show details for structured data
+  let showData = null;
+
+  try {
+    const response = await getDetails({ id, type });
+    if (response.data) {
+      showData = response.data;
+    }
+  } catch (error) {
+    console.error('Error fetching show data for structured data:', error);
+  }
+
   return (
     <ErrorBoundary>
+      {showData && <TVShowStructuredData show={showData} credits={undefined} />}
       <Suspense fallback={<PageLoader />}>
         <ShowComponent type={type} id={id} />
       </Suspense>

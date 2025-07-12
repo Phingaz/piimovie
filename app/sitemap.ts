@@ -1,7 +1,9 @@
 import { MetadataRoute } from 'next';
 import ENV from '@/lib/env';
+import { fetchDiscover } from './_queries/queries';
+import { getQueryString } from '@/lib/utils';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = ENV.NEXT_PUBLIC_URL;
 
   // Static pages
@@ -52,5 +54,37 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticPages, ...movieCategoryPages, ...tvCategoryPages];
+  const dynamicPages: MetadataRoute.Sitemap = [];
+
+  try {
+    const movieParams = getQueryString({ category: 'popular' });
+    const popularMovies = await fetchDiscover({ type: 'movie', params: movieParams });
+
+    if (popularMovies.data?.results) {
+      const moviePages = popularMovies.data.results.slice(0, 100).map((movie) => ({
+        url: `${baseUrl}/movie/${movie.id}`,
+        lastModified: new Date(),
+        changeFrequency: 'monthly' as const,
+        priority: 0.6,
+      }));
+      dynamicPages.push(...moviePages);
+    }
+
+    const tvParams = getQueryString({ category: 'popular' });
+    const popularShows = await fetchDiscover({ type: 'tv', params: tvParams });
+
+    if (popularShows.data?.results) {
+      const tvPages = popularShows.data.results.slice(0, 100).map((show) => ({
+        url: `${baseUrl}/tv/${show.id}`,
+        lastModified: new Date(),
+        changeFrequency: 'monthly' as const,
+        priority: 0.6,
+      }));
+      dynamicPages.push(...tvPages);
+    }
+  } catch (error) {
+    console.error('Error generating dynamic sitemap:', error);
+  }
+
+  return [...staticPages, ...movieCategoryPages, ...tvCategoryPages, ...dynamicPages];
 }
