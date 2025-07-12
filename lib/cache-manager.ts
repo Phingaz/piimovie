@@ -1,4 +1,5 @@
 import { apiCache } from './cache';
+import { logger } from './logger';
 
 export class CacheManager {
   static getStats() {
@@ -15,7 +16,7 @@ export class CacheManager {
 
   static clearAll() {
     apiCache.clear();
-    console.log('Cache cleared successfully');
+    logger.info('Cache cleared successfully');
   }
 
   static clearByPattern(pattern: string) {
@@ -29,19 +30,19 @@ export class CacheManager {
       }
     });
 
-    console.log(`Cleared ${deletedCount} cache entries matching pattern: ${pattern}`);
+    logger.info(`Cleared ${deletedCount} cache entries matching pattern: ${pattern}`);
     return deletedCount;
   }
 
   static cleanup() {
     const deletedCount = apiCache.cleanup();
-    console.log(`Cleaned up ${deletedCount} expired cache entries`);
+    logger.info(`Cleaned up ${deletedCount} expired cache entries`);
     return deletedCount;
   }
 
   static resetStats() {
     apiCache.resetStats();
-    console.log('Cache statistics reset');
+    logger.info('Cache statistics reset');
   }
 
   static getEntriesByAccess() {
@@ -70,7 +71,7 @@ export class CacheManager {
   }
 
   static async warmUp(entries: Array<{ key: string; fetchFn: () => Promise<unknown> }>) {
-    console.log(`Warming up cache with ${entries.length} entries...`);
+    logger.info(`Warming up cache with ${entries.length} entries...`);
 
     const results = await Promise.allSettled(
       entries.map(async ({ key, fetchFn }) => {
@@ -79,14 +80,14 @@ export class CacheManager {
           apiCache.set(key, data);
           return { key, success: true };
         } catch (error) {
-          console.error(`Failed to warm up cache for key: ${key}`, error);
+          logger.error(`Failed to warm up cache for key: ${key}`, { key }, error);
           return { key, success: false, error };
         }
       }),
     );
 
     const successful = results.filter((r) => r.status === 'fulfilled' && r.value.success).length;
-    console.log(`Cache warm-up completed: ${successful}/${entries.length} entries loaded`);
+    logger.info(`Cache warm-up completed: ${successful}/${entries.length} entries loaded`);
 
     return {
       total: entries.length,
@@ -101,11 +102,11 @@ export class CacheManager {
 
     if (totalRequests > 100) {
       if (hitRate < 50) {
-        console.warn(`Low cache hit rate: ${hitRate.toFixed(2)}%. Consider reviewing cache strategy.`);
+        logger.warn(`Low cache hit rate: ${hitRate.toFixed(2)}%. Consider reviewing cache strategy.`);
       }
 
       if (size > 400) {
-        console.warn(`Cache size is getting large: ${size} entries. Consider reducing TTL or max size.`);
+        logger.warn(`Cache size is getting large: ${size} entries. Consider reducing TTL or max size.`);
       }
     }
 
@@ -122,7 +123,7 @@ export class CacheManager {
 if (process.env.NODE_ENV === 'development') {
   if (typeof window !== 'undefined') {
     (window as Window & { __cacheManager?: typeof CacheManager }).__cacheManager = CacheManager;
-    console.log('Cache manager available at window.__cacheManager');
+    logger.debug('Cache manager available at window.__cacheManager');
   }
 }
 

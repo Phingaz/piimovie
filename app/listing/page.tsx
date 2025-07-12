@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import { ListType, FilterOption } from '../_types/utils';
 import { cookies } from 'next/headers';
 import ListingComponent from './ListingComponent';
+import { ErrorBoundary } from '@/components/helpers/ErrorBoundary';
 
 export async function generateMetadata({
   searchParams,
@@ -54,7 +55,11 @@ const Page = async ({ searchParams }: { searchParams: Promise<{ page: string; ca
 
   if (!data.page) data.page = '1';
 
-  return <ListingComponent data={data} type={type} />;
+  return (
+    <ErrorBoundary>
+      <ListingComponent data={data} type={type} />
+    </ErrorBoundary>
+  );
 };
 
 export default Page;

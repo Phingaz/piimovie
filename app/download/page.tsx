@@ -4,6 +4,7 @@ import { Metadata } from 'next';
 import DownloadComponent from './DownloadComponent';
 import PageLoader from './loading';
 import { MovieCategoryEnum } from '@/lib/enums';
+import { ErrorBoundary } from '@/components/helpers/ErrorBoundary';
 
 export async function generateMetadata({
   searchParams,
@@ -25,9 +26,11 @@ const Page = async ({ searchParams }: { searchParams: Promise<{ page: string; q:
   };
 
   return (
-    <Suspense key={JSON.stringify({ page, q })} fallback={<PageLoader />}>
-      <DownloadComponent page={page} q={q} />
-    </Suspense>
+    <ErrorBoundary>
+      <Suspense key={JSON.stringify({ page, q })} fallback={<PageLoader />}>
+        <DownloadComponent page={page} q={q} />
+      </Suspense>
+    </ErrorBoundary>
   );
 };
 

@@ -5,6 +5,7 @@ import { ListType } from '../_types/utils';
 import SearchComponent from './SearchComponent';
 import PageLoader from './loading';
 import { MovieCategoryEnum } from '@/lib/enums';
+import { ErrorBoundary } from '@/components/helpers/ErrorBoundary';
 
 export async function generateMetadata({
   searchParams,
@@ -44,9 +45,11 @@ const Page = async ({ searchParams }: { searchParams: Promise<{ page: string; q:
   const type = (await cookies()).get('t')?.value as ListType;
 
   return (
-    <Suspense key={JSON.stringify({ q, page })} fallback={<PageLoader />}>
-      <SearchComponent q={q} page={page} type={type} />
-    </Suspense>
+    <ErrorBoundary>
+      <Suspense key={JSON.stringify({ q, page })} fallback={<PageLoader />}>
+        <SearchComponent q={q} page={page} type={type} />
+      </Suspense>
+    </ErrorBoundary>
   );
 };
 

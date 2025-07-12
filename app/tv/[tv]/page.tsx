@@ -1,6 +1,7 @@
 import { getDetails } from '@/app/_queries/queries';
 import { PageLoader } from '@/components/helpers/Loaders';
 import ShowComponent from '@/components/show/ShowComponent';
+import { ErrorBoundary } from '@/components/helpers/ErrorBoundary';
 import { Metadata } from 'next';
 import React, { Suspense } from 'react';
 
@@ -84,9 +85,11 @@ const Page = async ({ params }: { params: Promise<{ tv: string }> }) => {
   const id = (await params).tv;
 
   return (
-    <Suspense fallback={<PageLoader />}>
-      <ShowComponent type={type} id={id} />
-    </Suspense>
+    <ErrorBoundary>
+      <Suspense fallback={<PageLoader />}>
+        <ShowComponent type={type} id={id} />
+      </Suspense>
+    </ErrorBoundary>
   );
 };
 

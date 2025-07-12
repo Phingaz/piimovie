@@ -1,6 +1,7 @@
 import { getDetails } from '@/app/_queries/queries';
 import { PageLoader } from '@/components/helpers/Loaders';
 import MovieComponent from '@/components/movie/MovieComponent';
+import { ErrorBoundary } from '@/components/helpers/ErrorBoundary';
 import { Metadata } from 'next';
 import React, { Suspense } from 'react';
 
@@ -82,9 +83,11 @@ const Page = async ({ params }: { params: Promise<{ movie: string }> }) => {
   const id = (await params).movie;
 
   return (
-    <Suspense key={id} fallback={<PageLoader />}>
-      <MovieComponent type={type} id={id} />
-    </Suspense>
+    <ErrorBoundary>
+      <Suspense key={id} fallback={<PageLoader />}>
+        <MovieComponent type={type} id={id} />
+      </Suspense>
+    </ErrorBoundary>
   );
 };
 

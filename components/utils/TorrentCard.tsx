@@ -16,7 +16,7 @@ import {
   Check,
   ExternalLink,
 } from 'lucide-react';
-import { formatDownloadDate } from '@/lib/utils';
+import { clientToastError, formatDownloadDate } from '@/lib/utils';
 import { DownlodResult } from '@/app/_types/utils';
 
 export default function TorrentItem({ torrent }: { torrent: DownlodResult }) {
@@ -33,12 +33,10 @@ export default function TorrentItem({ torrent }: { torrent: DownlodResult }) {
         setCopiedMagnet(true);
         setTimeout(() => setCopiedMagnet(false), 2000);
       }
-    } catch (err) {
-      console.error('Failed to copy: ', err);
+    } catch {
+      clientToastError('Failed to copy to clipboard');
     }
   };
-
-  console.log(torrent.date);
 
   return (
     <div className="bg-gray-900 rounded-lg p-3 hover:bg-gray-750 duration-200 border border-gray-900 shadow shadow-gray-500 hover:scale-[1.005] transition-all">

@@ -12,6 +12,7 @@ import Footer from '@/components/general/Footer';
 import db from '@/lib/prisma';
 import ENV from '@/lib/env';
 import { WebsiteStructuredData } from '@/components/seo/StructuredData';
+import { ErrorBoundary } from '@/components/helpers/ErrorBoundary';
 
 const heading = Poppins({
   subsets: ['latin'],
@@ -101,7 +102,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     manifest: '/site.webmanifest',
     verification: {
-      google: 'your-google-verification-code',
+      google: ENV.GOOGLE_VERIFICATION_CODE,
     },
   };
 }
@@ -133,11 +134,15 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${heading.variable} ${body.variable} antialiased`}>
         <WebsiteStructuredData />
-        <Providers value={{ user, fav, filters, featureFlags, isSuperAdmin }}>
-          <Header />
-          <main className="relative -mt-[80px] min-h-[calc(100svh-200px)]">{children}</main>
-          <Footer />
-        </Providers>
+        <ErrorBoundary>
+          <Providers value={{ user, fav, filters, featureFlags, isSuperAdmin }}>
+            <Header />
+            <main className="relative -mt-[80px] min-h-[calc(100svh-200px)]">
+              <ErrorBoundary>{children}</ErrorBoundary>
+            </main>
+            <Footer />
+          </Providers>
+        </ErrorBoundary>
         <Toaster richColors />
       </body>
     </html>
