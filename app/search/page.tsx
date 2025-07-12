@@ -13,9 +13,25 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { q } = await searchParams;
 
+  const title = `Search Results${q ? ` for "${q}"` : ''}`;
+  const description = q
+    ? `Search results for "${q}". Find movies and TV shows matching your query.`
+    : 'Search for your favorite movies and TV shows. Discover new content and find detailed information about any title.';
+
   return {
-    title: `Movie Box | Search ${q ? `| ${q}` : ''}`,
-    description: 'Search for movies.',
+    title,
+    description,
+    robots: 'noindex, follow',
+    openGraph: {
+      title,
+      description,
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary',
+      title,
+      description,
+    },
   };
 }
 

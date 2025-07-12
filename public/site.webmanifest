@@ -1,0 +1,53 @@
+{
+  "name": "Pii Movie - Discover Movies & TV Shows",
+  "short_name": "Pii Movie",
+  "description": "Discover, search, and explore movies and TV shows with detailed information, cast, crew, reviews, and more.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000b1c",
+  "theme_color": "#000b1c",
+  "orientation": "portrait-primary",
+  "categories": ["entertainment", "movies", "tv"],
+  "lang": "en-US",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Movies",
+      "short_name": "Movies",
+      "description": "Browse movies",
+      "url": "/movie",
+      "icons": [
+        {
+          "src": "/icon-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "TV Shows",
+      "short_name": "TV Shows",
+      "description": "Browse TV shows",
+      "url": "/tv",
+      "icons": [
+        {
+          "src": "/icon-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}

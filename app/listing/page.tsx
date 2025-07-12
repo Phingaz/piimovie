@@ -10,11 +10,41 @@ export async function generateMetadata({
   searchParams: Promise<{ category: string }>;
 }): Promise<Metadata> {
   const type = (await cookies()).get('t')?.value as ListType;
-  const c = (await searchParams).category;
+  const { category } = await searchParams;
+
+  const typeTitle = type.charAt(0).toUpperCase() + type.slice(1);
+  const categoryTitle = category ? category.charAt(0).toUpperCase() + category.slice(1).replace('_', ' ') : '';
+
+  const title = `${typeTitle} Listing${categoryTitle ? ` - ${categoryTitle}` : ''}`;
+  const description = category
+    ? `Browse ${categoryTitle.toLowerCase()} ${type}s. Discover ${type}s in the ${categoryTitle.toLowerCase()} category with detailed information, ratings, and reviews.`
+    : `Browse and discover ${type}s. Find detailed information, ratings, cast, crew, and reviews for every ${type}.`;
 
   return {
-    title: `${type.charAt(0).toLocaleUpperCase() + type.slice(1)} Listing ${c ? `| ${c.charAt(0).toLocaleUpperCase() + c.slice(1).replace('_', ' ')}` : ''}`,
-    description: `${type.charAt(0).toLocaleUpperCase() + type.slice(1)} listing`,
+    title,
+    description,
+    keywords: [
+      typeTitle.toLowerCase(),
+      ...(category ? [category.replace('_', ' ')] : []),
+      'browse',
+      'listing',
+      'discover',
+      'database',
+      'catalog',
+    ],
+    openGraph: {
+      title,
+      description,
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary',
+      title,
+      description,
+    },
+    alternates: {
+      canonical: `/listing${category ? `?category=${category}` : ''}`,
+    },
   };
 }
 

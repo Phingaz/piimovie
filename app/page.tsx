@@ -8,15 +8,45 @@ export async function generateMetadata(): Promise<Metadata> {
     const c = await cookies();
     const t = c.get('t')?.value;
 
+    const typeTitle = t ? t.charAt(0).toUpperCase() + t.slice(1) : 'Movies & TV Shows';
+    const title = `Discover ${typeTitle}`;
+    const description = `Discover and explore the best ${typeTitle.toLowerCase()}. Find detailed information, cast, crew, reviews, ratings, and more. Browse popular titles, new releases, and timeless classics all in one place.`;
+
     return {
-      title: `Pii Movie | ${t ? t.charAt(0).toLocaleUpperCase() + t.slice(1) : 'Movie'}`,
-      description:
-        'Discover, search, and download your favorite movies with ease. Our app lets you find the latest releases, timeless classics, and hidden gems—all in one place. With powerful search, seamless torrenting, and a personalized favorites list, your movie collection is just a tap away.',
+      title,
+      description,
+      keywords: [
+        'movies',
+        'tv shows',
+        'cinema',
+        'entertainment',
+        'database',
+        'search',
+        'discover',
+        'popular movies',
+        'top rated',
+        'new releases',
+        'cast',
+        'crew',
+        'reviews',
+      ],
+      openGraph: {
+        title,
+        description,
+        type: 'website',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title,
+        description,
+      },
     };
   } catch {
     return {
-      title: 'Pii Movie | Error Fetching Langing Page',
-      description: 'Something went wrong while fetching the movie details.',
+      title: 'Discover Movies & TV Shows',
+      description:
+        'Your ultimate destination for discovering movies and TV shows with detailed information, cast, crew, and reviews.',
+      robots: 'noindex',
     };
   }
 }
