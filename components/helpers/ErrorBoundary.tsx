@@ -70,8 +70,8 @@ interface ErrorFallbackProps {
 
 function DefaultErrorFallback({ error, resetError }: ErrorFallbackProps) {
   return (
-    <div className="flex min-h-[400px] flex-col items-center justify-center p-8 text-center">
-      <div className="mx-auto max-w-md">
+    <div className="flex min-h-[50svh] flex-col items-center justify-center p-8 text-center">
+      <div className="mx-auto">
         <h2 className="text-2xl font-bold text-red-600 mb-4">Something went wrong</h2>
         <p className="text-gray-600 mb-6">
           We apologize for the inconvenience. Please try refreshing the page or contact support if the problem persists.

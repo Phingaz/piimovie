@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import useDebounce from './useDebounce';
@@ -44,7 +43,6 @@ export const useFilterState = () => {
   const isMovie = getCookie('t') === 'movie';
 
   const searchParams = useSearchParams();
-  const updateQueryParams = useQueryParams();
   const vc = Number(searchParams.get(FilterEnum.VC_GTE));
   const va = Number(searchParams.get(FilterEnum.VA_GTE));
   const cs = searchParams.get(FilterEnum.WITH_ORIGIN_COUNTRY)?.split('|') || [];
@@ -75,37 +73,55 @@ export const useFilterState = () => {
   const debouncedSelectedGenres = useDebounce(selectedGenres, DEBOUNCE_TIMEOUT);
   const debouncedExcludedGenres = useDebounce(excludedGenres, DEBOUNCE_TIMEOUT);
 
+  // Consolidated useEffect for all filter updates
   useEffect(() => {
-    updateQueryParams(FilterEnum.SORT_BY, sortBy ?? '');
-  }, [sortBy]);
+    const updates: Array<{ key: string; value: string | string[] }> = [
+      { key: FilterEnum.SORT_BY, value: sortBy ?? '' },
+      { key: dateGteParam, value: debouncedFromDate ? format(debouncedFromDate, 'yyyy-MM-dd') : '' },
+      { key: dateLteParam, value: debouncedToDate ? format(debouncedToDate, 'yyyy-MM-dd') : '' },
+      { key: FilterEnum.VC_GTE, value: debouncedVoteCount?.toString() ?? '' },
+      { key: FilterEnum.VA_GTE, value: debouncedVoteAverage?.toString() ?? '' },
+      { key: FilterEnum.WITH_ORIGIN_COUNTRY, value: debouncedSelectedCountries },
+      { key: FilterEnum.WITH_GENRES, value: debouncedSelectedGenres },
+      { key: FilterEnum.WITHOUT_GENRES, value: debouncedExcludedGenres },
+    ];
 
-  useEffect(() => {
-    updateQueryParams(dateGteParam, debouncedFromDate ? format(debouncedFromDate, 'yyyy-MM-dd') : '');
-  }, [debouncedFromDate, isMovie]);
+    // Batch update all query parameters
+    const params = new URLSearchParams(searchParams);
+    let hasChanges = false;
 
-  useEffect(() => {
-    updateQueryParams(dateLteParam, debouncedToDate ? format(debouncedToDate, 'yyyy-MM-dd') : '');
-  }, [debouncedToDate, isMovie]);
+    updates.forEach(({ key, value }) => {
+      const currentValue = params.get(key);
+      const newValue = Array.isArray(value) ? (value.length > 0 ? value.join('|') : '') : value;
 
-  useEffect(() => {
-    updateQueryParams(FilterEnum.VC_GTE, debouncedVoteCount ?? '');
-  }, [debouncedVoteCount]);
+      if (currentValue !== newValue) {
+        hasChanges = true;
+        if (newValue) {
+          params.set(key, newValue);
+        } else {
+          params.delete(key);
+        }
+      }
+    });
 
-  useEffect(() => {
-    updateQueryParams(FilterEnum.VA_GTE, debouncedVoteAverage ?? '');
-  }, [debouncedVoteAverage]);
-
-  useEffect(() => {
-    updateQueryParams(FilterEnum.WITH_ORIGIN_COUNTRY, debouncedSelectedCountries);
-  }, [debouncedSelectedCountries]);
-
-  useEffect(() => {
-    updateQueryParams(FilterEnum.WITH_GENRES, debouncedSelectedGenres);
-  }, [debouncedSelectedGenres]);
-
-  useEffect(() => {
-    updateQueryParams(FilterEnum.WITHOUT_GENRES, debouncedExcludedGenres);
-  }, [debouncedExcludedGenres]);
+    // Only update URL if there are actual changes
+    if (hasChanges) {
+      router.replace(`?${params.toString()}`, { scroll: false });
+    }
+  }, [
+    sortBy,
+    debouncedFromDate,
+    debouncedToDate,
+    debouncedVoteCount,
+    debouncedVoteAverage,
+    debouncedSelectedCountries,
+    debouncedSelectedGenres,
+    debouncedExcludedGenres,
+    dateGteParam,
+    dateLteParam,
+    searchParams,
+    router,
+  ]);
 
   const resetFilters = () => {
     setSortBy(null);

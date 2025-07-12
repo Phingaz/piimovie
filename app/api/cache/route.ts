@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import CacheManager from '@/lib/cache-manager';
+import { logger } from '@/lib/logger';
 
 export async function GET(request: NextRequest) {
   try {
@@ -36,7 +37,7 @@ export async function GET(request: NextRequest) {
         });
     }
   } catch (error) {
-    console.error('Cache API error:', error);
+    logger.error('Cache API error', {}, error);
     return NextResponse.json(
       {
         success: false,
@@ -102,7 +103,7 @@ export async function POST(request: NextRequest) {
         );
     }
   } catch (error) {
-    console.error('Cache API error:', error);
+    logger.error('Cache API POST error', {}, error);
     return NextResponse.json(
       {
         success: false,
@@ -121,7 +122,7 @@ export async function DELETE() {
       message: 'All cache entries deleted successfully',
     });
   } catch (error) {
-    console.error('Cache API error:', error);
+    logger.error('Cache API DELETE error', {}, error);
     return NextResponse.json(
       {
         success: false,

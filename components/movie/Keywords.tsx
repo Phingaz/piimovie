@@ -28,8 +28,7 @@ const Keywords = async ({ id, type }: { id: number; type: ListType }) => {
         </div>
       </div>
     );
-  } catch (error) {
-    console.error(error);
+  } catch {
     return null;
   }
 };

@@ -9,50 +9,74 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
   const { setCookie } = useCookies();
 
+  // Reusable scroll to top function
+  const scrollToTop = () => {
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  // Component for footer links with consistent behavior
+  const FooterLink = ({
+    href,
+    children,
+    external = false,
+    onClick,
+  }: {
+    href: string;
+    children: React.ReactNode;
+    external?: boolean;
+    onClick?: () => void;
+  }) => (
+    <Link
+      href={href}
+      target={external ? '_blank' : undefined}
+      rel={external ? 'noopener noreferrer' : undefined}
+      onClick={() => {
+        if (!external) scrollToTop();
+        onClick?.();
+      }}
+      className="hover:text-white transition-colors"
+    >
+      {children}
+    </Link>
+  );
+
   return (
     <footer className="w-full bg-black text-gray-400 py-8 mt-auto">
       <div className="container mx-auto px-4">
         <div className="flex gap-8 flex-col md:flex-row">
           <div className="space-y-4 flex-[4]">
-            <Link
-              href="/"
-              onClick={() => {
-                if (!window) return;
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
-              className="font-bold text-lg text-gray-300 flex gap-3 items-start"
-            >
-              <Image
-                priority
-                src="/logo.png"
-                width={60}
-                height={60}
-                alt="logo"
-                unoptimized
-                className="object-contain size-[60px] object-top"
-              />
-              PiiMovie
-            </Link>
+            <FooterLink href="/" onClick={() => {}}>
+              <span className="font-bold text-lg text-gray-300 flex gap-3 items-start">
+                <Image
+                  priority
+                  src="/logo.png"
+                  width={60}
+                  height={60}
+                  alt="logo"
+                  unoptimized
+                  className="object-contain size-[60px] object-top"
+                />
+                PiiMovie
+              </span>
+            </FooterLink>
             <p className="text-sm max-w-[300px]">
               Your ultimate destination for movie information, reviews, and recommendations.
             </p>
             <div className="flex space-x-4">
-              <Link target="_blank" href="https://github.com/Phingaz" className="hover:text-white transition-colors">
+              <FooterLink href="https://github.com/Phingaz" external>
                 <Github size={20} />
                 <span className="sr-only">GitHub</span>
-              </Link>
-              <Link target="_blank" href="https://pnoya.com" className="hover:text-white transition-colors">
+              </FooterLink>
+              <FooterLink href="https://pnoya.com" external>
                 <Link2 size={20} />
                 <span className="sr-only">Portfolio</span>
-              </Link>
-              <Link
-                target="_blank"
-                href="https://www.linkedin.com/in/piinoya"
-                className="hover:text-white transition-colors"
-              >
+              </FooterLink>
+              <FooterLink href="https://www.linkedin.com/in/piinoya" external>
                 <Linkedin size={20} />
                 <span className="sr-only">LinkedIn</span>
-              </Link>
+              </FooterLink>
             </div>
           </div>
 
@@ -61,40 +85,13 @@ export default function Footer() {
               <h2 className="font-bold text-lg text-gray-300">Quick Links</h2>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <Link
-                    onClick={() => {
-                      if (!window) return;
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
-                    href="/"
-                    className="hover:text-white transition-colors"
-                  >
-                    Home
-                  </Link>
+                  <FooterLink href="/">Home</FooterLink>
                 </li>
                 <li>
-                  <Link
-                    onClick={() => {
-                      if (!window) return;
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
-                    href="/movie"
-                    className="hover:text-white transition-colors"
-                  >
-                    Movies
-                  </Link>
+                  <FooterLink href="/movie">Movies</FooterLink>
                 </li>
                 <li>
-                  <Link
-                    onClick={() => {
-                      if (!window) return;
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
-                    href="/tv"
-                    className="hover:text-white transition-colors"
-                  >
-                    TV Shows
-                  </Link>
+                  <FooterLink href="/tv">TV Shows</FooterLink>
                 </li>
               </ul>
             </div>
@@ -102,44 +99,26 @@ export default function Footer() {
             <div className="space-y-4">
               <h2 className="font-bold text-lg text-gray-300">Movies</h2>
               <ul className="space-y-2 text-sm">
-                {movieCat.map((el) => {
-                  return (
-                    <li key={el.href} onClick={() => setCookie('t', 'movie')}>
-                      <Link
-                        href={el.href}
-                        onClick={() => {
-                          if (!window) return;
-                          window.scrollTo({ top: 0, behavior: 'smooth' });
-                        }}
-                        className="hover:text-white transition-colors"
-                      >
-                        {el.title}
-                      </Link>
-                    </li>
-                  );
-                })}
+                {movieCat.map((el) => (
+                  <li key={el.href}>
+                    <FooterLink href={el.href} onClick={() => setCookie('t', 'movie')}>
+                      {el.title}
+                    </FooterLink>
+                  </li>
+                ))}
               </ul>
             </div>
 
             <div className="space-y-4">
               <h2 className="font-bold text-lg text-gray-300">TV Shows</h2>
               <ul className="space-y-2 text-sm">
-                {tvShowsCat.map((el) => {
-                  return (
-                    <li key={el.href} onClick={() => setCookie('t', 'tv')}>
-                      <Link
-                        href={el.href}
-                        onClick={() => {
-                          if (!window) return;
-                          window.scrollTo({ top: 0, behavior: 'smooth' });
-                        }}
-                        className="hover:text-white transition-colors"
-                      >
-                        {el.title}
-                      </Link>
-                    </li>
-                  );
-                })}
+                {tvShowsCat.map((el) => (
+                  <li key={el.href}>
+                    <FooterLink href={el.href} onClick={() => setCookie('t', 'tv')}>
+                      {el.title}
+                    </FooterLink>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
@@ -147,20 +126,11 @@ export default function Footer() {
 
         <div className="mt-8 pt-6 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center mb-4 md:mb-0">
-            <Link
-              href="https://www.themoviedb.org/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center"
-              onClick={() => {
-                if (!window) return;
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
-            >
+            <FooterLink href="https://www.themoviedb.org/" external>
               <span className="text-[10px] text-gray-400">
                 This product uses the TMDB API but is not endorsed or certified by TMDB.
               </span>
-            </Link>
+            </FooterLink>
           </div>
           <div className="text-xs">© {currentYear} PiiMovie. All rights reserved.</div>
         </div>
