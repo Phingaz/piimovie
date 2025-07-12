@@ -8,7 +8,7 @@ import { ShowDetail } from '@/app/_types/show';
 
 const Background = ({ movie }: { movie: MovieDetail | ShowDetail }) => {
   const title = React.useMemo(() => (movie as MovieDetail).title || (movie as ShowDetail).original_name, [movie]);
-  const imageUrlPath = React.useMemo(() => imageUrl(movie.backdrop_path), [movie]);
+  const imageUrlPath = React.useMemo(() => imageUrl(movie.backdrop_path, 'w1280'), [movie]);
 
   return (
     <AnimatePresence mode="wait">
@@ -26,6 +26,8 @@ const Background = ({ movie }: { movie: MovieDetail | ShowDetail }) => {
               fill
               priority
               alt={title}
+              quality={90}
+              sizes="100vw"
               src={imageUrlPath}
               className="scale-[1.2] object-top object-cover w-full h-full absolute"
             />

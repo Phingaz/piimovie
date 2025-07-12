@@ -28,9 +28,11 @@ const ShowDetails = ({ show }: { show: ShowDetail }) => {
         <div className="flex text-gray-300 drop-shadow-hero container">
           <Image
             width={300}
-            height={300}
+            height={400}
+            priority
             alt={show.original_name}
-            src={imageUrl(show.poster_path)}
+            sizes="(max-width: 768px) 0px, 300px"
+            src={imageUrl(show.poster_path, 'w780')}
             className="rounded-lg h-[400px] aspect-[3/4] object-center object-cover hidden md:block"
           />
           <div className="flex flex-col gap-2 justify-center md:px-8">

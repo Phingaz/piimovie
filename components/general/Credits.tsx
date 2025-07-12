@@ -48,7 +48,12 @@ const Credits = async ({ id, type }: { id: number; type: ListType }) => {
                       </Link>
                     </span>
                   </div>
-                  <ImageComponent string={imageCardUrl(el.profile_path)} title={el.name} />
+                  <ImageComponent
+                    string={imageCardUrl(el.profile_path)}
+                    title={el.name}
+                    aspectRatio="3/4"
+                    sizes="(max-width: 768px) 33vw, 16vw"
+                  />
                 </CarouselItem>
               );
             })}

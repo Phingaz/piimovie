@@ -15,7 +15,7 @@ const HeroMovieInfo = ({ movie, type }: { type: ListType; movie?: Movie | Show }
   const router = useRouter();
 
   const title = useMemo(() => (movie ? (movie as Movie).title || (movie as Show).name : ''), [movie]);
-  const posterUrl = useMemo(() => imageUrl(movie?.poster_path), [movie]);
+  const posterUrl = useMemo(() => imageUrl(movie?.poster_path, 'w780'), [movie]);
   const overview = useMemo(() => movie?.overview || 'No overview available.', [movie]);
   const movieId = useMemo(() => movie?.id, [movie]);
   const releaseDate = useMemo(
@@ -40,9 +40,10 @@ const HeroMovieInfo = ({ movie, type }: { type: ListType; movie?: Movie | Show }
             <Image
               width={320}
               height={420}
-              loading="eager"
+              priority
               alt={title}
               src={posterUrl}
+              sizes="(max-width: 768px) 0px, 320px"
               className="rounded-lg border border-gray-500/50 hidden md:block aspect-[3/4] object-center object-cover ml-8 w-[300px] h-[400px]"
             />
 

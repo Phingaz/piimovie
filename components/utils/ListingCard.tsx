@@ -24,9 +24,11 @@ const ListingCard = ({ movie, genres, type }: { type: ListType; movie: Movie | S
           </div>
         </div>
         <ImageComponent
-          className="rounded-md group-hover:scale-110"
-          string={imageCardUrl(movie.poster_path)}
           title={title}
+          aspectRatio="3/4"
+          className="rounded-md group-hover:scale-110"
+          string={imageCardUrl(movie.poster_path, 'w342')}
+          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
         />
       </Link>
     </div>
