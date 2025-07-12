@@ -66,7 +66,7 @@ const HeroMovieInfo = ({ movie, type }: { type: ListType; movie?: Movie | Show }
                 className="text-[15px] line-clamp-3"
                 initial={{ opacity: 0, y: -1 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.15, type: 'bounce' }}
+                transition={{ delay: 0.15, type: 'spring' }}
               >
                 {overview}
               </motion.p>
