@@ -11,16 +11,6 @@ export default function CachePage() {
       </div>
 
       <CacheMonitor className="w-full max-w-4xl mx-auto" />
-
-      <div className="mt-8 text-sm text-gray-500">
-        <p>
-          <strong>Note:</strong> This page is for development and monitoring purposes.
-        </p>
-        <p>
-          The cache system automatically manages API responses to improve performance. You can use this page to monitor
-          cache statistics and perform maintenance tasks.
-        </p>
-      </div>
     </div>
   );
 }

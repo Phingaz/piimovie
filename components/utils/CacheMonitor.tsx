@@ -164,7 +164,7 @@ export const CacheMonitor: React.FC<CacheMonitorProps> = ({ className }) => {
           {debugInfo && debugInfo.keys.length > 0 && (
             <div className="border-t border-gray-600 pt-4">
               <h3 className="text-sm font-medium mb-3 text-gray-300">Cached Items ({debugInfo.totalKeys})</h3>
-              <div className="space-y-2 max-h-64 overflow-y-auto">
+              <div className="space-y-2 max-h-64 overflow-y-auto tiny-scrollbar">
                 {debugInfo.keys.map((key, index) => {
                   // Extract meaningful parts from the cache key
                   const isApiUrl = key.startsWith('https://');
