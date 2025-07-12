@@ -6,10 +6,41 @@ import React, { Suspense } from 'react';
 const type = 'tv';
 
 export function generateMetadata(): Metadata {
+  const title = 'TV Shows';
+  const description =
+    'Explore the best TV shows and series. Discover popular series, trending shows, top-rated programs, and classic television. Find detailed information about episodes, seasons, cast, crew, and reviews for every show.';
+
   return {
-    title: `Pii Movie | ${type.charAt(0).toLocaleUpperCase() + type.slice(1)}`,
-    description:
-      'Discover, search, and download your favorite movies with ease. Our app lets you find the latest releases, timeless classics, and hidden gems—all in one place. With powerful search, seamless torrenting, and a personalized favorites list, your movie collection is just a tap away.',
+    title,
+    description,
+    keywords: [
+      'tv shows',
+      'television series',
+      'streaming',
+      'episodes',
+      'seasons',
+      'popular shows',
+      'top rated series',
+      'tv database',
+      'show reviews',
+      'drama series',
+      'comedy shows',
+      'documentaries',
+      'miniseries',
+    ],
+    openGraph: {
+      title: `${title} | Pii Movie`,
+      description,
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${title} | Pii Movie`,
+      description,
+    },
+    alternates: {
+      canonical: '/tv',
+    },
   };
 }
 

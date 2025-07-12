@@ -1,42 +1,37 @@
 import ENV from '@/lib/env';
+import { apiCache, generateCacheKey } from '@/lib/cache';
 import { FetchDataArgs } from '../_types/utils';
+import { logger, AppError, createSafeErrorMessage } from '@/lib/logger';
 
 const token = ENV.TMDB_API_KEY;
 
-export const logger = (message?: string) => {
-  const timestamp = new Date().toISOString();
-  console.log(`[${timestamp}] - ${message || 'Error message is empty'}`);
-};
 export const serverResult = <T>(data: T, message = 'Successfully fetched data') => {
-  logger(message);
+  logger.info(message);
   return { data, success: true, message };
 };
 
 export function catchError(error: unknown) {
-  let status_message = 'An unknown error occurred';
-  const timestamp = new Date().toISOString();
+  const safeMessage = createSafeErrorMessage(error);
 
-  if (error instanceof Error) {
-    status_message = error.message;
-    console.error(`[${timestamp}] - ${error}`);
+  if (error instanceof AppError) {
+    logger.warn('Application error', error.context, error);
   } else {
-    console.error(error);
+    logger.error('Unexpected error', {}, error);
   }
-  return { success: false, message: status_message, data: null };
-}
 
-const cache = new Map<string, { data: unknown; timestamp: number }>();
-const CACHE_TTL = 10 * 60 * 1000;
+  return { success: false, message: safeMessage, data: null };
+}
 
 export async function fetchData<T>({ url, args, message }: FetchDataArgs<T>) {
   try {
-    if (!url) throw Error('No url provided');
+    if (!url) throw new AppError('No URL provided', 400);
 
     const cacheKey = generateCacheKey(url, args);
-    const cached = cache.get(cacheKey);
+    const cached = apiCache.get(cacheKey);
 
-    if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
-      return serverResult(cached.data as T, `[CACHED] ${message}`);
+    if (cached) {
+      logger.debug(`[CACHED] ${message}`, { cacheKey });
+      return serverResult(cached as T, `[CACHED] ${message}`);
     }
 
     const req = await fetch(url, {
@@ -45,18 +40,16 @@ export async function fetchData<T>({ url, args, message }: FetchDataArgs<T>) {
     });
 
     if (req.status !== 200) {
-      throw Error(req.statusText);
+      throw new AppError(`TMDB API request failed: ${req.statusText}`, req.status, true, { url, status: req.status });
     }
 
     const res = await req.json();
-    cache.set(cacheKey, { data: res, timestamp: Date.now() });
+    apiCache.set(cacheKey, res);
 
-    return serverResult(res as T, message);
+    const logMessage = message || 'Data fetched successfully';
+    logger.info(logMessage, { url: url ?? 'undefined', cacheKey });
+    return serverResult(res as T, logMessage);
   } catch (error) {
     return catchError(error);
   }
-}
-
-function generateCacheKey(url: string, args: unknown): string {
-  return `${url}:${JSON.stringify(args)}`;
 }

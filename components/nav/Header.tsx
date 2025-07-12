@@ -9,41 +9,51 @@ import SignInBtn from './SignInBtn';
 import { UserDropDown } from './UserDropdown';
 import HamBurger from './HamBurger';
 import dynamic from 'next/dynamic';
+import { useErrorHandler } from '@/components/helpers/ErrorBoundary';
 
 const LinkSwitcher = dynamic(() => import('./LinkSwitcher'), { ssr: false });
 
 const Header = () => {
   const { user } = useMainCtx();
+  const handleError = useErrorHandler();
   const [active, setActive] = React.useState(false);
   const [width, setWidth] = React.useState(0);
 
   const [mobileNav, toggleMobileNav] = useCycle(false, true);
 
   React.useEffect(() => {
-    const handleScroll = () => {
-      setActive(window.scrollY > 100);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+    try {
+      const handleScroll = () => {
+        setActive(window.scrollY > 100);
+      };
+      window.addEventListener('scroll', handleScroll);
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
+    } catch (error) {
+      handleError(error, { component: 'Header', action: 'scroll-listener' });
+    }
+  }, [handleError]);
 
   React.useEffect(() => {
-    const handleWindowResize = () => {
-      setWidth(window.innerWidth);
-    };
+    try {
+      const handleWindowResize = () => {
+        setWidth(window.innerWidth);
+      };
 
-    window.addEventListener('resize', handleWindowResize);
+      window.addEventListener('resize', handleWindowResize);
 
-    if (width > 768 && mobileNav) {
-      toggleMobileNav();
+      if (width > 768 && mobileNav) {
+        toggleMobileNav();
+      }
+
+      return () => {
+        window.removeEventListener('resize', handleWindowResize);
+      };
+    } catch (error) {
+      handleError(error, { component: 'Header', action: 'resize-listener' });
     }
-
-    return () => {
-      window.removeEventListener('resize', handleWindowResize);
-    };
-  }, [mobileNav, toggleMobileNav, width]);
+  }, [mobileNav, toggleMobileNav, width, handleError]);
 
   return (
     <header

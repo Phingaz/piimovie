@@ -28,9 +28,11 @@ const Details = ({ movie }: { type: ListType; movie: MovieDetail }) => {
         <div className="flex text-gray-300 drop-shadow-hero container">
           <Image
             width={300}
-            height={300}
+            height={400}
+            priority
             alt={movie.title}
-            src={imageUrl(movie.poster_path)}
+            src={imageUrl(movie.poster_path, 'w780')}
+            sizes="(max-width: 768px) 0px, 300px"
             className="rounded-lg h-[400px] aspect-[3/4] object-center object-cover hidden md:block"
           />
           <div className="flex flex-col gap-2 justify-center md:px-8">
@@ -57,7 +59,7 @@ const Details = ({ movie }: { type: ListType; movie: MovieDetail }) => {
               className="text-[15px] line-clamp-3 max-w-2xl"
               initial={{ opacity: 0, y: -1 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15, type: 'bounce' }}
+              transition={{ delay: 0.15, type: 'spring' }}
             >
               {movie?.overview}
             </motion.p>

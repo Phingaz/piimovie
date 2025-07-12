@@ -8,16 +8,22 @@ datasource db {
 }
 
 model movie {
-  id           Int      @id @unique
-  poster_path  String
-  title        String
-  vote_average Int
-  type         String   @default("movie")
-  userId       String
-  createdAt    DateTime @default(now())
-  user         User     @relation(fields: [userId], references: [id])
+  id             Int      @id @unique
+  poster_path    String
+  title          String
+  vote_average   Int
+  type           String   @default("movie")
+  userId         String
+  createdAt      DateTime @default(now())
+  lastRatingSync DateTime @default(now())
+  user           User     @relation(fields: [userId], references: [id])
 
-  @@index([id])
+  @@index([userId])
+  @@index([userId, type])
+  @@index([userId, createdAt])
+  @@index([type, createdAt])
+  @@index([title])
+  @@index([lastRatingSync])
   @@map("movie")
 }
 
@@ -33,6 +39,10 @@ model filter {
   userId     String?
   User       User?    @relation(fields: [userId], references: [id])
 
+  @@index([userId])
+  @@index([userId, isFavorite])
+  @@index([userId, lastUsed])
+  @@index([type])
   @@map("filter")
 }
 
@@ -59,6 +69,8 @@ model User {
   movie         movie[]
   sessions      Session[]
 
+  @@index([email])
+  @@index([createdAt])
   @@map("user")
 }
 
@@ -73,6 +85,9 @@ model Session {
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@index([userId])
+  @@index([expiresAt])
+  @@index([token])
   @@map("session")
 }
 
@@ -92,6 +107,10 @@ model Account {
   updatedAt             DateTime
   user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@unique([accountId, providerId])
+  @@index([userId])
+  @@index([accountId])
+  @@index([providerId])
   @@map("account")
 }
 
@@ -103,5 +122,8 @@ model Verification {
   createdAt  DateTime?
   updatedAt  DateTime?
 
+  @@index([identifier])
+  @@index([value])
+  @@index([expiresAt])
   @@map("verification")
 }

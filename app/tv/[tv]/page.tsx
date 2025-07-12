@@ -1,6 +1,8 @@
 import { getDetails } from '@/app/_queries/queries';
 import { PageLoader } from '@/components/helpers/Loaders';
 import ShowComponent from '@/components/show/ShowComponent';
+import { ErrorBoundary } from '@/components/helpers/ErrorBoundary';
+import { TVShowStructuredData } from '@/components/seo/StructuredData';
 import { Metadata } from 'next';
 import React, { Suspense } from 'react';
 
@@ -13,14 +15,69 @@ export async function generateMetadata({ params }: { params: Promise<{ tv: strin
 
     if (!response.data) throw new Error(response.message);
 
+    const show = response.data;
+    const title = `${show.name}`;
+    const description =
+      show.overview ||
+      `Watch ${show.name}. Learn about cast, crew, episodes, seasons, and more details about this TV show.`;
+    const firstAirYear = show.first_air_date ? new Date(show.first_air_date).getFullYear() : '';
+    const imageUrl = show.poster_path ? `https://image.tmdb.org/t/p/w780${show.poster_path}` : '';
+    const backdropUrl = show.backdrop_path ? `https://image.tmdb.org/t/p/w1280${show.backdrop_path}` : '';
+
     return {
-      title: `${response.data.name} | Show Info`,
-      description: response.data.overview || 'Find out more about this show.',
+      title: `${title}${firstAirYear ? ` (${firstAirYear})` : ''}`,
+      description,
+      keywords: [
+        show.name,
+        ...(show.genres?.map((g) => g.name) || []),
+        'tv show',
+        'television',
+        'series',
+        'episodes',
+        'seasons',
+        'watch',
+        'stream',
+        ...(show.networks?.map((n) => n.name) || []),
+        ...(show.production_companies?.map((c) => c.name) || []),
+      ],
+      openGraph: {
+        type: 'video.tv_show',
+        title: title,
+        description: description,
+        images: [
+          {
+            url: backdropUrl || imageUrl,
+            width: 1280,
+            height: 720,
+            alt: `${show.name} poster`,
+          },
+          ...(imageUrl
+            ? [
+                {
+                  url: imageUrl,
+                  width: 780,
+                  height: 1170,
+                  alt: `${show.name} poster`,
+                },
+              ]
+            : []),
+        ],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: title,
+        description: description,
+        images: [backdropUrl || imageUrl],
+      },
+      alternates: {
+        canonical: `/tv/${id}`,
+      },
     };
   } catch {
     return {
-      title: 'Error | Show Not Found',
-      description: 'Something went wrong while fetching the show details.',
+      title: 'TV Show Not Found',
+      description: 'Sorry, we could not find the TV show you are looking for.',
+      robots: 'noindex',
     };
   }
 }
@@ -28,10 +85,25 @@ export async function generateMetadata({ params }: { params: Promise<{ tv: strin
 const Page = async ({ params }: { params: Promise<{ tv: string }> }) => {
   const id = (await params).tv;
 
+  // Get show details for structured data
+  let showData = null;
+
+  try {
+    const response = await getDetails({ id, type });
+    if (response.data) {
+      showData = response.data;
+    }
+  } catch (error) {
+    console.error('Error fetching show data for structured data:', error);
+  }
+
   return (
-    <Suspense fallback={<PageLoader />}>
-      <ShowComponent type={type} id={id} />
-    </Suspense>
+    <ErrorBoundary>
+      {showData && <TVShowStructuredData show={showData} credits={undefined} />}
+      <Suspense fallback={<PageLoader />}>
+        <ShowComponent type={type} id={id} />
+      </Suspense>
+    </ErrorBoundary>
   );
 };
 

@@ -6,10 +6,41 @@ import { Suspense } from 'react';
 const type = 'movie';
 
 export function generateMetadata(): Metadata {
+  const title = 'Movies';
+  const description =
+    'Discover the latest and greatest movies. Browse popular films, new releases, top-rated movies, and timeless classics. Find detailed information, cast, crew, reviews, and trailers for every movie.';
+
   return {
-    title: `Pii Movie | ${type.charAt(0).toLocaleUpperCase() + type.slice(1)}`,
-    description:
-      'Discover, search, and download your favorite movies with ease. Our app lets you find the latest releases, timeless classics, and hidden gems—all in one place. With powerful search, seamless torrenting, and a personalized favorites list, your movie collection is just a tap away.',
+    title,
+    description,
+    keywords: [
+      'movies',
+      'films',
+      'cinema',
+      'new releases',
+      'popular movies',
+      'top rated movies',
+      'movie database',
+      'film reviews',
+      'movie trailers',
+      'box office',
+      'hollywood',
+      'independent films',
+      'classic movies',
+    ],
+    openGraph: {
+      title: `${title} | Pii Movie`,
+      description,
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${title} | Pii Movie`,
+      description,
+    },
+    alternates: {
+      canonical: '/movie',
+    },
   };
 }
 

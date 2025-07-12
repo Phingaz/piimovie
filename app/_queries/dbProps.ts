@@ -3,38 +3,133 @@ import db from '@/lib/prisma';
 import { User } from 'better-auth';
 import { filter, movie } from '@prisma/client';
 import { ListType } from '../_types/utils';
+import { queryBuilder, PaginationParams } from '@/lib/database-utils';
+import { ValidationError, NotFoundError, logger } from '@/lib/logger';
+import { getSyncStats, syncUserMovieRatings } from './queries';
 
-export const getFavorites = async (user: User) => {
+export const getFavorites = async (user: User, paginationParams?: PaginationParams): Promise<movie[] | null> => {
   if (!user) return null;
-  return await db.movie.findMany({ where: { userId: user.id } });
+
+  if (paginationParams) {
+    const result = await queryBuilder.executeWithPagination(
+      'getFavorites',
+      (skip, take) =>
+        db.movie.findMany({
+          where: { userId: user.id },
+          skip,
+          take,
+          orderBy: { createdAt: 'desc' },
+        }),
+      () => db.movie.count({ where: { userId: user.id } }),
+      paginationParams,
+      { userId: user.id },
+    );
+    // For paginated requests, return just the data array for backward compatibility
+    return result.data;
+  }
+
+  return await queryBuilder.execute(
+    'getFavorites',
+    () =>
+      db.movie.findMany({
+        where: { userId: user.id },
+        orderBy: { createdAt: 'desc' },
+      }),
+    { userId: user.id },
+  );
 };
 
 export const addToFavorites = async (type: ListType, movie: movie, user: User) => {
-  if (!user || !movie) return null;
+  if (!user || !movie) {
+    throw new ValidationError('User and movie are required');
+  }
 
   const { id, poster_path, title, vote_average } = movie;
   const userId = user.id;
 
-  await db.movie.create({
-    data: {
-      id,
-      poster_path,
-      type,
-      title,
-      vote_average,
-      userId,
+  return await queryBuilder.execute(
+    'addToFavorites',
+    async () => {
+      // Check if already exists
+      const existing = await db.movie.findFirst({
+        where: { id, userId },
+      });
+
+      if (existing) {
+        logger.warn('Movie already in favorites', { movieId: id, userId });
+        return existing;
+      }
+
+      return await db.movie.create({
+        data: {
+          id,
+          poster_path,
+          type,
+          title,
+          vote_average,
+          userId,
+          lastRatingSync: new Date(),
+        },
+      });
     },
-  });
+    { movieId: id, userId, type },
+  );
 };
 
 export const removeFromFavorites = async (id: number, user: User) => {
-  if (!id || !user) return;
-  await db.movie.delete({ where: { id } });
+  if (!id || !user) {
+    throw new ValidationError('Movie ID and user are required');
+  }
+
+  return await queryBuilder.execute(
+    'removeFromFavorites',
+    async () => {
+      const movie = await db.movie.findFirst({
+        where: { id, userId: user.id },
+      });
+
+      if (!movie) {
+        throw new NotFoundError('Movie not found in favorites');
+      }
+
+      return await db.movie.delete({
+        where: { id },
+      });
+    },
+    { movieId: id, userId: user.id },
+  );
 };
 
-export const getFilters = async (user: User) => {
+export const getFilters = async (user: User, paginationParams?: PaginationParams): Promise<filter[] | null> => {
   if (!user) return null;
-  return await db.filter.findMany({ where: { userId: user.id }, orderBy: { lastUsed: 'desc' } });
+
+  if (paginationParams) {
+    const result = await queryBuilder.executeWithPagination(
+      'getFilters',
+      (skip, take) =>
+        db.filter.findMany({
+          where: { userId: user.id },
+          skip,
+          take,
+          orderBy: { lastUsed: 'desc' },
+        }),
+      () => db.filter.count({ where: { userId: user.id } }),
+      paginationParams,
+      { userId: user.id },
+    );
+    // For paginated requests, return just the data array for backward compatibility
+    return result.data;
+  }
+
+  return await queryBuilder.execute(
+    'getFilters',
+    () =>
+      db.filter.findMany({
+        where: { userId: user.id },
+        orderBy: { lastUsed: 'desc' },
+      }),
+    { userId: user.id },
+  );
 };
 
 export const addFilter = async (filter: filter, user: User) => {
@@ -101,4 +196,63 @@ export const toggleFeatureFlag = async (id: string) => {
 export const deleteFeatureFlag = async (id: string) => {
   if (!id) return null;
   return await db.feature_flags.delete({ where: { id } });
+};
+
+// Paginated versions that return full pagination metadata
+export const getFavoritesPaginated = async (user: User, paginationParams: PaginationParams) => {
+  if (!user) return null;
+
+  return await queryBuilder.executeWithPagination(
+    'getFavoritesPaginated',
+    (skip, take) =>
+      db.movie.findMany({
+        where: { userId: user.id },
+        skip,
+        take,
+        orderBy: { createdAt: 'desc' },
+      }),
+    () => db.movie.count({ where: { userId: user.id } }),
+    paginationParams,
+    { userId: user.id },
+  );
+};
+
+export const getFiltersPaginated = async (user: User, paginationParams: PaginationParams) => {
+  if (!user) return null;
+
+  return await queryBuilder.executeWithPagination(
+    'getFiltersPaginated',
+    (skip, take) =>
+      db.filter.findMany({
+        where: { userId: user.id },
+        skip,
+        take,
+        orderBy: { lastUsed: 'desc' },
+      }),
+    () => db.filter.count({ where: { userId: user.id } }),
+    paginationParams,
+    { userId: user.id },
+  );
+};
+
+export const syncFavoritesRatings = async (user: User, options?: { maxAge?: number; batchSize?: number }) => {
+  if (!user) return null;
+
+  return await syncUserMovieRatings(user, options);
+};
+
+export const getFavoritesWithSyncStats = async (user: User) => {
+  if (!user) return null;
+
+  const [favorites, syncStats] = await Promise.all([
+    getFavorites(user),
+    (async () => {
+      return getSyncStats(user);
+    })(),
+  ]);
+
+  return {
+    favorites,
+    syncStats,
+  };
 };

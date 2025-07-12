@@ -5,6 +5,7 @@ import { ListType } from '../_types/utils';
 import SearchComponent from './SearchComponent';
 import PageLoader from './loading';
 import { MovieCategoryEnum } from '@/lib/enums';
+import { ErrorBoundary } from '@/components/helpers/ErrorBoundary';
 
 export async function generateMetadata({
   searchParams,
@@ -13,9 +14,25 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { q } = await searchParams;
 
+  const title = `Search Results${q ? ` for "${q}"` : ''}`;
+  const description = q
+    ? `Search results for "${q}". Find movies and TV shows matching your query.`
+    : 'Search for your favorite movies and TV shows. Discover new content and find detailed information about any title.';
+
   return {
-    title: `Movie Box | Search ${q ? `| ${q}` : ''}`,
-    description: 'Search for movies.',
+    title,
+    description,
+    robots: 'noindex, follow',
+    openGraph: {
+      title,
+      description,
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary',
+      title,
+      description,
+    },
   };
 }
 
@@ -28,9 +45,11 @@ const Page = async ({ searchParams }: { searchParams: Promise<{ page: string; q:
   const type = (await cookies()).get('t')?.value as ListType;
 
   return (
-    <Suspense key={JSON.stringify({ q, page })} fallback={<PageLoader />}>
-      <SearchComponent q={q} page={page} type={type} />
-    </Suspense>
+    <ErrorBoundary>
+      <Suspense key={JSON.stringify({ q, page })} fallback={<PageLoader />}>
+        <SearchComponent q={q} page={page} type={type} />
+      </Suspense>
+    </ErrorBoundary>
   );
 };
 

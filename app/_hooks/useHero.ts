@@ -1,8 +1,9 @@
 'use client';
-import { getRandomMovie, imageUrl, preloadImage } from '@/lib/utils';
+import { getRandomMovie, imageUrl } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 import { Movie } from '../_types/movies';
 import { Show } from '../_types/show';
+import { preloadCriticalImages } from '@/lib/image-preload-service';
 
 const time = 20;
 const intervalTime = 500;
@@ -15,11 +16,24 @@ const useHero = (movies?: Movie[] | Show[]) => {
   useEffect(() => {
     if (!movies?.length) return;
 
+    const imagesToPreload = [];
+
     if (nextMovie?.backdrop_path) {
-      preloadImage(imageUrl(nextMovie.backdrop_path));
+      imagesToPreload.push({
+        url: imageUrl(nextMovie.backdrop_path, 'w1280'),
+        sizes: '100vw',
+      });
     }
+
     if (nextMovie?.poster_path) {
-      preloadImage(imageUrl(nextMovie.poster_path));
+      imagesToPreload.push({
+        url: imageUrl(nextMovie.poster_path, 'w780'),
+        sizes: '(max-width: 768px) 0px, 320px',
+      });
+    }
+
+    if (imagesToPreload.length > 0) {
+      preloadCriticalImages(imagesToPreload);
     }
 
     const interval = setInterval(() => {

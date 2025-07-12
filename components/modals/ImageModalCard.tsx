@@ -28,7 +28,7 @@ const ImageModalCard = ({ el }: { el: Poster }) => {
           <ImageComponent
             string={imageCardUrl(el.file_path)}
             title={el.file_path}
-            className="w-full h-full aspect-[3/4]"
+            className="w-full h-full aspect-[3/4] rounded-lg"
           />
         </Button>
       }

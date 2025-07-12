@@ -18,7 +18,7 @@ const HeroMovieImg = ({
   direction: string;
 }) => {
   const title = React.useMemo(() => (movie as Movie).title || (movie as Show).original_name, [movie]);
-  const imageUrlPath = React.useMemo(() => imageUrl(movie?.backdrop_path), [movie]);
+  const imageUrlPath = React.useMemo(() => imageUrl(movie?.backdrop_path, 'w1280'), [movie]);
 
   return (
     <div className="w-full h-[80svh] md:h-[100svh] bg-black relative overflow-clip">
@@ -49,6 +49,8 @@ const HeroMovieImg = ({
                 priority
                 alt={title}
                 src={imageUrlPath}
+                sizes="100vw"
+                quality={90}
                 className="scale-[1.2] object-top object-cover w-full h-full absolute"
               />
             </motion.div>
