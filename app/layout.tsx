@@ -6,7 +6,7 @@ import Header from '@/components/nav/Header';
 import { Toaster } from '@/components/ui/sonner';
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
-import { getFavorites, getFeatureFlags, getFilters } from './_queries/dbProps';
+import { getFavorites, getFeatureFlags, getFilters, syncFavoritesRatings } from './_queries/dbProps';
 import { feature_flags, filter, movie } from '@prisma/client';
 import Footer from '@/components/general/Footer';
 import db from '@/lib/prisma';
@@ -126,6 +126,7 @@ export default async function RootLayout({
     fav = await getFavorites(session.user);
     filters = await getFilters(session.user);
     featureFlags = await getFeatureFlags();
+    await syncFavoritesRatings(session.user, { maxAge: 24, batchSize: 10 });
   }
 
   const isSuperAdmin = (ENV.SUPER_ADMINS || '').split(',').includes(user?.email || '');

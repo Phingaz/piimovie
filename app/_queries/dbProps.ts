@@ -5,6 +5,7 @@ import { filter, movie } from '@prisma/client';
 import { ListType } from '../_types/utils';
 import { queryBuilder, PaginationParams } from '@/lib/database-utils';
 import { ValidationError, NotFoundError, logger } from '@/lib/logger';
+import { getSyncStats, syncUserMovieRatings } from './queries';
 
 export const getFavorites = async (user: User, paginationParams?: PaginationParams): Promise<movie[] | null> => {
   if (!user) return null;
@@ -67,6 +68,7 @@ export const addToFavorites = async (type: ListType, movie: movie, user: User) =
           title,
           vote_average,
           userId,
+          lastRatingSync: new Date(),
         },
       });
     },
@@ -231,4 +233,26 @@ export const getFiltersPaginated = async (user: User, paginationParams: Paginati
     paginationParams,
     { userId: user.id },
   );
+};
+
+export const syncFavoritesRatings = async (user: User, options?: { maxAge?: number; batchSize?: number }) => {
+  if (!user) return null;
+
+  return await syncUserMovieRatings(user, options);
+};
+
+export const getFavoritesWithSyncStats = async (user: User) => {
+  if (!user) return null;
+
+  const [favorites, syncStats] = await Promise.all([
+    getFavorites(user),
+    (async () => {
+      return getSyncStats(user);
+    })(),
+  ]);
+
+  return {
+    favorites,
+    syncStats,
+  };
 };

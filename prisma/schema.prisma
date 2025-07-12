@@ -8,20 +8,22 @@ datasource db {
 }
 
 model movie {
-  id           Int      @id @unique
-  poster_path  String
-  title        String
-  vote_average Int
-  type         String   @default("movie")
-  userId       String
-  createdAt    DateTime @default(now())
-  user         User     @relation(fields: [userId], references: [id])
+  id             Int      @id @unique
+  poster_path    String
+  title          String
+  vote_average   Int
+  type           String   @default("movie")
+  userId         String
+  createdAt      DateTime @default(now())
+  lastRatingSync DateTime @default(now())
+  user           User     @relation(fields: [userId], references: [id])
 
   @@index([userId])
   @@index([userId, type])
   @@index([userId, createdAt])
   @@index([type, createdAt])
   @@index([title])
+  @@index([lastRatingSync])
   @@map("movie")
 }
 
