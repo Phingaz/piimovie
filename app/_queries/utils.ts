@@ -27,7 +27,7 @@ export async function fetchData<T>({ url, args, message }: FetchDataArgs<T>) {
     if (!url) throw new AppError('No URL provided', 400);
 
     const cacheKey = generateCacheKey(url, args);
-    const cached = apiCache.get(cacheKey);
+    const cached = await apiCache.get(cacheKey);
 
     if (cached) {
       logger.debug(`[CACHED] ${message}`, { cacheKey });
@@ -44,7 +44,7 @@ export async function fetchData<T>({ url, args, message }: FetchDataArgs<T>) {
     }
 
     const res = await req.json();
-    apiCache.set(cacheKey, res);
+    await apiCache.set(cacheKey, res);
 
     const logMessage = message || 'Data fetched successfully';
     logger.info(logMessage, { url: url ?? 'undefined', cacheKey });

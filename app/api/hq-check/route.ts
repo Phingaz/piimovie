@@ -1,5 +1,6 @@
 import envProxy from '@/lib/env';
 import { NextRequest, NextResponse } from 'next/server';
+import { apiCache, generateCacheKey } from '@/lib/cache';
 
 export async function POST(request: NextRequest) {
   try {
@@ -7,6 +8,15 @@ export async function POST(request: NextRequest) {
 
     if (!query) {
       return NextResponse.json({ error: 'Query parameter is required' }, { status: 400 });
+    }
+
+    // Generate cache key for HQ status
+    const cacheKey = generateCacheKey('hq-check', { query: query.toLowerCase().trim() });
+
+    // Check cache first
+    const cachedResult = await apiCache.get(cacheKey);
+    if (cachedResult !== null) {
+      return NextResponse.json(cachedResult);
     }
 
     const HQ_API_URL = envProxy.HQ_API_URL;
@@ -26,6 +36,9 @@ export async function POST(request: NextRequest) {
     }
 
     const data = await response.json();
+
+    // Cache the result for 7 days (HQ status doesn't change often)
+    await apiCache.set(cacheKey, data);
 
     return NextResponse.json(data);
   } catch (error) {

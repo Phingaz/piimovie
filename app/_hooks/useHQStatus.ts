@@ -1,7 +1,6 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
 import { logger } from '@/lib/logger';
-import { Cache } from '@/lib/cache';
 
 interface HQResponse {
   query: string;
@@ -11,13 +10,6 @@ interface HQResponse {
 
 const HQ_API_URL = '/api/hq-check';
 
-const hqCache = new Cache<boolean>({
-  ttl: 1000 * 60 * 60 * 24 * 7,
-  cleanupInterval: 1000 * 60 * 60 * 24,
-  maxSize: 1000,
-  enableStats: true,
-});
-
 export const useHQStatus = (movieTitle?: string) => {
   const [hqStatus, setHqStatus] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(false);
@@ -25,13 +17,6 @@ export const useHQStatus = (movieTitle?: string) => {
 
   const checkHQAvailability = useCallback(async (title: string): Promise<boolean | null> => {
     if (!title?.trim()) return null;
-
-    const cacheKey = title.toLowerCase().trim();
-    const cachedResult = hqCache.get(cacheKey);
-
-    if (cachedResult !== null) {
-      return cachedResult;
-    }
 
     try {
       setLoading(true);
@@ -48,9 +33,6 @@ export const useHQStatus = (movieTitle?: string) => {
       }
 
       const data: HQResponse = await response.json();
-
-      // Cache the result
-      hqCache.set(cacheKey, data.hasHQ);
 
       return data.hasHQ;
     } catch (err) {
@@ -86,54 +68,46 @@ export const useBulkHQStatus = () => {
     if (!titles.length) return;
 
     setLoading(true);
-    const results: Record<string, boolean> = {};
 
-    // Process in batches to avoid overwhelming the API
-    const batchSize = 5;
-    for (let i = 0; i < titles.length; i += batchSize) {
-      const batch = titles.slice(i, i + batchSize);
-
-      const promises = batch.map(async (title) => {
-        const cacheKey = title.toLowerCase().trim();
-        const cachedResult = hqCache.get(cacheKey);
-
-        if (cachedResult !== null) {
-          return { title, hasHQ: cachedResult };
-        }
-
-        try {
-          const response = await fetch(HQ_API_URL, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ query: title }),
-          });
-
-          if (response.ok) {
-            const data: HQResponse = await response.json();
-            hqCache.set(cacheKey, data.hasHQ);
-            return { title, hasHQ: data.hasHQ };
-          }
-        } catch (err) {
-          logger.error('Batch HQ check failed for title:', { title, error: err });
-        }
-
-        return { title, hasHQ: false };
+    try {
+      const response = await fetch('/api/hq-check/multiple', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ queries: titles }),
       });
 
-      const batchResults = await Promise.all(promises);
-      batchResults.forEach(({ title, hasHQ }) => {
-        results[title] = hasHQ;
-      });
+      if (response.ok) {
+        const data: { results: Array<{ query: string; hasHQ: boolean; duration: number }> } = await response.json();
 
-      if (i + batchSize < titles.length) {
-        await new Promise((resolve) => setTimeout(resolve, 100));
+        // Update state with results
+        const results: Record<string, boolean> = {};
+        for (const { query, hasHQ } of data.results) {
+          results[query] = hasHQ;
+        }
+
+        setHqStatuses((prev) => ({ ...prev, ...results }));
+      } else {
+        logger.error('Multiple HQ check API error:', { status: response.status, statusText: response.statusText });
+        // Set default false for failed queries
+        const results: Record<string, boolean> = {};
+        titles.forEach((title) => {
+          results[title] = false;
+        });
+        setHqStatuses((prev) => ({ ...prev, ...results }));
       }
+    } catch (err) {
+      logger.error('Multiple HQ check failed:', { error: err, titles });
+      // Set default false for failed queries
+      const results: Record<string, boolean> = {};
+      titles.forEach((title) => {
+        results[title] = false;
+      });
+      setHqStatuses((prev) => ({ ...prev, ...results }));
+    } finally {
+      setLoading(false);
     }
-
-    setHqStatuses((prev) => ({ ...prev, ...results }));
-    setLoading(false);
   }, []);
 
   return {
