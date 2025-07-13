@@ -23,7 +23,6 @@ const serverEnvSchema = z.object({
   SENTRY_DSN: z.string().url().optional(),
   HQ_API_KEY: z.string(),
   HQ_API_URL: z.string().url('HQ_API_URL must be a valid URL'),
-  INTERNAL_API_KEY: z.string().min(32, 'INTERNAL_API_KEY must be at least 32 characters'),
 });
 
 type ServerEnvConfig = z.infer<typeof serverEnvSchema>;
@@ -51,7 +50,6 @@ function validateEnv(): ServerEnvConfig | ClientEnvConfig {
         SENTRY_DSN: process.env.SENTRY_DSN,
         HQ_API_URL: process.env.HQ_API_URL,
         HQ_API_KEY: process.env.HQ_API_KEY,
-        INTERNAL_API_KEY: process.env.INTERNAL_API_KEY,
       });
     } catch (error) {
       if (error instanceof z.ZodError) {
