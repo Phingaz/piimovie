@@ -14,6 +14,8 @@ import PageTitle from '@/components/utils/texts/PageTitle';
 import PageSection from '@/components/utils/texts/PageSection';
 import useLocalStorage from '../_hooks/useLocalStorage';
 import { ErrorBoundary } from '@/components/helpers/ErrorBoundary';
+import { useBulkHQStatus } from '../_hooks/useHQStatus';
+import HQBadge from '@/components/ui/HQBadge';
 
 const Page = () => {
   const { user } = useMainCtx();
@@ -37,6 +39,15 @@ const Page = () => {
       setFilteredResults(results);
     }
   }, [searchResults, sortOrder, filterType]);
+
+  const { checkMultipleHQ, hqStatuses, loading: hqLoading } = useBulkHQStatus();
+
+  useEffect(() => {
+    if (filteredResults && filteredResults.length > 0) {
+      const movieTitles = filteredResults.map((movie) => movie.title);
+      checkMultipleHQ(movieTitles);
+    }
+  }, [filteredResults, checkMultipleHQ]);
 
   return (
     <ErrorBoundary>
@@ -64,7 +75,10 @@ const Page = () => {
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:gap-x-8 md:gap-y-10 gap-3 mb-20">
             {filteredResults?.map((movie) => (
-              <LandingCard key={movie.id} type={movie.type as ListType} movie={movie as unknown as Movie} />
+              <div key={movie.id} className="relative">
+                <HQBadge hasHQ={hqStatuses[movie.title]} loading={hqLoading} />
+                <LandingCard type={movie.type as ListType} movie={movie as unknown as Movie} />
+              </div>
             ))}
           </div>
         )}

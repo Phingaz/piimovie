@@ -3,6 +3,7 @@ import { z } from 'zod';
 // Client-safe environment schema (only public variables)
 const clientEnvSchema = z.object({
   NEXT_PUBLIC_URL: z.string().url('NEXT_PUBLIC_URL must be a valid URL'),
+  HQ_API_KEY: z.string().optional(),
 });
 
 // Server-only environment schema
@@ -20,6 +21,8 @@ const serverEnvSchema = z.object({
   SUPER_ADMINS: z.string().optional().default(''),
   GOOGLE_VERIFICATION_CODE: z.string().optional(),
   SENTRY_DSN: z.string().url().optional(),
+  HQ_API_KEY: z.string(),
+  HQ_API_URL: z.string().url('HQ_API_URL must be a valid URL'),
 });
 
 type ServerEnvConfig = z.infer<typeof serverEnvSchema>;
@@ -30,7 +33,6 @@ function validateEnv(): ServerEnvConfig | ClientEnvConfig {
   const isServer = typeof window === 'undefined';
 
   if (isServer) {
-    // Server-side: validate all environment variables
     try {
       return serverEnvSchema.parse({
         NODE_ENV: process.env.NODE_ENV,
@@ -46,6 +48,8 @@ function validateEnv(): ServerEnvConfig | ClientEnvConfig {
         SUPER_ADMINS: process.env.SUPER_ADMINS,
         GOOGLE_VERIFICATION_CODE: process.env.GOOGLE_VERIFICATION_CODE,
         SENTRY_DSN: process.env.SENTRY_DSN,
+        HQ_API_URL: process.env.HQ_API_URL,
+        HQ_API_KEY: process.env.HQ_API_KEY,
       });
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -55,7 +59,6 @@ function validateEnv(): ServerEnvConfig | ClientEnvConfig {
       throw error;
     }
   } else {
-    // Client-side: only validate public environment variables
     try {
       return clientEnvSchema.parse({
         NEXT_PUBLIC_URL: process.env.NEXT_PUBLIC_URL,
@@ -83,27 +86,28 @@ const envProxy = new Proxy({} as ServerEnvConfig, {
       if (prop.startsWith('NEXT_PUBLIC_')) {
         return (ENV as ClientEnvConfig)[prop as keyof ClientEnvConfig];
       }
-      
+
       // Allow access to safe, non-sensitive environment variables
       const safeClientVars = ['NODE_ENV'];
       if (safeClientVars.includes(prop)) {
         return process.env[prop];
       }
-      
+
       // Block access to sensitive server-only variables
       const sensitiveVars = [
         'BETTER_AUTH_SECRET',
         'GOOGLE_CLIENT_SECRET',
         'DATABASE_URL',
         'TMDB_API_KEY',
-        'SENTRY_DSN'
+        'SENTRY_DSN',
+        'INTERNAL_API_KEY',
       ];
-      
+
       if (sensitiveVars.includes(prop)) {
         console.warn(`Attempted to access sensitive server environment variable "${prop}" on client side`);
         return undefined;
       }
-      
+
       // For other variables, return undefined instead of throwing
       return undefined;
     }
