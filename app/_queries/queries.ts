@@ -202,7 +202,7 @@ export const syncUserMovieRatings = async (
         await db.movie.update({
           where: { id: movie.id },
           data: {
-            vote_average: Math.round(tmdbData.vote_average || 0), // Keep as Int for now
+            vote_average: tmdbData.vote_average || 0,
             lastRatingSync: new Date(),
           },
         });
@@ -212,7 +212,7 @@ export const syncUserMovieRatings = async (
           movieId: movie.id,
           title: movie.title,
           oldRating: movie.vote_average,
-          newRating: Math.round(tmdbData.vote_average || 0),
+          newRating: tmdbData.vote_average || 0,
           userId: user.id,
         });
       } catch (error) {
