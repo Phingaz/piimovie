@@ -23,6 +23,7 @@ const serverEnvSchema = z.object({
   SENTRY_DSN: z.string().url().optional(),
   HQ_API_KEY: z.string(),
   HQ_API_URL: z.string().url('HQ_API_URL must be a valid URL'),
+  REDIS_URL: z.string().url('REDIS_URL must be a valid URL'),
 });
 
 type ServerEnvConfig = z.infer<typeof serverEnvSchema>;
@@ -50,6 +51,7 @@ function validateEnv(): ServerEnvConfig | ClientEnvConfig {
         SENTRY_DSN: process.env.SENTRY_DSN,
         HQ_API_URL: process.env.HQ_API_URL,
         HQ_API_KEY: process.env.HQ_API_KEY,
+        REDIS_URL: process.env.REDIS_URL,
       });
     } catch (error) {
       if (error instanceof z.ZodError) {
