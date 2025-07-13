@@ -10,11 +10,14 @@ import Ratings from '../utils/texts/Ratings';
 import ReleaseDate from '../utils/texts/ReleaseDate';
 import { Show } from '@/app/_types/show';
 import { ListType } from '@/app/_types/utils';
+import { useHQStatus } from '@/app/_hooks/useHQStatus';
+import HQBadge from '../ui/HQBadge';
 
 const HeroMovieInfo = ({ movie, type }: { type: ListType; movie?: Movie | Show }) => {
   const router = useRouter();
 
   const title = useMemo(() => (movie ? (movie as Movie).title || (movie as Show).name : ''), [movie]);
+  const { hqStatus, loading } = useHQStatus(title);
   const posterUrl = useMemo(() => imageUrl(movie?.poster_path, 'w780'), [movie]);
   const overview = useMemo(() => movie?.overview || 'No overview available.', [movie]);
   const movieId = useMemo(() => movie?.id, [movie]);
@@ -37,16 +40,18 @@ const HeroMovieInfo = ({ movie, type }: { type: ListType; movie?: Movie | Show }
           className="w-full flex justify-center absolute top-[35%] md:top-[60%] overflow-visible"
         >
           <div className="w-5xl md:w-7xl flex text-gray-300 drop-shadow-hero">
-            <Image
-              width={320}
-              height={420}
-              priority
-              alt={title}
-              src={posterUrl}
-              sizes="(max-width: 768px) 0px, 320px"
-              className="rounded-lg border border-gray-500/50 hidden md:block aspect-[3/4] object-center object-cover ml-8 w-[300px] h-[400px]"
-            />
-
+            <div className="relative flex-shrink-0 mr-5 md:mr-8">
+              <Image
+                width={320}
+                height={420}
+                priority
+                alt={title}
+                src={posterUrl}
+                sizes="(max-width: 768px) 0px, 320px"
+                className="rounded-lg border border-gray-500/50 hidden md:block aspect-[3/4] object-center object-cover w-[300px] h-[400px]"
+              />
+              <HQBadge hasHQ={hqStatus} loading={loading} />
+            </div>
             <div className="flex flex-col gap-4 justify-center px-8">
               <motion.h1
                 initial={{ opacity: 0, y: -2 }}
