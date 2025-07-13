@@ -70,10 +70,10 @@ interface ErrorFallbackProps {
 
 function DefaultErrorFallback({ error, resetError }: ErrorFallbackProps) {
   return (
-    <div className="flex min-h-[50svh] flex-col items-center justify-center p-8 text-center">
-      <div className="mx-auto">
+    <div className="flex h-[calc(100svh-225px)] flex-col items-center justify-center p-8 text-center">
+      <div className="mx-auto bg-gray-800 p-6 rounded-lg shadow-lg text-white text-center">
         <h2 className="text-2xl font-bold text-red-600 mb-4">Something went wrong</h2>
-        <p className="text-gray-600 mb-6">
+        <p className="text-gray-300 mb-6">
           We apologize for the inconvenience. Please try refreshing the page or contact support if the problem persists.
         </p>
         {process.env.NODE_ENV === 'development' && error && (
@@ -88,10 +88,10 @@ function DefaultErrorFallback({ error, resetError }: ErrorFallbackProps) {
           </details>
         )}
         <div className="space-x-4">
-          <Button onClick={resetError} variant="default">
+          <Button onClick={resetError} variant="secondary" className="rounded-sm h-[45px] bg-gray-200 text-gray-800">
             Try Again
           </Button>
-          <Button onClick={() => window.location.reload()} variant="outline">
+          <Button onClick={() => window.location.reload()} variant="outline" className="h-[45px] rounded-sm">
             Refresh Page
           </Button>
         </div>
