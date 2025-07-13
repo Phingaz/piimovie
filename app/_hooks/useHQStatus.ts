@@ -11,7 +11,12 @@ interface HQResponse {
 
 const HQ_API_URL = '/api/hq-check';
 
-const hqCache = new Cache<boolean>({ ttl: 1000 * 60 * 60 * 24 * 7, maxSize: 1000, enableStats: true });
+const hqCache = new Cache<boolean>({
+  ttl: 1000 * 60 * 60 * 24 * 7,
+  cleanupInterval: 1000 * 60 * 60 * 24,
+  maxSize: 1000,
+  enableStats: true,
+});
 
 export const useHQStatus = (movieTitle?: string) => {
   const [hqStatus, setHqStatus] = useState<boolean | null>(null);
