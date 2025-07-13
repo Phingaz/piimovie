@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
 import { logger } from '@/lib/logger';
+import { Cache } from '@/lib/cache';
 
 interface HQResponse {
   query: string;
@@ -8,16 +9,9 @@ interface HQResponse {
   duration: number;
 }
 
-interface HQStatusCache {
-  [key: string]: {
-    hasHQ: boolean;
-    timestamp: number;
-  };
-}
-
 const HQ_API_URL = '/api/hq-check';
-const hqCache: HQStatusCache = {};
-const CACHE_DURATION = 1000 * 60 * 60 * 24;
+
+const hqCache = new Cache<boolean>({ ttl: 1000 * 60 * 60 * 24 * 7, maxSize: 1000, enableStats: true });
 
 export const useHQStatus = (movieTitle?: string) => {
   const [hqStatus, setHqStatus] = useState<boolean | null>(null);
@@ -28,11 +22,10 @@ export const useHQStatus = (movieTitle?: string) => {
     if (!title?.trim()) return null;
 
     const cacheKey = title.toLowerCase().trim();
-    const cached = hqCache[cacheKey];
+    const cachedResult = hqCache.get(cacheKey);
 
-    // Check cache first
-    if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
-      return cached.hasHQ;
+    if (cachedResult !== null) {
+      return cachedResult;
     }
 
     try {
@@ -41,10 +34,7 @@ export const useHQStatus = (movieTitle?: string) => {
 
       const response = await fetch(HQ_API_URL, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Internal-Api-Key': process.env.NEXT_PUBLIC_INTERNAL_API_KEY || '',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: title }),
       });
 
@@ -55,10 +45,7 @@ export const useHQStatus = (movieTitle?: string) => {
       const data: HQResponse = await response.json();
 
       // Cache the result
-      hqCache[cacheKey] = {
-        hasHQ: data.hasHQ,
-        timestamp: Date.now(),
-      };
+      hqCache.set(cacheKey, data.hasHQ);
 
       return data.hasHQ;
     } catch (err) {
@@ -103,10 +90,10 @@ export const useBulkHQStatus = () => {
 
       const promises = batch.map(async (title) => {
         const cacheKey = title.toLowerCase().trim();
-        const cached = hqCache[cacheKey];
+        const cachedResult = hqCache.get(cacheKey);
 
-        if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
-          return { title, hasHQ: cached.hasHQ };
+        if (cachedResult !== null) {
+          return { title, hasHQ: cachedResult };
         }
 
         try {
@@ -120,10 +107,7 @@ export const useBulkHQStatus = () => {
 
           if (response.ok) {
             const data: HQResponse = await response.json();
-            hqCache[cacheKey] = {
-              hasHQ: data.hasHQ,
-              timestamp: Date.now(),
-            };
+            hqCache.set(cacheKey, data.hasHQ);
             return { title, hasHQ: data.hasHQ };
           }
         } catch (err) {
