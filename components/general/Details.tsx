@@ -29,18 +29,15 @@ const Details = ({ movie }: { type: ListType; movie: MovieDetail }) => {
         className="w-full flex justify-center absolute -bottom-[10.5%] overflow-visible bg-gradient-to-b to-black"
       >
         <div className="flex text-gray-300 drop-shadow-hero container">
-          <div className="relative flex-shrink-0 mr-5 md:mr-8">
-            <Image
-              width={300}
-              height={400}
-              priority
-              alt={movie.title}
-              src={imageUrl(movie.poster_path, 'w780')}
-              sizes="(max-width: 768px) 0px, 300px"
-              className="rounded-lg h-[400px] aspect-[3/4] object-center object-cover hidden md:block"
-            />
-            <HQBadge hasHQ={hqStatus} loading={loading} />
-          </div>
+          <Image
+            width={300}
+            height={400}
+            priority
+            alt={movie.title}
+            src={imageUrl(movie.poster_path, 'w780')}
+            sizes="(max-width: 768px) 0px, 300px"
+            className="rounded-lg h-[400px] aspect-[3/4] object-center object-cover hidden md:block"
+          />
           <div className="flex flex-col gap-2 justify-center md:px-8">
             <GoBack />
 
@@ -59,6 +56,7 @@ const Details = ({ movie }: { type: ListType; movie: MovieDetail }) => {
               <Ratings voteCount={movie.vote_count} vote_average={movie.vote_average} />
               <RunTimeDetails runtime={movie.runtime} />
               <ReleaseDate release_date={movie.release_date} />
+              <HQBadge hasHQ={hqStatus} loading={loading} className="static" />
             </div>
 
             <motion.p
