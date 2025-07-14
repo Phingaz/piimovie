@@ -37,9 +37,9 @@ export class Cache<T = unknown> {
 
   constructor(options: CacheOptions = {}) {
     this.options = {
-      ttl: options.ttl ?? 10 * 60 * 1000, // 10 minutes default
+      ttl: options.ttl ?? 24 * 60 * 60 * 1000, // 24 hours default
       maxSize: options.maxSize ?? 1000, // 1000 entries default
-      cleanupInterval: options.cleanupInterval ?? 5 * 60 * 1000, // 5 minutes default
+      cleanupInterval: options.cleanupInterval ?? 1 * 60 * 60 * 1000, // 1 hour default
       enableStats: options.enableStats ?? true,
       keyPrefix: options.keyPrefix ?? 'cache:',
     };
@@ -398,11 +398,4 @@ const globalForCache = globalThis as unknown as {
 };
 
 export const apiCache =
-  globalForCache.__apiCache ??
-  (globalForCache.__apiCache = new Cache({
-    ttl: 10 * 60 * 1000, // 10 minutes
-    maxSize: 500,
-    cleanupInterval: 5 * 60 * 1000,
-    enableStats: true,
-    keyPrefix: 'api:',
-  }));
+  globalForCache.__apiCache ?? (globalForCache.__apiCache = new Cache({ enableStats: true, keyPrefix: 'piimovies:' }));

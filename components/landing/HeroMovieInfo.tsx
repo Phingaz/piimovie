@@ -40,18 +40,15 @@ const HeroMovieInfo = ({ movie, type }: { type: ListType; movie?: Movie | Show }
           className="w-full flex justify-center absolute top-[35%] md:top-[60%] overflow-visible"
         >
           <div className="w-5xl md:w-7xl flex text-gray-300 drop-shadow-hero">
-            <div className="relative flex-shrink-0 mr-5 md:mr-8">
-              <Image
-                width={320}
-                height={420}
-                priority
-                alt={title}
-                src={posterUrl}
-                sizes="(max-width: 768px) 0px, 320px"
-                className="rounded-lg border border-gray-500/50 hidden md:block aspect-[3/4] object-center object-cover w-[300px] h-[400px]"
-              />
-              <HQBadge hasHQ={hqStatus} loading={loading} />
-            </div>
+            <Image
+              width={320}
+              height={420}
+              priority
+              alt={title}
+              src={posterUrl}
+              sizes="(max-width: 768px) 0px, 320px"
+              className="rounded-lg border border-gray-500/50 hidden md:block aspect-[3/4] object-center object-cover ml-8 w-[300px] h-[400px]"
+            />
             <div className="flex flex-col gap-4 justify-center px-8">
               <motion.h1
                 initial={{ opacity: 0, y: -2 }}
@@ -65,6 +62,7 @@ const HeroMovieInfo = ({ movie, type }: { type: ListType; movie?: Movie | Show }
               <div className="text-gray-400 font-[500] flex gap-3">
                 <Ratings vote_average={movie.vote_average} />
                 <ReleaseDate release_date={releaseDate} />
+                <HQBadge hasHQ={hqStatus} loading={loading} className='static' />
               </div>
 
               <motion.p
