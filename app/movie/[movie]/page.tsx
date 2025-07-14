@@ -4,6 +4,7 @@ import MovieComponent from '@/components/movie/MovieComponent';
 import { ErrorBoundary } from '@/components/helpers/ErrorBoundary';
 import { MovieStructuredData } from '@/components/seo/StructuredData';
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import React, { Suspense } from 'react';
 
 const type = 'movie';
@@ -13,7 +14,9 @@ export async function generateMetadata({ params }: { params: Promise<{ movie: st
     const id = (await params).movie;
     const response = await getDetails({ id, type });
 
-    if (!response.data) throw new Error(response.message);
+    if (!response.data) {
+      notFound();
+    }
 
     const movie = response.data;
     const title = `${movie.title}`;
@@ -72,11 +75,7 @@ export async function generateMetadata({ params }: { params: Promise<{ movie: st
       },
     };
   } catch {
-    return {
-      title: 'Movie Not Found',
-      description: 'Sorry, we could not find the movie you are looking for.',
-      robots: 'noindex',
-    };
+    notFound();
   }
 }
 
@@ -87,11 +86,13 @@ const Page = async ({ params }: { params: Promise<{ movie: string }> }) => {
 
   try {
     const response = await getDetails({ id, type });
-    if (response.data) {
-      movieData = response.data;
+    if (!response.data) {
+      notFound();
     }
+    movieData = response.data;
   } catch (error) {
-    console.error('Error fetching movie data for structured data:', error);
+    console.error('Error fetching movie data:', error);
+    notFound();
   }
 
   return (
