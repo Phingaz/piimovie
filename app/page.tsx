@@ -46,7 +46,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title: 'Discover Movies & TV Shows',
       description:
         'Your ultimate destination for discovering movies and TV shows with detailed information, cast, crew, and reviews.',
-      robots: 'noindex',
+      robots: 'noindex, follow',
     };
   }
 }

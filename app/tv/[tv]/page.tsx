@@ -4,6 +4,7 @@ import ShowComponent from '@/components/show/ShowComponent';
 import { ErrorBoundary } from '@/components/helpers/ErrorBoundary';
 import { TVShowStructuredData } from '@/components/seo/StructuredData';
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import React, { Suspense } from 'react';
 
 const type = 'tv';
@@ -13,7 +14,9 @@ export async function generateMetadata({ params }: { params: Promise<{ tv: strin
     const id = (await params).tv;
     const response = await getDetails({ id, type });
 
-    if (!response.data) throw new Error(response.message);
+    if (!response.data) {
+      notFound();
+    }
 
     const show = response.data;
     const title = `${show.name}`;
@@ -74,11 +77,7 @@ export async function generateMetadata({ params }: { params: Promise<{ tv: strin
       },
     };
   } catch {
-    return {
-      title: 'TV Show Not Found',
-      description: 'Sorry, we could not find the TV show you are looking for.',
-      robots: 'noindex',
-    };
+    notFound();
   }
 }
 
@@ -90,11 +89,13 @@ const Page = async ({ params }: { params: Promise<{ tv: string }> }) => {
 
   try {
     const response = await getDetails({ id, type });
-    if (response.data) {
-      showData = response.data;
+    if (!response.data) {
+      notFound();
     }
+    showData = response.data;
   } catch (error) {
-    console.error('Error fetching show data for structured data:', error);
+    console.error('Error fetching show data:', error);
+    notFound();
   }
 
   return (
