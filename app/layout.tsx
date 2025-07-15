@@ -11,7 +11,6 @@ import { feature_flags, filter, movie } from '@prisma/client';
 import Footer from '@/components/general/Footer';
 // import db from '@/lib/prisma';
 import ENV from '@/lib/env';
-import { WebsiteStructuredData } from '@/components/seo/StructuredData';
 import { ErrorBoundary } from '@/components/helpers/ErrorBoundary';
 import db from '@/lib/prisma';
 
@@ -135,7 +134,6 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${heading.variable} ${body.variable} antialiased`}>
-        <WebsiteStructuredData />
         <ErrorBoundary>
           <Providers value={{ user, fav, filters, featureFlags, isSuperAdmin }}>
             <Header />
