@@ -13,6 +13,7 @@ import Footer from '@/components/general/Footer';
 import ENV from '@/lib/env';
 import { WebsiteStructuredData } from '@/components/seo/StructuredData';
 import { ErrorBoundary } from '@/components/helpers/ErrorBoundary';
+import db from '@/lib/prisma';
 
 const heading = Poppins({
   subsets: ['latin'],
@@ -29,9 +30,9 @@ const body = Inter({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-  // const allowBot = await db.feature_flags.findFirst({
-  //   where: { name: 'allowBots' },
-  // });
+  const allowBot = await db.feature_flags.findFirst({
+    where: { name: 'allowBots' },
+  });
 
   const title = 'Pii Movie - Discover Movies & TV Shows';
   const description =
@@ -64,8 +65,8 @@ export async function generateMetadata(): Promise<Metadata> {
     authors: [{ name: 'Pii Movie' }],
     creator: 'Pii Movie',
     publisher: 'Pii Movie',
-    // robots: allowBot?.enabled ? 'index, follow' : 'noindex',
-    robots: 'index, follow',
+    robots: allowBot?.enabled ? 'index, follow' : 'noindex',
+    // robots: 'index, follow',
     metadataBase: new URL(url),
     alternates: {
       canonical: url,
