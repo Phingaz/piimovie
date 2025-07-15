@@ -16,6 +16,7 @@ import useLocalStorage from '../_hooks/useLocalStorage';
 import { ErrorBoundary } from '@/components/helpers/ErrorBoundary';
 import { useBulkHQStatus } from '../_hooks/useHQStatus';
 import HQBadge from '@/components/ui/HQBadge';
+import { syncFavoritesRatings } from '../_queries/dbProps';
 
 const Page = () => {
   const { user } = useMainCtx();
@@ -48,6 +49,16 @@ const Page = () => {
       checkMultipleHQ(movieTitles);
     }
   }, [filteredResults, checkMultipleHQ]);
+
+  useEffect(() => {
+    async function m() {
+      if (user) {
+        await syncFavoritesRatings(user, { maxAge: 24, batchSize: 10 });
+      }
+    }
+
+    m();
+  });
 
   return (
     <ErrorBoundary>
