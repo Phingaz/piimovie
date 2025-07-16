@@ -15,7 +15,6 @@ import PageSection from '@/components/utils/texts/PageSection';
 import useLocalStorage from '../_hooks/useLocalStorage';
 import { useBulkHQStatus } from '../_hooks/useHQStatus';
 import HQBadge from '@/components/ui/HQBadge';
-// import { syncUserMovieRatings } from '../_queries/queries';
 
 const Page = () => {
   const { user } = useMainCtx();
@@ -48,16 +47,6 @@ const Page = () => {
       checkMultipleHQ(movieTitles);
     }
   }, [filteredResults, checkMultipleHQ]);
-
-  // useEffect(() => {
-  //   async function m() {
-  //     if (user) {
-  //       syncUserMovieRatings(user, { maxAge: 24, batchSize: 10 });
-  //     }
-  //   }
-
-  //   m();
-  // });
 
   return (
     <div className="container mx-auto py-10 mt-[70px] px-3 md:px-[2rem]">

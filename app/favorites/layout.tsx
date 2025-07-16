@@ -6,8 +6,10 @@ export const metadata: Metadata = {
 };
 
 import React from 'react';
+import { syncUserMovieRatings } from '../_queries/queries';
 
 const layout = ({ children }: { children: React.ReactElement }) => {
+  syncUserMovieRatings({ maxAge: 24, batchSize: 10 });
   return <>{children}</>;
 };
 

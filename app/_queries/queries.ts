@@ -14,6 +14,8 @@ import { Show, ShowDetail } from '../_types/show';
 import { MovieDetail, Movie } from '../_types/movies';
 import { User } from 'better-auth';
 import db from '@/lib/prisma';
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
 
 const tmdbUrl = ENV.TMDB_URL;
 
@@ -132,14 +134,15 @@ export const searchMoviesForDownload = async ({
   });
 };
 
-export const syncUserMovieRatings = async (
-  user: User,
-  options: {
-    maxAge?: number;
-    batchSize?: number;
-  },
-): Promise<{ synced: number; failed: number }> => {
-  if (!user) {
+export const syncUserMovieRatings = async (options: {
+  maxAge?: number;
+  batchSize?: number;
+}): Promise<{ synced: number; failed: number }> => {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session?.user) {
     throw new Error('User is required for rating sync');
   }
 
@@ -151,24 +154,22 @@ export const syncUserMovieRatings = async (
     // Get movies that need rating updates
     const staleMovies = await db.movie.findMany({
       where: {
-        userId: user.id,
+        userId: session.user.id,
         lastRatingSync: {
           lt: cutoffTime,
         },
       },
       take: batchSize,
-      orderBy: {
-        lastRatingSync: 'asc', // Oldest first
-      },
+      orderBy: { lastRatingSync: 'asc' },
     });
 
     if (staleMovies.length === 0) {
-      console.log('No movies need rating sync', { userId: user.id });
+      console.log('No movies need rating sync', { userId: session.user.id });
       return { synced: 0, failed: 0 };
     }
 
     console.log(`Syncing ratings for ${staleMovies.length} movies`, {
-      userId: user.id,
+      userId: session.user.id,
       movieCount: staleMovies.length,
     });
 
@@ -187,7 +188,7 @@ export const syncUserMovieRatings = async (
         if (!response.data) {
           console.warn('Failed to fetch movie data from TMDB', {
             movieId: movie.id,
-            userId: user.id,
+            userId: session.user.id,
           });
           failed++;
           continue;
@@ -210,12 +211,12 @@ export const syncUserMovieRatings = async (
           title: movie.title,
           oldRating: movie.vote_average,
           newRating: tmdbData.vote_average || 0,
-          userId: user.id,
+          userId: session.user.id,
         });
       } catch (error) {
         console.error('Failed to sync movie rating', {
           movieId: movie.id,
-          userId: user.id,
+          userId: session.user.id,
           error: error instanceof Error ? error.message : 'Unknown error',
         });
         failed++;
@@ -226,7 +227,7 @@ export const syncUserMovieRatings = async (
     }
 
     console.log('Rating sync completed', {
-      userId: user.id,
+      userId: session.user.id,
       synced,
       failed,
       total: staleMovies.length,
@@ -235,7 +236,7 @@ export const syncUserMovieRatings = async (
     return { synced, failed };
   } catch (error) {
     console.error('Rating sync failed', {
-      userId: user.id,
+      userId: session.user.id,
       error: error instanceof Error ? error.message : 'Unknown error',
     });
     throw error;

@@ -12,7 +12,7 @@ const FavAndReview = ({ type, movie, title }: { type: ListType; movie: Movie | S
   return (
     <div className="absolute top-0 right-0 p-2 cursor-pointer z-20 w-full flex flex-col justify-between items-end gap-1">
       <Ratings showBg isReview vote_average={movie.vote_average} voteCount={movie?.vote_count} />
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1">
         <Download isLarge={false} title={title} />
         <Favorite type={type} movie={{ ...movie, title } as unknown as movie} />
       </div>

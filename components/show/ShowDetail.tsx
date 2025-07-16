@@ -59,7 +59,7 @@ const ShowDetails = ({ show }: { show: ShowDetail }) => {
               className="text-[15px] line-clamp-3 max-w-2xl"
               initial={{ opacity: 0, y: -1 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15, type: 'bounce' }}
+              transition={{ delay: 0.15, type: 'spring' }}
             >
               {show.overview}
             </motion.p>
