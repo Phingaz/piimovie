@@ -9,7 +9,6 @@ import { headers } from 'next/headers';
 import { getFavorites, getFeatureFlags, getFilters } from './_queries/dbProps';
 import { feature_flags, filter, movie } from '@prisma/client';
 import Footer from '@/components/general/Footer';
-import db from '@/lib/prisma';
 import ENV from '@/lib/env';
 
 const heading = Poppins({
@@ -27,15 +26,10 @@ const body = Inter({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const allowBot = await db.feature_flags.findFirst({
-    where: { name: 'allowBots' },
-  });
-
   return {
-    title: 'Movie Box | Home',
-    description:
-      'Discover, search, and download your favorite movies with ease. Our app lets you find the latest releases, timeless classics, and hidden gems—all in one place. With powerful search, seamless torrenting, and a personalized favorites list, your movie collection is just a tap away.',
-    robots: allowBot?.enabled ? 'index, follow' : 'noindex',
+    title: 'PiiMovie - Stream Movies & TV Shows',
+    description: 'Watch your favorite movies and TV shows with PiiMovie. Discover trending content and enjoy seamless streaming.',
+    robots: 'noindex, nofollow, noarchive, nosnippet, noimageindex, nocache',
   };
 }
 
