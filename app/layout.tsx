@@ -28,7 +28,8 @@ const body = Inter({
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: 'PiiMovie - Stream Movies & TV Shows',
-    description: 'Watch your favorite movies and TV shows with PiiMovie. Discover trending content and enjoy seamless streaming.',
+    description:
+      'Watch your favorite movies and TV shows with PiiMovie. Discover trending content and enjoy seamless streaming.',
     robots: 'noindex, nofollow, noarchive, nosnippet, noimageindex, nocache',
   };
 }
