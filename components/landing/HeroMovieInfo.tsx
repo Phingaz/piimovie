@@ -10,12 +10,15 @@ import Ratings from '../utils/texts/Ratings';
 import ReleaseDate from '../utils/texts/ReleaseDate';
 import { Show } from '@/app/_types/show';
 import { ListType } from '@/app/_types/utils';
+import { useHQStatus } from '@/app/_hooks/useHQStatus';
+import HQBadge from '../ui/HQBadge';
 
 const HeroMovieInfo = ({ movie, type }: { type: ListType; movie?: Movie | Show }) => {
   const router = useRouter();
 
   const title = useMemo(() => (movie ? (movie as Movie).title || (movie as Show).name : ''), [movie]);
-  const posterUrl = useMemo(() => imageUrl(movie?.poster_path), [movie]);
+  const { hqStatus, loading } = useHQStatus(title);
+  const posterUrl = useMemo(() => imageUrl(movie?.poster_path, 'w780'), [movie]);
   const overview = useMemo(() => movie?.overview || 'No overview available.', [movie]);
   const movieId = useMemo(() => movie?.id, [movie]);
   const releaseDate = useMemo(
@@ -40,12 +43,12 @@ const HeroMovieInfo = ({ movie, type }: { type: ListType; movie?: Movie | Show }
             <Image
               width={320}
               height={420}
-              loading="eager"
+              priority
               alt={title}
               src={posterUrl}
+              sizes="(max-width: 768px) 0px, 320px"
               className="rounded-lg border border-gray-500/50 hidden md:block aspect-[3/4] object-center object-cover ml-8 w-[300px] h-[400px]"
             />
-
             <div className="flex flex-col gap-4 justify-center px-8">
               <motion.h1
                 initial={{ opacity: 0, y: -2 }}
@@ -59,13 +62,14 @@ const HeroMovieInfo = ({ movie, type }: { type: ListType; movie?: Movie | Show }
               <div className="text-gray-400 font-[500] flex gap-3">
                 <Ratings vote_average={movie.vote_average} />
                 <ReleaseDate release_date={releaseDate} />
+                <HQBadge hasHQ={hqStatus} loading={loading} className='static' />
               </div>
 
               <motion.p
                 className="text-[15px] line-clamp-3"
                 initial={{ opacity: 0, y: -1 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.15, type: 'bounce' }}
+                transition={{ delay: 0.15, type: 'spring' }}
               >
                 {overview}
               </motion.p>

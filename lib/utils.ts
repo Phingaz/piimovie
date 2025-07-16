@@ -22,16 +22,6 @@ export const clientToastError = (error: unknown) => {
   }
 };
 
-export const preloadImage = (url: string) => {
-  if (url) {
-    const link = document.createElement('link');
-    link.rel = 'preload';
-    link.as = 'image';
-    link.href = url;
-    document.head.appendChild(link);
-  }
-};
-
 export function getRandomMovie(movies: Movie[] | Show[] | undefined) {
   if (!movies) return null;
 
@@ -91,12 +81,12 @@ export const formatCurrency = (value: number) => {
 
 export const isFav = (favMovies: movie[], id: number) => favMovies?.some((favMovie) => favMovie.id === id);
 
-export const imageUrl = (imgUrl?: string) => {
-  return imgUrl ? `https://image.tmdb.org/t/p/original/${imgUrl}` : '/placeholder.png';
+export const imageUrl = (imgUrl?: string, size: 'w780' | 'w1280' | 'original' = 'original') => {
+  return imgUrl ? `https://image.tmdb.org/t/p/${size}${imgUrl}` : '/placeholder.png';
 };
 
-export const imageCardUrl = (imgUrl?: string) => {
-  return imgUrl ? `https://image.tmdb.org/t/p/w500/${imgUrl}` : '/placeholder.png';
+export const imageCardUrl = (imgUrl?: string, size: 'w342' | 'w500' | 'w780' = 'w500') => {
+  return imgUrl ? `https://image.tmdb.org/t/p/${size}${imgUrl}` : '/placeholder.png';
 };
 
 export const updateSearchParam = ({

@@ -1,5 +1,6 @@
 import ENV from '@/lib/env';
 import { FetchDataArgs } from '../_types/utils';
+import { apiCache, generateCacheKey } from '@/lib/cache';
 
 const token = ENV.TMDB_API_KEY;
 
@@ -25,18 +26,15 @@ export function catchError(error: unknown) {
   return { success: false, message: status_message, data: null };
 }
 
-const cache = new Map<string, { data: unknown; timestamp: number }>();
-const CACHE_TTL = 10 * 60 * 1000;
-
 export async function fetchData<T>({ url, args, message }: FetchDataArgs<T>) {
   try {
     if (!url) throw Error('No url provided');
 
     const cacheKey = generateCacheKey(url, args);
-    const cached = cache.get(cacheKey);
+    const cached = await apiCache.get(cacheKey);
 
-    if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
-      return serverResult(cached.data as T, `[CACHED] ${message}`);
+    if (cached) {
+      return serverResult(cached as T, `[CACHED] ${message}`);
     }
 
     const req = await fetch(url, {
@@ -49,14 +47,10 @@ export async function fetchData<T>({ url, args, message }: FetchDataArgs<T>) {
     }
 
     const res = await req.json();
-    cache.set(cacheKey, { data: res, timestamp: Date.now() });
+    apiCache.set(cacheKey, res);
 
     return serverResult(res as T, message);
   } catch (error) {
     return catchError(error);
   }
-}
-
-function generateCacheKey(url: string, args: unknown): string {
-  return `${url}:${JSON.stringify(args)}`;
 }

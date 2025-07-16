@@ -14,5 +14,10 @@ const ENV = {
   NEXT_PUBLIC_URL: process.env.NEXT_PUBLIC_URL!,
   DATABASE_URL: process.env.DATABASE_URL!,
   SUPER_ADMINS: process.env.SUPER_ADMINS!,
+
+  HQ_API_URL: process.env.HQ_API_URL!,
+  HQ_API_KEY: process.env.HQ_API_KEY!,
+
+  REDIS_URL: process.env.REDIS_URL!,
 };
 export default ENV;
