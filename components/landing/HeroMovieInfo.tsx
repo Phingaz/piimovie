@@ -10,14 +10,14 @@ import Ratings from '../utils/texts/Ratings';
 import ReleaseDate from '../utils/texts/ReleaseDate';
 import { Show } from '@/app/_types/show';
 import { ListType } from '@/app/_types/utils';
-import { useHQStatus } from '@/app/_hooks/useHQStatus';
-import HQBadge from '../ui/HQBadge';
+// import { useHQStatus } from '@/app/_hooks/useHQStatus';
+// import HQBadge from '../ui/HQBadge';
 
 const HeroMovieInfo = ({ movie, type }: { type: ListType; movie?: Movie | Show }) => {
   const router = useRouter();
 
   const title = useMemo(() => (movie ? (movie as Movie).title || (movie as Show).name : ''), [movie]);
-  const { hqStatus, loading } = useHQStatus(title);
+  // const { hqStatus, loading } = useHQStatus(title);
   const posterUrl = useMemo(() => imageUrl(movie?.poster_path, 'w780'), [movie]);
   const overview = useMemo(() => movie?.overview || 'No overview available.', [movie]);
   const movieId = useMemo(() => movie?.id, [movie]);
@@ -62,7 +62,7 @@ const HeroMovieInfo = ({ movie, type }: { type: ListType; movie?: Movie | Show }
               <div className="text-gray-400 font-[500] flex gap-3">
                 <Ratings vote_average={movie.vote_average} />
                 <ReleaseDate release_date={releaseDate} />
-                <HQBadge hasHQ={hqStatus} loading={loading} className='static' />
+                {/* <HQBadge hasHQ={hqStatus} loading={loading} className='static' /> */}
               </div>
 
               <motion.p

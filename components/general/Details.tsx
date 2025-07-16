@@ -13,11 +13,11 @@ import Download from '../utils/buttons/Download';
 import GoBack from '../utils/buttons/GoBack';
 import { movie } from '@prisma/client';
 import { ListType } from '@/app/_types/utils';
-import HQBadge from '../ui/HQBadge';
-import { useHQStatus } from '@/app/_hooks/useHQStatus';
+// import HQBadge from '../ui/HQBadge';
+// import { useHQStatus } from '@/app/_hooks/useHQStatus';
 
 const Details = ({ movie }: { type: ListType; movie: MovieDetail }) => {
-  const { hqStatus, loading } = useHQStatus(movie.title);
+  // const { hqStatus, loading } = useHQStatus(movie.title);
   return (
     <AnimatePresence mode="wait">
       <motion.div
@@ -56,7 +56,7 @@ const Details = ({ movie }: { type: ListType; movie: MovieDetail }) => {
               <Ratings voteCount={movie.vote_count} vote_average={movie.vote_average} />
               <RunTimeDetails runtime={movie.runtime} />
               <ReleaseDate release_date={movie.release_date} />
-              <HQBadge hasHQ={hqStatus} loading={loading} className="static" />
+              {/* <HQBadge hasHQ={hqStatus} loading={loading} className="static" /> */}
             </div>
 
             <motion.p
