@@ -36,8 +36,6 @@ export async function POST(request: NextRequest) {
     }
 
     const data = await response.json();
-
-    // Cache the result for 7 days (HQ status doesn't change often)
     await apiCache.set(cacheKey, data);
 
     return NextResponse.json(data);

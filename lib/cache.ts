@@ -39,7 +39,7 @@ export class Cache<T = unknown> {
     this.options = {
       ttl: options.ttl ?? 24 * 60 * 60 * 1000, // 24 hours default
       maxSize: options.maxSize ?? 1000, // 1000 entries default
-      cleanupInterval: options.cleanupInterval ?? 1 * 60 * 60 * 1000, // 1 hour default
+      cleanupInterval: options.cleanupInterval ?? 24 * 60 * 60 * 1000, // 24 hours default
       enableStats: options.enableStats ?? true,
       keyPrefix: options.keyPrefix ?? 'cache:',
     };

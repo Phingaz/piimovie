@@ -13,7 +13,7 @@ export const HQBadge: React.FC<HQBadgeProps> = ({ hasHQ, loading, className }) =
     return (
       <div
         className={cn(
-          `absolute top-2 left-2 z-1 animate-pulse grid place-content-center px-1 rounded-full bg-gray-800 text-gray-200 border border-gray-300/50`,
+          `absolute top-2 left-2 z-1 animate-pulse grid place-content-center p-1 rounded-full bg-gray-800 text-gray-200 border border-gray-300/50`,
           className,
         )}
       >
