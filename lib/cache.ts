@@ -377,17 +377,27 @@ export class Cache<T = unknown> {
     }
   }
 }
+
 export function generateCacheKey(url: string, args?: unknown): string {
   if (!args) return url;
 
   try {
-    // Sort object keys for consistent cache keys
-    const sortedArgs =
-      typeof args === 'object' && args !== null ? JSON.stringify(args, Object.keys(args).sort()) : JSON.stringify(args);
+    let argsStr: string;
 
-    return `${url}:${sortedArgs}`;
+    if (typeof args === 'object' && args !== null) {
+      if (Array.isArray(args)) {
+        argsStr = JSON.stringify(args);
+      } else {
+        const keys = Object.keys(args).sort();
+        const sortedPairs = keys.map((key) => `"${key}":${JSON.stringify((args as Record<string, unknown>)[key])}`);
+        argsStr = `{${sortedPairs.join(',')}}`;
+      }
+    } else {
+      argsStr = JSON.stringify(args);
+    }
+
+    return `${url}:${argsStr}`;
   } catch {
-    // Fallback if JSON.stringify fails
     return `${url}:${String(args)}`;
   }
 }

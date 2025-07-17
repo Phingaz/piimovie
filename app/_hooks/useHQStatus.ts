@@ -50,12 +50,7 @@ export const useHQStatus = (movieTitle?: string) => {
     }
   }, [movieTitle, checkHQAvailability]);
 
-  return {
-    hqStatus,
-    loading,
-    error,
-    checkHQAvailability,
-  };
+  return { hqStatus, loading, error, checkHQAvailability };
 };
 
 // Hook for bulk checking multiple movies
@@ -71,9 +66,7 @@ export const useBulkHQStatus = () => {
     try {
       const response = await fetch('/api/hq-check/multiple', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ queries: titles }),
       });
 
@@ -89,7 +82,6 @@ export const useBulkHQStatus = () => {
         setHqStatuses((prev) => ({ ...prev, ...results }));
       } else {
         console.error('Multiple HQ check API error:', { status: response.status, statusText: response.statusText });
-        // Set default false for failed queries
         const results: Record<string, boolean> = {};
         titles.forEach((title) => {
           results[title] = false;
@@ -98,7 +90,6 @@ export const useBulkHQStatus = () => {
       }
     } catch (err) {
       console.error('Multiple HQ check failed:', { error: err, titles });
-      // Set default false for failed queries
       const results: Record<string, boolean> = {};
       titles.forEach((title) => {
         results[title] = false;
@@ -109,9 +100,5 @@ export const useBulkHQStatus = () => {
     }
   }, []);
 
-  return {
-    hqStatuses,
-    loading,
-    checkMultipleHQ,
-  };
+  return { hqStatuses, loading, checkMultipleHQ };
 };

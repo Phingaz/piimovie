@@ -28,28 +28,32 @@ export function catchError(error: unknown) {
 
 export async function fetchData<T>({ url, args, message }: FetchDataArgs<T>) {
   try {
-    if (!url) throw Error('No url provided');
+    if (!url) throw new Error('No url provided');
 
     const cacheKey = generateCacheKey(url, args);
-    const cached = await apiCache.get(cacheKey);
 
+    // Check cache first
+    const cached = await apiCache.get(cacheKey);
     if (cached) {
       return serverResult(cached as T, `[CACHED] ${message}`);
     }
 
-    const req = await fetch(url, {
-      headers: { Authorization: `Bearer ${token}` },
+    // Prepare fetch options with proper defaults
+    const fetchOptions: RequestInit = {
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json', ...args?.headers },
       ...args,
-    });
+    };
 
-    if (req.status !== 200) {
-      throw Error(req.statusText);
+    const response = await fetch(url, fetchOptions);
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
 
-    const res = await req.json();
-    apiCache.set(cacheKey, res);
+    const data = (await response.json()) as T;
+    apiCache.set(cacheKey, data).catch((error) => console.warn('Failed to cache data:', error));
 
-    return serverResult(res as T, message);
+    return serverResult(data, message);
   } catch (error) {
     return catchError(error);
   }
