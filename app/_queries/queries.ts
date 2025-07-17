@@ -1,3 +1,4 @@
+'use server';
 import ENV from '@/lib/env';
 import {
   CreditApiResponse,
@@ -12,7 +13,6 @@ import { fetchData } from './utils';
 import { ListType } from '../_types/utils';
 import { Show, ShowDetail } from '../_types/show';
 import { MovieDetail, Movie } from '../_types/movies';
-import { User } from 'better-auth';
 import db from '@/lib/prisma';
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
@@ -149,126 +149,115 @@ export const syncUserMovieRatings = async (options: {
   const { maxAge = 24, batchSize = 10 } = options;
   const maxAgeMs = maxAge * 60 * 60 * 1000;
   const cutoffTime = new Date(Date.now() - maxAgeMs);
+  const userId = session.user.id;
 
   try {
     // Get movies that need rating updates
     const staleMovies = await db.movie.findMany({
-      where: {
-        userId: session.user.id,
-        lastRatingSync: {
-          lt: cutoffTime,
-        },
-      },
+      where: { userId, lastRatingSync: { lt: cutoffTime } },
       take: batchSize,
       orderBy: { lastRatingSync: 'asc' },
     });
 
     if (staleMovies.length === 0) {
-      console.log('No movies need rating sync', { userId: session.user.id });
+      console.log('No movies need rating sync', { userId });
       return { synced: 0, failed: 0 };
     }
 
     console.log(`Syncing ratings for ${staleMovies.length} movies`, {
-      userId: session.user.id,
+      userId,
       movieCount: staleMovies.length,
     });
 
     let synced = 0;
     let failed = 0;
+    const updatePromises: Promise<void>[] = [];
 
-    // Process movies in smaller batches to avoid overwhelming TMDB API
-    for (const movie of staleMovies) {
-      try {
-        // Fetch current movie data from TMDB
-        const response = await getDetails({
-          id: movie.id.toString(),
-          type: movie.type as 'movie' | 'tv',
-        });
+    for (let i = 0; i < staleMovies.length; i += 3) {
+      const batch = staleMovies.slice(i, i + 3);
 
-        if (!response.data) {
-          console.warn('Failed to fetch movie data from TMDB', {
+      const batchPromises = batch.map(async (movie) => {
+        try {
+          // Fetch current movie data from TMDB
+          const response = await getDetails({
+            id: movie.id.toString(),
+            type: movie.type as 'movie' | 'tv',
+          });
+
+          if (!response.success || !response.data) {
+            console.warn('Failed to fetch movie data from TMDB', {
+              movieId: movie.id,
+              userId,
+              error: response.message,
+            });
+            failed++;
+            return;
+          }
+
+          const tmdbData = response.data;
+          const newRating = Number(tmdbData.vote_average.toFixed()) || 0;
+
+          // Always update lastRatingSync to prevent infinite syncing
+          const updateData: { vote_average: number; lastRatingSync: Date } = {
+            vote_average: newRating,
+            lastRatingSync: new Date(),
+          };
+
+          updatePromises.push(
+            db.movie
+              .update({
+                where: { id: movie.id },
+                data: updateData,
+              })
+              .then(() => {
+                const hasChanged = movie.vote_average !== newRating;
+                console.log('Synced movie rating', {
+                  movieId: movie.id,
+                  title: movie.title,
+                  oldRating: movie.vote_average,
+                  newRating,
+                  changed: hasChanged,
+                  userId,
+                });
+              }),
+          );
+
+          synced++;
+        } catch (error) {
+          console.error('Failed to sync movie rating', {
             movieId: movie.id,
-            userId: session.user.id,
+            userId,
+            error: error instanceof Error ? error.message : 'Unknown error',
           });
           failed++;
-          continue;
         }
+      });
 
-        const tmdbData = response.data;
+      await Promise.allSettled(batchPromises);
 
-        // Update the movie with fresh TMDB data
-        await db.movie.update({
-          where: { id: movie.id },
-          data: {
-            vote_average: tmdbData.vote_average || 0,
-            lastRatingSync: new Date(),
-          },
-        });
-
-        synced++;
-        console.log('Synced movie rating', {
-          movieId: movie.id,
-          title: movie.title,
-          oldRating: movie.vote_average,
-          newRating: tmdbData.vote_average || 0,
-          userId: session.user.id,
-        });
-      } catch (error) {
-        console.error('Failed to sync movie rating', {
-          movieId: movie.id,
-          userId: session.user.id,
-          error: error instanceof Error ? error.message : 'Unknown error',
-        });
-        failed++;
+      if (i + 3 < staleMovies.length) {
+        await new Promise((resolve) => setTimeout(resolve, 250));
       }
+    }
 
-      // Small delay to respect TMDB rate limits
-      await new Promise((resolve) => setTimeout(resolve, 100));
+    if (updatePromises.length > 0) {
+      await Promise.allSettled(updatePromises);
     }
 
     console.log('Rating sync completed', {
-      userId: session.user.id,
+      userId,
       synced,
       failed,
       total: staleMovies.length,
+      updated: updatePromises.length,
     });
 
     return { synced, failed };
   } catch (error) {
     console.error('Rating sync failed', {
-      userId: session.user.id,
+      userId,
       error: error instanceof Error ? error.message : 'Unknown error',
     });
     throw error;
   }
-};
-
-export const getSyncStats = async (user: User) => {
-  if (!user) return null;
-
-  const now = new Date();
-  const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-
-  const [total, needsSync, recentlySync] = await Promise.all([
-    db.movie.count({ where: { userId: user.id } }),
-    db.movie.count({
-      where: {
-        userId: user.id,
-        lastRatingSync: { lt: oneDayAgo },
-      },
-    }),
-    db.movie.count({
-      where: {
-        userId: user.id,
-        lastRatingSync: { gte: oneDayAgo },
-      },
-    }),
-  ]);
-
-  return {
-    total,
-    needsSync,
-    recentlySync,
-    syncPercentage: total > 0 ? Math.round((recentlySync / total) * 100) : 0,
-  };
 };
