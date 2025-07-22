@@ -33,7 +33,7 @@ const ShowComponent = async ({ id, type }: { id: string; type: ListType }) => {
             <MoreInfo show={show} />
             <VideoPlayer id={show.id} type={type} />
           </div>
-          <Seasons seasons={show.seasons} />
+          <Seasons seasons={show.seasons} tvId={show.id} showName={show.original_name} />
 
           <div className="flex md:flex-row flex-col md:grid grid-cols-3 gap-3 md:gap-8 mb-[70px]">
             <div className="flex-[7] flex flex-col md:gap-12 gap-6 col-span-2">

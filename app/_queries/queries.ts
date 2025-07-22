@@ -13,6 +13,7 @@ import { fetchData } from './utils';
 import { ListType } from '../_types/utils';
 import { Show, ShowDetail } from '../_types/show';
 import { MovieDetail, Movie } from '../_types/movies';
+import { SeasonDetail } from '../_types/utils';
 
 const tmdbUrl = ENV.TMDB_URL;
 
@@ -110,6 +111,15 @@ export const getVideos = async ({ id, type }: { id: number; type: ListType }) =>
   return await fetchData<VideoApiResponse>({
     url,
     message: `Successfully fetched videos for ${type} id ${id}`,
+  });
+};
+
+export const getSeasonDetails = async ({ tvId, seasonNumber }: { tvId: number; seasonNumber: number }) => {
+  const url = `${tmdbUrl}/tv/${tvId}/season/${seasonNumber}`;
+
+  return await fetchData<SeasonDetail>({
+    url,
+    message: `Successfully fetched season ${seasonNumber} details for tv show ${tvId}`,
   });
 };
 
