@@ -38,7 +38,7 @@
 }
 
 .carousel-item {
-  @apply min-w-0 grow-0 shrink-0 basis-[55%] sm:basis-[47%] aspect-[2.2/3] md:basis-[28%] lg:basis-[20%] relative overflow-clip rounded-lg hover:rounded-lg;
+  @apply min-w-0 grow-0 shrink-0 basis-[55%] sm:basis-[47%] aspect-[2.2/3] md:basis-[28%] lg:basis-[20%] relative overflow-clip rounded-sm hover:rounded-sm;
 }
 
 html {

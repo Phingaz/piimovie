@@ -25,9 +25,9 @@ const Images = async ({ id, type }: { id: number; type: ListType }) => {
             return (
               <CarouselItem
                 key={el.file_path}
-                className={`rounded-md carousel-item ${images.length > 1 ? 'multiple' : 'single'}`}
+                className={`rounded carousel-item ${images.length > 1 ? 'multiple' : 'single'}`}
               >
-                <ImageModalCard el={el} />
+                <ImageModalCard el={el} i={images.indexOf(el)} images={images} />
               </CarouselItem>
             );
           })}

@@ -1,46 +1,62 @@
 'use client';
-import React, { useCallback } from 'react';
+import React, { useState } from 'react';
 import ImageComponent from '../utils/ImageComponent';
 import { imageCardUrl, imageUrl } from '@/lib/utils';
 import { Poster } from '@/app/_types/utils';
 import { Button } from '../ui/button';
 import ModalComponent from '../general/Modal';
-import NextImage from 'next/image';
 
-const ImageModalCard = ({ el }: { el: Poster }) => {
-  const imgSrc = imageUrl(el.file_path);
+const ImageModalCard = ({ el, i, images }: { el: Poster; i: number; images: Poster[] }) => {
+  const [index, setIndex] = useState(i);
+  const img = images[index];
 
-  const handlePreload = useCallback(() => {
-    if (typeof window !== 'undefined' && !document.querySelector(`link[rel="preload"][href="${imgSrc}"]`)) {
-      const link = document.createElement('link');
-      link.rel = 'preload';
-      link.as = 'image';
-      link.href = imgSrc;
-      document.head.appendChild(link);
-    }
-  }, [imgSrc]);
+  const goPrev = () => setIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  const goNext = () => setIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
 
   return (
     <ModalComponent
-      className="w-[min(800px,90vw)] aspect-[3/4]"
+      className="w-[min(1000px,90svw)] aspect-[3/4]"
       trigger={
-        <Button onMouseEnter={handlePreload} className="w-full h-full p-0 rounded-lg m-0">
+        <Button className="block w-full h-full p-0 rounded m-0">
           <ImageComponent
-            string={imageCardUrl(el.file_path)}
             title={el.file_path}
-            className="w-full h-full aspect-[3/4]"
+            string={imageCardUrl(el.file_path)}
+            className="w-full h-full aspect-square rounded hover:rounded"
           />
         </Button>
       }
     >
-      <NextImage
+      <span className="absolute left-2 top-1/2 -translate-y-1/2 z-10">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={goPrev}
+          aria-label="Previous image"
+          className="rounded-full bg-gray-800/50"
+        >
+          &#8592;
+        </Button>
+      </span>
+      <span className="absolute right-2 top-1/2 -translate-y-1/2 z-10">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={goNext}
+          aria-label="Next image"
+          className="rounded-full bg-gray-800/50"
+        >
+          &#8594;
+        </Button>
+      </span>
+      <ImageComponent
         fill
-        alt={el.file_path}
-        title={el.file_path}
-        src={imgSrc}
-        loading="lazy"
-        className="w-full h-full object-cover object-center rounded-lg"
+        title={img.file_path}
+        string={imageUrl(img.file_path, 'original')}
+        className="size-full rounded object-cover hover:scale-100"
       />
+      <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs text-white bg-black/60 px-2 py-1 rounded">
+        {index + 1} / {images.length}
+      </span>
     </ModalComponent>
   );
 };
