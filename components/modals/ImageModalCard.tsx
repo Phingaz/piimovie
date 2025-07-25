@@ -50,6 +50,7 @@ const ImageModalCard = ({ el, i, images }: { el: Poster; i: number; images: Post
       </span>
       <ImageComponent
         fill
+        key={img.file_path}
         title={img.file_path}
         string={imageUrl(img.file_path, 'original')}
         className="size-full rounded object-cover hover:scale-100"
