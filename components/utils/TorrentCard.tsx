@@ -38,8 +38,6 @@ export default function TorrentItem({ torrent }: { torrent: DownlodResult }) {
     }
   };
 
-  console.log(torrent.date);
-
   return (
     <div className="bg-gray-900 rounded-lg p-3 hover:bg-gray-750 duration-200 border border-gray-900 shadow shadow-gray-500 hover:scale-[1.005] transition-all">
       {/* Torrent Name */}
