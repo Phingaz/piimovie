@@ -13,7 +13,7 @@ export async function GET() {
     }
 
     const maxAge = 24;
-    const batchSize = 10;
+    const batchSize = 50;
     const maxAgeMs = maxAge * 60 * 60 * 1000;
     const cutoffTime = new Date(Date.now() - maxAgeMs);
 
