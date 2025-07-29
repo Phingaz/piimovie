@@ -1,6 +1,6 @@
 import ENV from '@/lib/env';
 import { NextRequest, NextResponse } from 'next/server';
-import { apiCache, generateCacheKey } from '@/lib/cache';
+import { hQCache, generateCacheKey } from '@/lib/cache';
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
     const cacheKey = generateCacheKey('hq-check', { query: query.toLowerCase().trim() });
 
     // Check cache first
-    const cachedResult = await apiCache.get(cacheKey);
+    const cachedResult = await hQCache.get(cacheKey);
     if (cachedResult !== null) {
       return NextResponse.json(cachedResult);
     }
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
     }
 
     const data = await response.json();
-    await apiCache.set(cacheKey, data);
+    await hQCache.set(cacheKey, data);
 
     return NextResponse.json(data);
   } catch (error) {

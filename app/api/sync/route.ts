@@ -36,8 +36,8 @@ export async function GET() {
       movieCount: staleMovies.length,
     });
 
-    let synced = 0;
-    let failed = 0;
+    const synced: string[] = [];
+    const failed: { title: string; reason: string }[] = [];
     const updatePromises: Promise<void>[] = [];
 
     for (let i = 0; i < staleMovies.length; i += 3) {
@@ -56,7 +56,7 @@ export async function GET() {
               movieId: movie.id,
               error: response.message,
             });
-            failed++;
+            failed.push({ title: movie.title, reason: response.message || 'Unknown error' });
             return;
           }
 
@@ -87,13 +87,13 @@ export async function GET() {
               }),
           );
 
-          synced++;
+          synced.push(movie.title);
         } catch (error) {
           console.error('Failed to sync movie rating', {
             movieId: movie.id,
             error: error instanceof Error ? error.message : 'Unknown error',
           });
-          failed++;
+          failed.push({ title: movie.title, reason: error instanceof Error ? error.message : 'Unknown error' });
         }
       });
 
@@ -117,8 +117,17 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
-      data: { synced, failed },
-      message: `Successfully synced ${synced} movie ratings`,
+      data: {
+        synced: {
+          length: synced.length,
+          titles: synced,
+        },
+        failed: {
+          length: failed.length,
+          titles: failed,
+        },
+      },
+      message: `Successfully synced ${synced.length} movie ratings`,
     });
   } catch (error) {
     console.error('Error syncing movie ratings:', error);

@@ -1,6 +1,6 @@
 import envProxy from '@/lib/env';
 import { NextRequest, NextResponse } from 'next/server';
-import { apiCache, generateCacheKey } from '@/lib/cache';
+import { hQCache, generateCacheKey } from '@/lib/cache';
 
 export async function POST(request: NextRequest) {
   try {
@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     // Check cache for each query first
     for (const query of queries) {
       const cacheKey = generateCacheKey('hq-check', { query: query.toLowerCase().trim() });
-      const cachedResult = await apiCache.get(cacheKey);
+      const cachedResult = await hQCache.get(cacheKey);
 
       if (cachedResult !== null) {
         results.push(cachedResult);
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
       if (data.results && Array.isArray(data.results)) {
         for (const result of data.results) {
           const cacheKey = generateCacheKey('hq-check', { query: result.query.toLowerCase().trim() });
-          await apiCache.set(cacheKey, result);
+          await hQCache.set(cacheKey, result);
           results.push(result);
         }
       }

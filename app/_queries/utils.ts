@@ -1,6 +1,6 @@
 import ENV from '@/lib/env';
 import { FetchDataArgs } from '../_types/utils';
-import { apiCache, generateCacheKey } from '@/lib/cache';
+import { defaultCache, generateCacheKey } from '@/lib/cache';
 
 const token = ENV.TMDB_API_KEY;
 
@@ -33,7 +33,7 @@ export async function fetchData<T>({ url, args, message }: FetchDataArgs<T>) {
     const cacheKey = generateCacheKey(url, args);
 
     // Check cache first
-    const cached = await apiCache.get(cacheKey);
+    const cached = await defaultCache.get(cacheKey);
     if (cached) {
       return serverResult(cached as T, `[CACHED] ${message}`);
     }
@@ -51,7 +51,7 @@ export async function fetchData<T>({ url, args, message }: FetchDataArgs<T>) {
     }
 
     const data = (await response.json()) as T;
-    apiCache.set(cacheKey, data).catch((error) => console.warn('Failed to cache data:', error));
+    defaultCache.set(cacheKey, data).catch((error) => console.warn('Failed to cache data:', error));
 
     return serverResult(data, message);
   } catch (error) {

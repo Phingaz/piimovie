@@ -42,11 +42,10 @@ const Page = () => {
   const { checkMultipleHQ, hqStatuses, loading: hqLoading } = useBulkHQStatus();
 
   useEffect(() => {
-    if (filteredResults && filteredResults.length > 0) {
-      const movieTitles = filteredResults.map((movie) => movie.title);
-      checkMultipleHQ(movieTitles);
+    if (movies && movies.length > 0) {
+      checkMultipleHQ(movies.map((m) => m.title));
     }
-  }, [filteredResults, checkMultipleHQ]);
+  }, [movies, checkMultipleHQ]);
 
   return (
     <div className="container mx-auto py-10 mt-[70px] px-3 md:px-[2rem]">

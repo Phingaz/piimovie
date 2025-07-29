@@ -10,7 +10,6 @@ export interface CacheEntry<T = unknown> {
 export interface CacheOptions {
   ttl?: number; // Time to live in milliseconds
   maxSize?: number; // Maximum number of entries
-  cleanupInterval?: number; // Auto cleanup interval in milliseconds
   enableStats?: boolean; // Enable cache statistics
   keyPrefix?: string; // Redis key prefix
 }
@@ -39,7 +38,6 @@ export class Cache<T = unknown> {
     this.options = {
       ttl: options.ttl ?? 24 * 60 * 60 * 1000, // 24 hours default
       maxSize: options.maxSize ?? 1000, // 1000 entries default
-      cleanupInterval: options.cleanupInterval ?? 24 * 60 * 60 * 1000, // 24 hours default
       enableStats: options.enableStats ?? true,
       keyPrefix: options.keyPrefix ?? 'cache:',
     };
@@ -52,7 +50,7 @@ export class Cache<T = unknown> {
     }
 
     // Start automatic cleanup if enabled
-    if (this.options.cleanupInterval > 0) {
+    if (this.options.ttl > 0) {
       this.startAutoCleanup();
     }
   }
@@ -309,9 +307,9 @@ export class Cache<T = unknown> {
     Object.assign(this.options, newOptions);
 
     // Restart cleanup timer if interval changed
-    if (newOptions.cleanupInterval !== undefined) {
+    if (newOptions.ttl !== undefined) {
       this.stopAutoCleanup();
-      if (this.options.cleanupInterval > 0) {
+      if (this.options.ttl > 0) {
         this.startAutoCleanup();
       }
     }
@@ -367,7 +365,7 @@ export class Cache<T = unknown> {
       this.cleanup().catch((error) => {
         console.error('Auto cleanup error:', error);
       });
-    }, this.options.cleanupInterval);
+    }, this.options.ttl);
   }
 
   private stopAutoCleanup(): void {
@@ -404,8 +402,22 @@ export function generateCacheKey(url: string, args?: unknown): string {
 
 // Use globalThis to persist cache across hot reloads in development
 const globalForCache = globalThis as unknown as {
-  __apiCache: Cache | undefined;
+  __defaultCache: Cache | undefined;
 };
 
-export const apiCache =
-  globalForCache.__apiCache ?? (globalForCache.__apiCache = new Cache({ enableStats: true, keyPrefix: 'piimovies:' }));
+const globalForHQCache = globalThis as unknown as {
+  __hqCache: Cache | undefined;
+};
+
+export const defaultCache =
+  globalForCache.__defaultCache ??
+  (globalForCache.__defaultCache = new Cache({ enableStats: true, keyPrefix: 'piimovies:' }));
+
+export const hQCache =
+  globalForHQCache.__hqCache ??
+  (globalForHQCache.__hqCache = new Cache({
+    enableStats: true,
+    keyPrefix: 'piimovies:hq-check:',
+    ttl: 7 * 24 * 60 * 60 * 1000,
+    maxSize: 1000,
+  }));
