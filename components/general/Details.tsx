@@ -15,6 +15,7 @@ import { movie } from '@prisma/client';
 import { ListType } from '@/app/_types/utils';
 import HQBadge from '../ui/HQBadge';
 import { useHQStatus } from '@/app/_hooks/useHQStatus';
+import OverView from './OverView';
 
 const Details = ({ movie }: { type: ListType; movie: MovieDetail }) => {
   const { hqStatus, loading } = useHQStatus(movie.title);
@@ -59,14 +60,7 @@ const Details = ({ movie }: { type: ListType; movie: MovieDetail }) => {
               <HQBadge hasHQ={hqStatus} loading={loading} className="static" />
             </div>
 
-            <motion.p
-              className="text-[15px] line-clamp-3 max-w-2xl"
-              initial={{ opacity: 0, y: -1 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15, type: 'spring' }}
-            >
-              {movie?.overview}
-            </motion.p>
+            <OverView overView={movie.overview} />
 
             <div className="flex gap-5 items-center mt-2">
               <Favorite type="movie" isLarge movie={movie as unknown as movie} />

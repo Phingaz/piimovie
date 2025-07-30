@@ -13,8 +13,13 @@ import { movie } from '@prisma/client';
 import ShowRunTime from './ShowRunTime';
 import NumberOfEpisodes from './NumberOfEpisodes';
 import NumberOfSeasons from './NumberOfSeasons';
+import { useHQStatus } from '@/app/_hooks/useHQStatus';
+import HQBadge from '../ui/HQBadge';
+import OverView from '../general/OverView';
 
 const ShowDetails = ({ show }: { show: ShowDetail }) => {
+  const { hqStatus, loading } = useHQStatus(show.original_name);
+
   return (
     <AnimatePresence mode="wait">
       <motion.div
@@ -53,16 +58,10 @@ const ShowDetails = ({ show }: { show: ShowDetail }) => {
               <ShowRunTime first_air_date={show.first_air_date} last_air_date={show.last_air_date} />
               <NumberOfSeasons number_of_seasons={show.number_of_seasons} />
               <NumberOfEpisodes number_of_episodes={show.number_of_episodes} />
+              <HQBadge hasHQ={hqStatus} loading={loading} className="static" />
             </div>
 
-            <motion.p
-              className="text-[15px] line-clamp-3 max-w-2xl"
-              initial={{ opacity: 0, y: -1 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15, type: 'spring' }}
-            >
-              {show.overview}
-            </motion.p>
+            <OverView overView={show.overview} />
 
             <div className="flex gap-5 items-center mt-2">
               <Favorite type="tv" isLarge movie={{ ...show, title: show.original_name } as unknown as movie} />

@@ -32,7 +32,7 @@ const ImageComponent = ({
   title,
   className,
   priority = false,
-  sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
+  sizes = '(max-width: 768px) 40vw, (max-width: 1200px) 50vw, 80vw',
   ...props
 }: ImageComponentProps) => {
   const [imageError, setImageError] = React.useState(false);
