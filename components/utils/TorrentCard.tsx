@@ -1,41 +1,48 @@
-'use client';
-
-import { useState } from 'react';
-import {
-  File,
-  HardDrive,
-  Upload,
-  Download,
-  Tag,
-  User,
-  Calendar,
-  Link,
-  Hash,
-  Magnet,
-  Copy,
-  Check,
-  ExternalLink,
-} from 'lucide-react';
-import { formatDownloadDate } from '@/lib/utils';
+import { format } from 'date-fns';
+import CopyButton from './buttons/CopyButton';
+import StreamButton from './buttons/StreamButton';
 import { DownlodResult } from '@/app/_types/utils';
+import { File, HardDrive, Upload, Download, Tag, User, Calendar, Link, Hash, Magnet, ExternalLink } from 'lucide-react';
 
 export default function TorrentItem({ torrent }: { torrent: DownlodResult }) {
-  const [copiedHash, setCopiedHash] = useState(false);
-  const [copiedMagnet, setCopiedMagnet] = useState(false);
+  const cleanDate = (date: string | number) => {
+    if (typeof date === 'string') {
+      console.log('Received date:', date);
 
-  const copyToClipboard = async (text: string, type: 'hash' | 'magnet') => {
-    try {
-      await navigator.clipboard.writeText(text);
-      if (type === 'hash') {
-        setCopiedHash(true);
-        setTimeout(() => setCopiedHash(false), 2000);
-      } else {
-        setCopiedMagnet(true);
-        setTimeout(() => setCopiedMagnet(false), 2000);
+      if (date.toLowerCase() === 'y-day' || date.toLowerCase() === 'yesterday') {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        return format(yesterday, 'MMM dd, yyyy');
       }
-    } catch (err) {
-      console.error('Failed to copy: ', err);
+
+      // Parse date formats like "07-25 10:41" or "08-12 2023"
+      const dateMatch = date.match(/(\d{2})-(\d{2})(?:\s+(\d{2}):(\d{2})|(?:\s+(\d{4})))?/);
+      if (dateMatch) {
+        const month = parseInt(dateMatch[1]) - 1; // Months are 0-indexed in JS
+        const day = parseInt(dateMatch[2]);
+        const year = dateMatch[5] ? parseInt(dateMatch[5]) : new Date().getFullYear();
+
+        const parsedDate = new Date();
+        parsedDate.setFullYear(year, month, day);
+
+        if (dateMatch[3] && dateMatch[4]) {
+          parsedDate.setHours(parseInt(dateMatch[3]), parseInt(dateMatch[4]));
+        }
+
+        return format(parsedDate, 'MMM dd, yyyy');
+      }
+
+      try {
+        return format(new Date(date), 'MMM dd, yyyy');
+      } catch {
+        return format(new Date(), 'MMM dd, yyyy');
+      }
     }
+
+    if (typeof date === 'number') {
+      return format(new Date(date), 'MMM dd, yyyy');
+    }
+    return format(new Date(), 'MMM dd, yyyy');
   };
 
   return (
@@ -82,25 +89,19 @@ export default function TorrentItem({ torrent }: { torrent: DownlodResult }) {
 
           <div className="flex items-center text-gray-400">
             <Calendar size={16} />
-            <span className="ml-1 text-[13px]">{formatDownloadDate(torrent.date)}</span>
+            <span className="ml-1 text-[13px]">{cleanDate(torrent?.date)}</span>
           </div>
 
-          <div className="flex items-center">
-            <Magnet className="w-4 h-4 text-red-400" />
+          <div className="flex items-center gap-2">
+            <StreamButton magnetLink={torrent.magnet} title={torrent.name} isLarge={false} />
             <a
               href={torrent.magnet}
-              className="ml-1 text-[13px] text-red-400 hover:text-red-300 transition-colors"
               aria-label="Open magnet link"
+              className="p-[6px] bg-red-800 rounded-sm text-red-100 hover:bg-red-700 transition-colors"
             >
-              Magnet
+              <Magnet className="size-4" />
             </a>
-            <button
-              onClick={() => copyToClipboard(torrent.magnet, 'magnet')}
-              className="ml-1 text-gray-400 hover:text-white transition-colors"
-              aria-label="Copy magnet link"
-            >
-              {copiedMagnet ? <Check className="w-3 h-3 text-green-500" /> : <Copy className="w-3 h-3" />}
-            </button>
+            <CopyButton text={torrent.magnet} />
           </div>
         </div>
       </div>
@@ -125,14 +126,8 @@ export default function TorrentItem({ torrent }: { torrent: DownlodResult }) {
         <div className="flex items-center">
           <Hash className="w-3.5 h-3.5 text-gray-400" />
           <div className="ml-1 font-mono flex items-center">
-            <span className="truncate max-w-[150px] md:max-w-[200px] text-gray-400">{torrent.hash}</span>
-            <button
-              onClick={() => copyToClipboard(torrent.hash, 'hash')}
-              className="ml-1 text-gray-400 hover:text-white transition-colors flex-shrink-0"
-              aria-label="Copy hash"
-            >
-              {copiedHash ? <Check className="w-3 h-3 text-green-500" /> : <Copy className="w-3 h-3" />}
-            </button>
+            <span className="truncate max-w-[150px] md:max-w-[450px] mr-2 text-gray-400">{torrent.hash}</span>
+            <CopyButton text={torrent.hash} />
           </div>
         </div>
       </div>
