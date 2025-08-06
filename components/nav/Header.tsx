@@ -3,7 +3,7 @@ import Image from 'next/image';
 import React from 'react';
 import { useCycle } from 'framer-motion';
 import Link from 'next/link';
-import { DownloadIcon, Heart, Search } from 'lucide-react';
+import { DownloadIcon, Heart, Search, PlayCircle } from 'lucide-react';
 import { useMainCtx } from '@/app/_context/Main';
 import SignInBtn from './SignInBtn';
 import { UserDropDown } from './UserDropdown';
@@ -102,6 +102,14 @@ const Header = () => {
                     className="text-gray-300 bg-gray-700/50 p-[6px] rounded-md w-fit"
                   >
                     <Heart size={25} />
+                  </Link>
+                  <Link
+                    aria-label="streaming"
+                    href="/streaming"
+                    onClick={() => mobileNav && toggleMobileNav()}
+                    className="text-gray-300 bg-gray-700/50 p-[6px] rounded-md w-fit"
+                  >
+                    <PlayCircle size={25} />
                   </Link>
                   <Link
                     aria-label="download"

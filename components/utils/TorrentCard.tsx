@@ -7,8 +7,6 @@ import { File, HardDrive, Upload, Download, Tag, User, Calendar, Link, Hash, Mag
 export default function TorrentItem({ torrent }: { torrent: DownlodResult }) {
   const cleanDate = (date: string | number) => {
     if (typeof date === 'string') {
-      console.log('Received date:', date);
-
       if (date.toLowerCase() === 'y-day' || date.toLowerCase() === 'yesterday') {
         const yesterday = new Date();
         yesterday.setDate(yesterday.getDate() - 1);
@@ -93,7 +91,9 @@ export default function TorrentItem({ torrent }: { torrent: DownlodResult }) {
           </div>
 
           <div className="flex items-center gap-2">
-            <StreamButton magnetLink={torrent.magnet} title={torrent.name} isLarge={false} />
+            {parseFloat(torrent.size.replace(/[^\d.]/g, '')) < 3.5 && (
+              <StreamButton magnetLink={torrent.magnet} title={torrent.name} isLarge={false} />
+            )}
             <a
               href={torrent.magnet}
               aria-label="Open magnet link"

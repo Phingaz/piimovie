@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { Play, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
+import useLocalStorage from '@/app/_hooks/useLocalStorage';
 
 interface StreamButtonProps {
   magnetLink: string;
@@ -12,10 +14,14 @@ interface StreamButtonProps {
 
 const StreamButton: React.FC<StreamButtonProps> = ({ magnetLink, title, className = '' }) => {
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const [, setMagnetLink] = useLocalStorage('magnetLink', '');
 
   const handleStartStream = async () => {
     try {
       setLoading(true);
+      setMagnetLink(magnetLink);
+      router.push(`/streaming`);
     } catch (error) {
       console.error('Failed to start stream:', error);
     }

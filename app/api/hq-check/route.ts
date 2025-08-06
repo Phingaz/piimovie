@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     }
 
     const HQ_API_URL = ENV.HQ_API_URL;
-    const apiKey = ENV.HQ_API_KEY;
+    const apiKey = ENV.SERVER_API_KEY;
 
     const response = await fetch(HQ_API_URL, {
       method: 'POST',

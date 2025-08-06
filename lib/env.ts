@@ -16,7 +16,8 @@ const ENV = {
   SUPER_ADMINS: process.env.SUPER_ADMINS!,
 
   HQ_API_URL: process.env.HQ_API_URL!,
-  HQ_API_KEY: process.env.HQ_API_KEY!,
+  STREAMING_API_BASE: process.env.STREAMING_API_BASE!,
+  SERVER_API_KEY: process.env.SERVER_API_KEY!,
 
   REDIS_URL: process.env.REDIS_URL!,
 };
