@@ -11,8 +11,7 @@ export type ProviderProps = {
   isSuperAdmin: boolean;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export interface FetchDataArgs<T> {
+export interface FetchDataArgs {
   url?: string;
   args?: RequestInit;
   message?: string;
