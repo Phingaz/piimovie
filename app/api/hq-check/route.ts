@@ -19,10 +19,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(cachedResult);
     }
 
-    const HQ_API_URL = ENV.HQ_API_URL;
+    const HQ_API_URL = ENV.SERVER_API_URL;
     const apiKey = ENV.SERVER_API_KEY;
 
-    const response = await fetch(HQ_API_URL, {
+    const response = await fetch(`${HQ_API_URL}/query`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
