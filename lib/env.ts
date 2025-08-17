@@ -19,5 +19,11 @@ const ENV = {
   SERVER_API_KEY: process.env.SERVER_API_KEY!,
 
   REDIS_URL: process.env.REDIS_URL!,
+  // Download feature constants
+  MAX_DOWNLOAD_SIZE: parseInt(process.env.MAX_DOWNLOAD_SIZE || `${5 * 1024 ** 3}`), // 5GB default
+  DEFAULT_CHUNK_SIZE: parseInt(process.env.DEFAULT_CHUNK_SIZE || `${10_485_760}`), // 10MiB
+  MAX_CONCURRENT_DOWNLOADS: parseInt(process.env.MAX_CONCURRENT_DOWNLOADS || '3'),
+  DOWNLOAD_ENCRYPTION_ENABLED: (process.env.DOWNLOAD_ENCRYPTION_ENABLED || 'false').toLowerCase() === 'true',
+  DOWNLOAD_ENCRYPTION_SALT: process.env.DOWNLOAD_ENCRYPTION_SALT || 'piimovie.static.salt.v1',
 };
 export default ENV;
