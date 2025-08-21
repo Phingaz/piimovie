@@ -9,19 +9,19 @@ async function deriveKey(magnetLink: string, fileIndex: number): Promise<CryptoK
     textEncoder.encode(`${magnetLink}|${fileIndex}|${ENV.DOWNLOAD_ENCRYPTION_SALT}`),
     'PBKDF2',
     false,
-    ['deriveBits', 'deriveKey']
+    ['deriveBits', 'deriveKey'],
   );
   return crypto.subtle.deriveKey(
     {
       name: 'PBKDF2',
       salt: textEncoder.encode('piimovie.v1'),
       iterations: 10000,
-      hash: 'SHA-256'
+      hash: 'SHA-256',
     },
     material,
     { name: 'AES-GCM', length: 256 },
     false,
-    ['encrypt', 'decrypt']
+    ['encrypt', 'decrypt'],
   );
 }
 

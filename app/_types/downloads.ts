@@ -36,7 +36,7 @@ export enum DownloadLifecycleState {
   CANCELLED = 'cancelled',
   VERIFYING = 'verifying',
   STALLED = 'stalled',
-  INSUFFICIENT_SPACE = 'insufficient_space'
+  INSUFFICIENT_SPACE = 'insufficient_space',
 }
 
 export interface DownloadRecord extends DownloadInfo {
@@ -71,6 +71,24 @@ export interface StartDownloadParams {
   chunkSize?: number;
 }
 
+// Torrent metadata activation
+export interface TorrentFileEntry {
+  index: number;
+  path: string;
+  name: string;
+  size_bytes: number;
+  size_mb: number;
+  is_video: boolean;
+  mime_type: string;
+}
+
+export interface TorrentMetadataResponse {
+  torrent_name: string;
+  total_files: number;
+  files: TorrentFileEntry[];
+  preloaded_file_index?: number | null;
+}
+
 export interface DownloadChunkMeta {
   downloadId: DownloadId;
   chunkIndex: number;
@@ -86,7 +104,10 @@ export interface QueueItem {
   createdAt: number;
 }
 
-export interface StartResult { id: DownloadId; alreadyExisted?: boolean; }
+export interface StartResult {
+  id: DownloadId;
+  alreadyExisted?: boolean;
+}
 
 export interface DownloadServiceAPI {
   start(params: StartDownloadParams): Promise<StartResult>;

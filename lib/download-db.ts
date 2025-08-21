@@ -6,6 +6,7 @@ import { DownloadRecord, DownloadId, DownloadChunkMeta } from '../app/_types/dow
 export interface ChunkRow extends DownloadChunkMeta {
   // Store either a Blob or ArrayBuffer (possibly encrypted data)
   data: Blob | ArrayBuffer;
+  id?: string; // primary key composed externally
 }
 
 export class DownloadDB extends Dexie {
@@ -15,10 +16,10 @@ export class DownloadDB extends Dexie {
 
   constructor() {
     super('DownloadDB');
-  (this as any).version(1).stores({
+    this.version(1).stores({
       downloads: '&id, lifecycle, magnetLink, fileIndex',
-      chunks: '&id, downloadId, downloadId, downloadId_chunkIndex',
-      meta: '&key'
+      chunks: '&id, downloadId, downloadId_chunkIndex',
+      meta: '&key',
     });
   }
 }
