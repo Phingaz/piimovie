@@ -11,6 +11,7 @@ import { authClient } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
 import UserFilterModal from '../modals/UserFilterModal';
 import FeatureFlag from '../modals/FeatureFlag';
+import WebhookConfigModal from '../modals/WebhookConfigModal';
 import { useDbPropsCtx } from '@/app/_context/DbProps';
 
 export function UserDropDown({
@@ -36,6 +37,9 @@ export function UserDropDown({
       <DropdownMenuContent align="end" className="w-fit rounded-sm bg-black text-gray-200 border-none">
         <DropdownMenuItem className="cursor-pointer bg-black hover:bg-gray-800" onSelect={(e) => e.preventDefault()}>
           <UserFilterModal />
+        </DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer bg-black hover:bg-gray-800" onSelect={(e) => e.preventDefault()}>
+          <WebhookConfigModal />
         </DropdownMenuItem>
         {isSuperAdmin && (
           <DropdownMenuItem className="cursor-pointer bg-black hover:bg-gray-800" onSelect={(e) => e.preventDefault()}>

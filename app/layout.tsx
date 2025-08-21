@@ -6,8 +6,8 @@ import Header from '@/components/nav/Header';
 import { Toaster } from '@/components/ui/sonner';
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
-import { getFavorites, getFeatureFlags, getFilters } from './_queries/dbProps';
-import { feature_flags, filter, movie } from '@prisma/client';
+import { getFavorites, getFeatureFlags, getFilters, getWebhookConfig } from './_queries/dbProps';
+import { feature_flags, filter, movie, WebhookConfig } from '@prisma/client';
 import Footer from '@/components/general/Footer';
 import ENV from '@/lib/env';
 
@@ -48,11 +48,13 @@ export default async function RootLayout({
   let fav: movie[] | null = null;
   let filters: filter[] | null = null;
   let featureFlags: feature_flags[] | null = null;
+  let webhookConfig: WebhookConfig[] | null = null;
 
   if (session && session.user) {
     fav = await getFavorites(session.user);
     filters = await getFilters(session.user);
     featureFlags = await getFeatureFlags();
+    webhookConfig = await getWebhookConfig(session.user);
   }
 
   const isSuperAdmin = (ENV.SUPER_ADMINS || '').split(',').includes(user?.email || '');
@@ -60,7 +62,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${heading.variable} ${body.variable} antialiased`}>
-        <Providers value={{ user, fav, filters, featureFlags, isSuperAdmin }}>
+        <Providers value={{ user, fav, filters, featureFlags, webhookConfig, isSuperAdmin }}>
           <Header />
           <main className="relative -mt-[80px] min-h-[calc(100svh-200px)]">{children}</main>
           <Footer />

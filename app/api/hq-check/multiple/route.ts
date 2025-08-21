@@ -30,12 +30,10 @@ export async function POST(request: NextRequest) {
 
     // If we have uncached queries, fetch them from the API
     if (uncachedQueries.length > 0) {
-      const HQ_API_URL = envProxy.HQ_API_URL;
+      const HQ_API_URL = envProxy.SERVER_API_URL;
       const apiKey = envProxy.SERVER_API_KEY;
 
-      const multipleEndpoint = `${HQ_API_URL.replace('/api/v1/query', '/api/v1/query/multiple')}`;
-
-      const response = await fetch(multipleEndpoint, {
+      const response = await fetch(`${HQ_API_URL}/query/multiple`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

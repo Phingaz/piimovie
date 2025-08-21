@@ -1,0 +1,122 @@
+import { useCallback } from 'react';
+import { movie, WebhookConfig } from '@prisma/client';
+
+interface WebhookHeader {
+  key: string;
+  value: string;
+}
+
+interface MediaData {
+  query: string;
+  type: 'tv' | 'movie';
+  year?: number;
+  tmdbId?: number;
+}
+
+export const useWebhook = (webHooks: WebhookConfig[] | null) => {
+  const sendWebhook = useCallback(
+    async (movie: movie, type: 'tv' | 'movie', send: boolean): Promise<boolean> => {
+      try {
+        if (!webHooks || webHooks.length === 0) {
+          console.warn('No webhooks configured');
+          return false;
+        }
+
+        const yearMatch = movie.title.match(/\((\d{4})\)/);
+        const year = yearMatch ? parseInt(yearMatch[1]) : undefined;
+
+        // Clean title by removing year if present
+        const cleanTitle = movie.title.replace(/\s*\(\d{4}\)\s*$/, '').trim();
+
+        const webhookData: MediaData = {
+          query: cleanTitle,
+          type: type === 'movie' ? ('movie' as const) : ('tv' as const),
+          tmdbId: movie.id,
+          ...(year && { year }),
+        };
+
+        const results = await Promise.allSettled(
+          webHooks.map(async (webHook) => {
+            if (!webHook.sendAlways && !send) {
+              console.log('Skipping webhook for non-favorite');
+              return false;
+            }
+
+            if (!webHook || !webHook.url) {
+              console.warn('Webhook not properly configured, skipping');
+              return false;
+            }
+
+            // Prepare headers
+            const headers: Record<string, string> = {
+              'Content-Type': 'application/json',
+            };
+
+            // Parse and add configured headers
+            let parsedHeaders: WebhookHeader[] = [];
+
+            if (webHook.headers) {
+              try {
+                if (typeof webHook.headers === 'string') {
+                  // If it's a JSON string, parse it
+                  parsedHeaders = JSON.parse(webHook.headers);
+                } else if (Array.isArray(webHook.headers)) {
+                  // If it's already an array, use it directly
+                  parsedHeaders = webHook.headers as unknown as WebhookHeader[];
+                }
+
+                // Validate and add headers
+                if (Array.isArray(parsedHeaders)) {
+                  parsedHeaders.forEach((header) => {
+                    if (header && typeof header === 'object' && 'key' in header && 'value' in header) {
+                      const { key, value } = header as WebhookHeader;
+                      if (key?.trim() && value?.trim()) {
+                        headers[key] = value;
+                      }
+                    }
+                  });
+                }
+              } catch (error) {
+                console.warn('Failed to parse webhook headers:', error);
+              }
+            }
+
+            // Prepare the request body
+            const requestBody: MediaData = {
+              query: webhookData.query,
+              type: webhookData.type,
+              ...(webhookData.year && { year: webhookData.year }),
+              ...(webhookData.tmdbId && { tmdbId: webhookData.tmdbId }),
+            };
+
+            const response = await fetch(webHook.url, {
+              method: 'POST',
+              headers,
+              body: JSON.stringify(requestBody),
+            });
+
+            if (!response.ok) {
+              throw new Error(`Webhook failed: ${response.status} ${response.statusText}`);
+            }
+
+            const result = await response.json();
+            console.log('Webhook success:', result);
+            return true;
+          }),
+        );
+
+        // Return true if at least one webhook succeeded
+        const successes = results.filter((result) => result.status === 'fulfilled' && result.value === true);
+        return successes.length > 0;
+      } catch (error) {
+        console.error('Webhook error:', error);
+        return false;
+      }
+    },
+    [webHooks],
+  );
+
+  return sendWebhook;
+};
+
+export default useWebhook;
