@@ -57,9 +57,9 @@ model feature_flags {
 }
 
 model User {
-  id            String    @id
+  id            String          @id
   name          String
-  email         String    @unique
+  email         String          @unique
   emailVerified Boolean
   image         String?
   createdAt     DateTime
@@ -68,10 +68,25 @@ model User {
   filter        filter[]
   movie         movie[]
   sessions      Session[]
+  WebhookConfig WebhookConfig[]
 
   @@index([email])
   @@index([createdAt])
   @@map("user")
+}
+
+model WebhookConfig {
+  id         String   @id @default(cuid())
+  url        String
+  headers    Json
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  userId     String
+  sendAlways Boolean  @default(false)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("webhook_config")
 }
 
 model Session {

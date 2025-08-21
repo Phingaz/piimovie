@@ -1,4 +1,4 @@
-import { feature_flags, filter, movie } from '@prisma/client';
+import { feature_flags, filter, movie, WebhookConfig } from '@prisma/client';
 import { MovieCategory } from './movies';
 import { ShowCategory } from './show';
 import { User } from 'better-auth';
@@ -8,6 +8,7 @@ export type ProviderProps = {
   fav: movie[] | null;
   filters: filter[] | null;
   featureFlags: feature_flags[] | null;
+  webhookConfig: WebhookConfig[] | null;
   isSuperAdmin: boolean;
 };
 

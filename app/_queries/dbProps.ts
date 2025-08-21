@@ -3,6 +3,7 @@ import db from '@/lib/prisma';
 import { User } from 'better-auth';
 import { filter, movie } from '@prisma/client';
 import { ListType } from '../_types/utils';
+import { LocalWebhookConfig } from '@/components/modals/WebhookConfigModal';
 
 export const getFavorites = async (user: User) => {
   if (!user) return null;
@@ -78,6 +79,29 @@ export const updateFilterLastUsedTime = async (id: filter['id'], user: User) => 
 
 export const getFeatureFlags = async () => {
   return await db.feature_flags.findMany();
+};
+
+export const getWebhookConfig = async (user: User) => {
+  if (!user) return null;
+  return await db.webhookConfig.findMany({ where: { userId: user.id } });
+};
+
+export const addWebhookConfig = async (config: LocalWebhookConfig, user: User) => {
+  if (!user || !config) return null;
+  console.log('Adding webhook config:', config);
+  await db.webhookConfig.create({
+    data: {
+      url: config.url,
+      userId: user.id,
+      sendAlways: config.sendAlways,
+      headers: JSON.stringify(config.headers),
+    },
+  });
+};
+
+export const deleteWebhookConfig = async (userId: string | undefined, id: string) => {
+  if (!userId || !id) return null;
+  await db.webhookConfig.deleteMany({ where: { userId, id } });
 };
 
 export const addFeatureFlag = async (name: string) => {

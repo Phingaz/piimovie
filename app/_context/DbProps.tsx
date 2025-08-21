@@ -10,16 +10,18 @@ import {
   updateFilterLastUsedTime,
 } from '../_queries/dbProps';
 import { toast } from 'sonner';
-import { feature_flags, filter, movie } from '@prisma/client';
+import { feature_flags, filter, movie, WebhookConfig } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { useMainCtx } from './Main';
 import { ListType, ProviderProps } from '../_types/utils';
+import { useWebhook } from '../_hooks/useWebhook';
 
 export type TDbPropsCtx = {
   fav: movie[] | null;
   isSuperAdmin: boolean;
   filters: filter[] | null;
   featureFlags: feature_flags[] | null;
+  webhookConfig: WebhookConfig[] | null;
   manageFav: (movie: movie, type: ListType) => Promise<void>;
   addToFilter: (filter: filter) => Promise<void>;
   removeFromFilter: (filter: filter) => Promise<void>;
@@ -35,9 +37,10 @@ export type DbPropsCtxProviderProps = {
 };
 
 export function DbPropsCtxProvider({ children, value }: DbPropsCtxProviderProps) {
-  const { fav, filters } = value;
+  const { fav, filters, webhookConfig } = value;
   const { user } = useMainCtx();
   const router = useRouter();
+  const sendWebhook = useWebhook(webhookConfig);
 
   const manageFav = async (movie: movie, type: ListType) => {
     if (!user) {
@@ -50,9 +53,11 @@ export function DbPropsCtxProvider({ children, value }: DbPropsCtxProviderProps)
     if (!isFav) {
       await addToFavorites(type, movie, user);
       toast.success('Added to favorites successfully');
+      await sendWebhook(movie, type, true);
     } else {
       await removeFromFavorites(movie.id, user);
       toast.success('Removed to favorites successfully');
+      await sendWebhook(movie, type, false);
     }
 
     router.refresh();
