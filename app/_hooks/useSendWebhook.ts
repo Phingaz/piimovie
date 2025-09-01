@@ -54,12 +54,10 @@ export const useSendWebhook = (webHooks: WebhookConfig[] | null) => {
         const results = await Promise.allSettled(
           webHooks.map(async (webHook) => {
             if (!webHook.sendAlways && !send) {
-              console.log('Skipping webhook for non-favorite');
               return false;
             }
 
             if (!webHook || !webHook.url) {
-              console.warn('Webhook not properly configured, skipping');
               return false;
             }
 
@@ -111,7 +109,6 @@ export const useSendWebhook = (webHooks: WebhookConfig[] | null) => {
                   seasons: [1],
                 };
               }
-              console.log('Using Jellyseerr payload format:', requestBody);
             } else {
               requestBody = {
                 query: webhookData.query,
@@ -138,8 +135,6 @@ export const useSendWebhook = (webHooks: WebhookConfig[] | null) => {
               throw new Error(`Webhook failed: ${errorData.error}`);
             }
 
-            const result = await response.json();
-            console.log('Webhook success:', result);
             return true;
           }),
         );

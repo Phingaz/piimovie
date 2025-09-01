@@ -88,12 +88,13 @@ export const getWebhookConfig = async (user: User) => {
 
 export const addWebhookConfig = async (config: LocalWebhookConfig, user: User) => {
   if (!user || !config) return null;
-  console.log('Adding webhook config:', config);
+
   await db.webhookConfig.create({
     data: {
       url: config.url,
       userId: user.id,
       sendAlways: config.sendAlways,
+      isJellyseerr: config.isJellyseerr,
       headers: JSON.stringify(config.headers),
     },
   });

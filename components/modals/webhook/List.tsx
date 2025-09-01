@@ -5,7 +5,6 @@ import { Trash2 } from 'lucide-react';
 
 import { WebhookConfig } from '@prisma/client';
 import { FilterTitle } from '@/components/utils/FilterHelpers';
-import { WebhookHeader } from '@/app/_types/utils';
 
 const WebHookList = ({
   webHooks,
@@ -21,7 +20,23 @@ const WebHookList = ({
           <FilterTitle>Configured Webhooks</FilterTitle>
           <div className="space-y-2">
             {webHooks.map((webhook, index) => {
-              const headers = Array.isArray(webhook.headers) ? (webhook.headers as unknown as WebhookHeader[]) : [];
+              // Parse headers correctly from string or array
+              let headersCount = 0;
+              try {
+                if (typeof webhook.headers === 'string') {
+                  // If it's a JSON string, parse it
+                  const parsedHeaders = JSON.parse(webhook.headers);
+                  headersCount = Array.isArray(parsedHeaders) ? parsedHeaders.length : 0;
+                } else if (Array.isArray(webhook.headers)) {
+                  // If it's already an array
+                  headersCount = webhook.headers.length;
+                } else if (webhook.headers && typeof webhook.headers === 'object') {
+                  // If it's a JSON object
+                  headersCount = Object.keys(webhook.headers).length;
+                }
+              } catch (error) {
+                console.warn('Failed to parse webhook headers for display:', error);
+              }
 
               return (
                 <div
@@ -53,7 +68,7 @@ const WebHookList = ({
                       <span className="font-medium">URL:</span> {webhook.url}
                     </div>
                     <div>
-                      <span className="font-medium">Headers:</span> {headers.length} configured
+                      <span className="font-medium">Headers:</span> {headersCount} configured
                     </div>
                     <div>
                       <span className="font-medium">Created:</span> {new Date(webhook.createdAt).toLocaleDateString()}
