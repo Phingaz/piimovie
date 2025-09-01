@@ -96,11 +96,8 @@ export const useSendWebhook = (webHooks: WebhookConfig[] | null) => {
                 console.warn('Failed to parse webhook headers:', error);
               }
             }
-
-            // Determine which payload format to use
             let requestBody: MediaData | JellyseerrPayload;
 
-            // If Jellyseerr format is enabled
             if (webHook.isJellyseerr) {
               if (type === 'movie') {
                 requestBody = {
@@ -111,12 +108,11 @@ export const useSendWebhook = (webHooks: WebhookConfig[] | null) => {
                 requestBody = {
                   mediaType: 'tv',
                   mediaId: movie.id,
-                  seasons: [1], // Default to requesting season 1
+                  seasons: [1],
                 };
               }
               console.log('Using Jellyseerr payload format:', requestBody);
             } else {
-              // Standard webhook format
               requestBody = {
                 query: webhookData.query,
                 type: webhookData.type,
@@ -125,14 +121,21 @@ export const useSendWebhook = (webHooks: WebhookConfig[] | null) => {
               };
             }
 
-            const response = await fetch(webHook.url, {
+            const proxyUrl = '/api/webhook-proxy';
+
+            const response = await fetch(proxyUrl, {
               method: 'POST',
-              headers,
-              body: JSON.stringify(requestBody),
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                webhookUrl: webHook.url,
+                headers: headers,
+                payload: requestBody,
+              }),
             });
 
             if (!response.ok) {
-              throw new Error(`Webhook failed: ${response.status} ${response.statusText}`);
+              const errorData = await response.json();
+              throw new Error(`Webhook failed: ${errorData.error}`);
             }
 
             const result = await response.json();
