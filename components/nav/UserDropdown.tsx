@@ -1,9 +1,3 @@
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { User } from 'better-auth';
 import { LogOutIcon } from 'lucide-react';
@@ -13,6 +7,7 @@ import UserFilterModal from '../modals/UserFilterModal';
 import FeatureFlag from '../modals/FeatureFlag';
 import WebhookConfigModal from '../modals/WebhookConfigModal';
 import { useDbPropsCtx } from '@/app/_context/DbProps';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 export function UserDropDown({
   user,
@@ -27,27 +22,32 @@ export function UserDropDown({
   const { isSuperAdmin } = useDbPropsCtx();
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+    <Popover>
+      <PopoverTrigger asChild>
         <Avatar className="cursor-pointer">
           <AvatarImage aria-label={user.name} src={user.image ?? ''} alt={user.name} />
           <AvatarFallback>{user.name}</AvatarFallback>
         </Avatar>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-fit rounded-sm bg-black text-gray-200 border-none">
-        <DropdownMenuItem className="cursor-pointer bg-black hover:bg-gray-800" onSelect={(e) => e.preventDefault()}>
+      </PopoverTrigger>
+      <PopoverContent
+        align="end"
+        alignOffset={0}
+        sideOffset={10}
+        className="w-fit rounded-sm bg-black p-2 text-gray-200 border-none"
+      >
+        <p className="m-i cursor-pointer bg-black hover:bg-gray-800" onSelect={(e) => e.preventDefault()}>
           <UserFilterModal />
-        </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer bg-black hover:bg-gray-800" onSelect={(e) => e.preventDefault()}>
+        </p>
+        <p className="m-i cursor-pointer bg-black hover:bg-gray-800" onSelect={(e) => e.preventDefault()}>
           <WebhookConfigModal />
-        </DropdownMenuItem>
+        </p>
         {isSuperAdmin && (
-          <DropdownMenuItem className="cursor-pointer bg-black hover:bg-gray-800" onSelect={(e) => e.preventDefault()}>
+          <p className="m-i cursor-pointer bg-black hover:bg-gray-800" onSelect={(e) => e.preventDefault()}>
             <FeatureFlag />
-          </DropdownMenuItem>
+          </p>
         )}
-        <DropdownMenuItem
-          className="cursor-pointer bg-black hover:bg-gray-800"
+        <p
+          className="m-i cursor-pointer bg-black hover:bg-gray-800"
           onClick={async () => {
             await authClient.signOut();
             if (mobileNav) {
@@ -58,8 +58,8 @@ export function UserDropDown({
         >
           <LogOutIcon strokeWidth={2} size={25} />
           Log out
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        </p>
+      </PopoverContent>
+    </Popover>
   );
 }

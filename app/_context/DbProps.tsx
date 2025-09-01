@@ -14,7 +14,7 @@ import { feature_flags, filter, movie, WebhookConfig } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { useMainCtx } from './Main';
 import { ListType, ProviderProps } from '../_types/utils';
-import { useWebhook } from '../_hooks/useWebhook';
+import { useSendWebhook } from '../_hooks/useSendWebhook';
 
 export type TDbPropsCtx = {
   fav: movie[] | null;
@@ -40,7 +40,7 @@ export function DbPropsCtxProvider({ children, value }: DbPropsCtxProviderProps)
   const { fav, filters, webhookConfig } = value;
   const { user } = useMainCtx();
   const router = useRouter();
-  const sendWebhook = useWebhook(webhookConfig);
+  const sendWebhook = useSendWebhook(webhookConfig);
 
   const manageFav = async (movie: movie, type: ListType) => {
     if (!user) {

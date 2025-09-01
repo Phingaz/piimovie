@@ -3,6 +3,11 @@ import { MovieCategory } from './movies';
 import { ShowCategory } from './show';
 import { User } from 'better-auth';
 
+export interface WebhookHeader {
+  key: string;
+  value: string;
+}
+
 export type ProviderProps = {
   user?: User;
   fav: movie[] | null;

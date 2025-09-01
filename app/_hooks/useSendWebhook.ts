@@ -6,6 +6,7 @@ interface WebhookHeader {
   value: string;
 }
 
+// Standard webhook payload
 interface MediaData {
   query: string;
   type: 'tv' | 'movie';
@@ -13,7 +14,21 @@ interface MediaData {
   tmdbId?: number;
 }
 
-export const useWebhook = (webHooks: WebhookConfig[] | null) => {
+// Jellyseerr-specific payload
+interface JellyseerrMoviePayload {
+  mediaType: 'movie';
+  mediaId: number;
+}
+
+interface JellyseerrTvPayload {
+  mediaType: 'tv';
+  mediaId: number;
+  seasons: number[];
+}
+
+type JellyseerrPayload = JellyseerrMoviePayload | JellyseerrTvPayload;
+
+export const useSendWebhook = (webHooks: WebhookConfig[] | null) => {
   const sendWebhook = useCallback(
     async (movie: movie, type: 'tv' | 'movie', send: boolean): Promise<boolean> => {
       try {
@@ -28,6 +43,7 @@ export const useWebhook = (webHooks: WebhookConfig[] | null) => {
         // Clean title by removing year if present
         const cleanTitle = movie.title.replace(/\s*\(\d{4}\)\s*$/, '').trim();
 
+        // Standard webhook data
         const webhookData: MediaData = {
           query: cleanTitle,
           type: type === 'movie' ? ('movie' as const) : ('tv' as const),
@@ -81,13 +97,33 @@ export const useWebhook = (webHooks: WebhookConfig[] | null) => {
               }
             }
 
-            // Prepare the request body
-            const requestBody: MediaData = {
-              query: webhookData.query,
-              type: webhookData.type,
-              ...(webhookData.year && { year: webhookData.year }),
-              ...(webhookData.tmdbId && { tmdbId: webhookData.tmdbId }),
-            };
+            // Determine which payload format to use
+            let requestBody: MediaData | JellyseerrPayload;
+
+            // If Jellyseerr format is enabled
+            if (webHook.isJellyseerr) {
+              if (type === 'movie') {
+                requestBody = {
+                  mediaType: 'movie',
+                  mediaId: movie.id,
+                };
+              } else {
+                requestBody = {
+                  mediaType: 'tv',
+                  mediaId: movie.id,
+                  seasons: [1], // Default to requesting season 1
+                };
+              }
+              console.log('Using Jellyseerr payload format:', requestBody);
+            } else {
+              // Standard webhook format
+              requestBody = {
+                query: webhookData.query,
+                type: webhookData.type,
+                ...(webhookData.year && { year: webhookData.year }),
+                ...(webhookData.tmdbId && { tmdbId: webhookData.tmdbId }),
+              };
+            }
 
             const response = await fetch(webHook.url, {
               method: 'POST',
@@ -119,4 +155,4 @@ export const useWebhook = (webHooks: WebhookConfig[] | null) => {
   return sendWebhook;
 };
 
-export default useWebhook;
+export default useSendWebhook;

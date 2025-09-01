@@ -1,6 +1,5 @@
 import { format } from 'date-fns';
 import CopyButton from './buttons/CopyButton';
-import StreamButton from './buttons/StreamButton';
 import { DownlodResult } from '@/app/_types/utils';
 import { File, HardDrive, Upload, Download, Tag, User, Calendar, Link, Hash, Magnet, ExternalLink } from 'lucide-react';
 
@@ -91,9 +90,6 @@ export default function TorrentItem({ torrent }: { torrent: DownlodResult }) {
           </div>
 
           <div className="flex items-center gap-2">
-            {parseFloat(torrent.size.replace(/[^\d.]/g, '')) < 3.5 && (
-              <StreamButton magnetLink={torrent.magnet} title={torrent.name} isLarge={false} />
-            )}
             <a
               href={torrent.magnet}
               aria-label="Open magnet link"
