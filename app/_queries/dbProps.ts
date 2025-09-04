@@ -93,7 +93,6 @@ export const addWebhookConfig = async (config: LocalWebhookConfig, user: User) =
     data: {
       url: config.url,
       userId: user.id,
-      sendAlways: config.sendAlways,
       isJellyseerr: config.isJellyseerr,
       headers: JSON.stringify(config.headers),
     },

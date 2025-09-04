@@ -46,9 +46,6 @@ const WebHookList = ({
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-sm font-medium text-gray-200 dark:text-gray-800">Webhook #{index + 1}</span>
                     <div className="flex items-center gap-2">
-                      <span className={`text-xs px-2 py-1 rounded-full bg-green-100 text-green-800`}>
-                        {webhook.sendAlways ? 'Favorites and Unfavorites' : 'Favorites Only'}
-                      </span>
                       {webhook.isJellyseerr && (
                         <span className="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-800">Jellyseerr</span>
                       )}
