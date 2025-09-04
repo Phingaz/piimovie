@@ -7,6 +7,7 @@ import { Movie } from '@/app/_types/movies';
 import { Show } from '@/app/_types/show';
 import { ListType } from '@/app/_types/utils';
 import Download from './Download';
+import SendWebhook from './SendWebhook';
 
 const FavAndReview = ({ type, movie, title }: { type: ListType; movie: Movie | Show; title: string }) => {
   return (
@@ -14,6 +15,7 @@ const FavAndReview = ({ type, movie, title }: { type: ListType; movie: Movie | S
       <Ratings showBg isReview vote_average={movie.vote_average} voteCount={movie?.vote_count} />
       <div className="flex items-center gap-1">
         <Download isLarge={false} title={title} />
+        <SendWebhook type={type} movie={{ ...movie, title } as unknown as movie} />
         <Favorite type={type} movie={{ ...movie, title } as unknown as movie} />
       </div>
     </div>

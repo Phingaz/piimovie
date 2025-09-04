@@ -82,7 +82,6 @@ model WebhookConfig {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   userId       String
-  sendAlways   Boolean  @default(false)
   isJellyseerr Boolean  @default(false)
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 

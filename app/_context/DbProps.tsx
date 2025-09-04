@@ -14,7 +14,6 @@ import { feature_flags, filter, movie, WebhookConfig } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { useMainCtx } from './Main';
 import { ListType, ProviderProps } from '../_types/utils';
-import { useSendWebhook } from '../_hooks/useSendWebhook';
 
 export type TDbPropsCtx = {
   fav: movie[] | null;
@@ -37,10 +36,9 @@ export type DbPropsCtxProviderProps = {
 };
 
 export function DbPropsCtxProvider({ children, value }: DbPropsCtxProviderProps) {
-  const { fav, filters, webhookConfig } = value;
+  const { fav, filters } = value;
   const { user } = useMainCtx();
   const router = useRouter();
-  const sendWebhook = useSendWebhook(webhookConfig);
 
   const manageFav = async (movie: movie, type: ListType) => {
     if (!user) {
@@ -53,11 +51,9 @@ export function DbPropsCtxProvider({ children, value }: DbPropsCtxProviderProps)
     if (!isFav) {
       await addToFavorites(type, movie, user);
       toast.success('Added to favorites successfully');
-      await sendWebhook(movie, type, true);
     } else {
       await removeFromFavorites(movie.id, user);
       toast.success('Removed to favorites successfully');
-      await sendWebhook(movie, type, false);
     }
 
     router.refresh();

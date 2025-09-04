@@ -20,10 +20,7 @@ const useWebHookConfig = () => {
 
   const [url, setUrl] = useState('');
   const [headers, setHeaders] = useState<{ key: string; value: string }[]>([{ key: '', value: '' }]);
-  const [booleans, setBooleans] = useState<{ sendAlways: boolean; isJellyseerr: boolean }>({
-    sendAlways: false,
-    isJellyseerr: false,
-  });
+  const [isJellyseerr, setIsJellyseerr] = useState<boolean>(false);
 
   const [canSave, setCanSave] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -33,8 +30,7 @@ const useWebHookConfig = () => {
     id: 'test-webhook',
     url: url,
     headers: headers as unknown as JsonValue,
-    sendAlways: booleans.sendAlways,
-    isJellyseerr: booleans.isJellyseerr,
+    isJellyseerr,
     createdAt: new Date(),
     updatedAt: new Date(),
     userId: 'test-user',
@@ -87,7 +83,7 @@ const useWebHookConfig = () => {
     setIsSaving(true);
     try {
       if (!user) return;
-      const config: LocalWebhookConfig = { url, headers, ...booleans };
+      const config: LocalWebhookConfig = { url, headers, isJellyseerr };
       await addWebhookConfig(config, user);
       toast.success('Webhook saved successfully');
       router.refresh();
@@ -127,10 +123,10 @@ const useWebHookConfig = () => {
     webHooks,
     url,
     headers,
-    booleans,
     setUrl,
     setHeaders,
-    setBooleans,
+    isJellyseerr,
+    setIsJellyseerr,
   };
 };
 

@@ -16,8 +16,9 @@ import { ListType } from '@/app/_types/utils';
 import HQBadge from '../ui/HQBadge';
 import { useHQStatus } from '@/app/_hooks/useHQStatus';
 import OverView from './OverView';
+import SendWebhook from '../utils/buttons/SendWebhook';
 
-const Details = ({ movie }: { type: ListType; movie: MovieDetail }) => {
+const Details = ({ movie, type }: { type: ListType; movie: MovieDetail }) => {
   const { hqStatus, loading } = useHQStatus(movie.title);
   return (
     <AnimatePresence mode="wait">
@@ -65,6 +66,7 @@ const Details = ({ movie }: { type: ListType; movie: MovieDetail }) => {
             <div className="flex gap-5 items-center mt-2">
               <Favorite type="movie" isLarge movie={movie as unknown as movie} />
               <Download title={movie.title} />
+              <SendWebhook isLarge type={type} movie={{ ...movie, title: movie.title } as unknown as movie} />
             </div>
           </div>
         </div>

@@ -14,7 +14,6 @@ import useWebHookConfig from '@/app/_hooks/useWebHookConfig';
 
 export interface LocalWebhookConfig {
   url: string;
-  sendAlways: boolean;
   isJellyseerr: boolean;
   headers: WebhookHeader[];
 }
@@ -35,8 +34,8 @@ export default function WebhookConfigModal() {
     setUrl,
     headers,
     setHeaders,
-    booleans,
-    setBooleans,
+    isJellyseerr,
+    setIsJellyseerr,
   } = useWebHookConfig();
 
   return (
@@ -76,20 +75,12 @@ export default function WebhookConfigModal() {
         <WebHookHeaders url={url} headers={headers} setHeaders={setHeaders} />
 
         <div>
-          <FilterTitle>{!booleans.sendAlways ? 'Send on Favorite' : 'Send on Favorite & Unfavorite'}</FilterTitle>
-          <Switch
-            checked={booleans.sendAlways}
-            onCheckedChange={(checked) => setBooleans({ ...booleans, sendAlways: checked })}
-          />
-        </div>
-
-        <div>
           <FilterTitle>Jellyseerr Integration</FilterTitle>
           <div className="flex flex-col space-y-2">
             <Switch
-              checked={booleans.isJellyseerr}
+              checked={isJellyseerr}
               onCheckedChange={(checked) => {
-                setBooleans({ ...booleans, isJellyseerr: checked });
+                setIsJellyseerr(checked);
 
                 if (checked) {
                   if (!url.includes('/api/v1/request')) {
@@ -107,11 +98,9 @@ export default function WebhookConfigModal() {
               }}
             />
             <span className="text-xs text-gray-500">
-              {booleans.isJellyseerr
-                ? 'Using Jellyseerr-specific format for requests'
-                : 'Using standard webhook format'}
+              {isJellyseerr ? 'Using Jellyseerr-specific format for requests' : 'Using standard webhook format'}
             </span>
-            {booleans.isJellyseerr && (
+            {isJellyseerr && (
               <div className="mt-2 p-2 bg-blue-900/20 border border-blue-800 rounded-md">
                 <p className="text-xs text-blue-400">
                   <strong>Jellyseerr Mode:</strong> Requests will be sent to Jellyseerr&apos;s API in the proper format.
