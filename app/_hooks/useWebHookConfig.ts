@@ -59,7 +59,7 @@ const useWebHookConfig = () => {
         lastRatingSync: new Date(),
       };
 
-      const success = await sendWebhook(testData, 'tv', true);
+      const success = await sendWebhook(testData, 'tv');
       if (success) {
         toast.success('Webhook test successful!');
         setCanSave(true);

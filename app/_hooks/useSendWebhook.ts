@@ -30,7 +30,7 @@ type JellyseerrPayload = JellyseerrMoviePayload | JellyseerrTvPayload;
 
 export const useSendWebhook = (webHooks: WebhookConfig[] | null) => {
   const sendWebhook = useCallback(
-    async (movie: movie, type: 'tv' | 'movie', send: boolean): Promise<boolean> => {
+    async (movie: movie, type: 'tv' | 'movie'): Promise<boolean> => {
       try {
         if (!webHooks || webHooks.length === 0) {
           console.warn('No webhooks configured');
@@ -53,10 +53,6 @@ export const useSendWebhook = (webHooks: WebhookConfig[] | null) => {
 
         const results = await Promise.allSettled(
           webHooks.map(async (webHook) => {
-            if (!webHook.sendAlways && !send) {
-              return false;
-            }
-
             if (!webHook || !webHook.url) {
               return false;
             }

@@ -27,7 +27,7 @@ const SendWebhook = ({ type, movie, isLarge = false }: { type: ListType; isLarge
         return;
       }
 
-      const success = await sendWebhook(movie, type, true);
+      const success = await sendWebhook(movie, type);
       if (success) {
         toast.success('Webhook sent successfully');
       } else {
