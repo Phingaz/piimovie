@@ -16,6 +16,8 @@ const SendWebhook = ({ type, movie, isLarge = false }: { type: ListType; isLarge
   const sendWebhook = useSendWebhook(webHooks);
   const [isLoading, setIsLoading] = React.useState(false);
 
+  if (!user || !webHooks || webHooks.length === 0) return null;
+
   const handleClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
     if (isLoading) return;
     try {
