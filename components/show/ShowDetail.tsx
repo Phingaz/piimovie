@@ -16,8 +16,10 @@ import NumberOfSeasons from './NumberOfSeasons';
 import { useHQStatus } from '@/app/_hooks/useHQStatus';
 import HQBadge from '../ui/HQBadge';
 import OverView from '../general/OverView';
+import SendWebhook from '../utils/buttons/SendWebhook';
+import { ListType } from '@/app/_types/utils';
 
-const ShowDetails = ({ show }: { show: ShowDetail }) => {
+const ShowDetails = ({ show, type }: { show: ShowDetail; type: ListType }) => {
   const { hqStatus, loading } = useHQStatus(show.original_name);
 
   return (
@@ -66,6 +68,7 @@ const ShowDetails = ({ show }: { show: ShowDetail }) => {
             <div className="flex gap-5 items-center mt-2">
               <Favorite type="tv" isLarge movie={{ ...show, title: show.original_name } as unknown as movie} />
               <Download title={show.original_name} />
+              <SendWebhook isLarge type={type} movie={{ ...show, title: show.original_name } as unknown as movie} />
             </div>
           </div>
         </div>

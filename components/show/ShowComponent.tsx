@@ -26,7 +26,7 @@ const ShowComponent = async ({ id, type }: { id: string; type: ListType }) => {
       <section className="w-full h-full relative -mt-[30px]">
         <div className="relative h-[75svh] w-full">
           <Background movie={show} />
-          <ShowDetails show={show} />
+          <ShowDetails type={type} show={show} />
         </div>
         <div className="flex justify-center flex-col w-full mt-[100px] md:mt-[120px] 3xl:mt-[150px] container gap-3 mx-auto md:gap-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-8">
