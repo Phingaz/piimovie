@@ -4,28 +4,40 @@ import ListingCard from '@/components/utils/ListingCard';
 import SearchBar from '@/components/utils/SearchComponent';
 import { SearchXIcon } from 'lucide-react';
 import React from 'react';
-import { search } from '../_queries/queries';
+import { searchPerPage } from '../_queries/queries';
 import { movieGenres } from '@/lib/arrays';
+import { Movie } from '../_types/movies';
+import { Show } from '../_types/show';
 import { ListType } from '../_types/utils';
 import PageTitle from '@/components/utils/texts/PageTitle';
 import PageSection from '@/components/utils/texts/PageSection';
+import PerPageSelector from '@/components/utils/PerPageSelector';
 
-const SearchComponent = async ({ q, type, page }: { q: string; type: ListType; page: string }) => {
+const SearchComponent = async ({ q, type, page, per }: { q: string; type: ListType; page: string; per?: string }) => {
   try {
-    const result = await search({ page: Number(page) || 1, query: q, type });
+    const perPage = Number(per) || 20;
+    const requestedPage = Number(page) || 1;
 
-    if (!result.data) throw new Error(result.message);
+    const resp = (await searchPerPage({ query: q, type, page: requestedPage, per: perPage })) as {
+      data: { page: number; results: Array<Movie | Show>; total_pages: number; total_results: number };
+      success?: boolean;
+      message?: string;
+    };
+    if (!resp || !resp.data) throw new Error(resp?.message || 'Failed to fetch');
 
-    const movies = result.data?.results;
-    const currentPage = result.data?.page;
-    const totalPages = result.data?.total_pages;
-    const totalResults = result.data?.total_results;
+    const movies: Array<Movie | Show> = resp.data.results || [];
+    const currentPage = resp.data.page || requestedPage;
+    const totalPages = resp.data.total_pages || 1;
+    const totalResults = resp.data.total_results || movies.length;
 
     return (
       <div className="container mx-auto py-10 px-3 md:px-[2rem] mt-[100px]">
         <PageSection>
           <PageTitle className="text-4xl font-bold">Search Results</PageTitle>
-          <SearchBar />
+          <div className="flex items-end gap-4">
+            <SearchBar />
+            <PerPageSelector />
+          </div>
         </PageSection>
 
         {!q ? (

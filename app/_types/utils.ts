@@ -33,6 +33,7 @@ export interface FilterOption {
   'vote_average.gte'?: string;
   sort_by?: string;
   year?: string;
+  per?: number;
   include_adult?: string;
   with_release_type?: string;
   'release_date.gte'?: string;

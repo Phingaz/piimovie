@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-r
 import { useEffect, useState } from 'react';
 import { cn, updateSearchParam } from '@/lib/utils';
 import { useMainCtx } from '@/app/_context/Main';
+import useCookies from '@/app/_hooks/useCookies';
 
 interface PaginationProps {
   currentPage: number;
@@ -18,6 +19,7 @@ export default function Pagination({ currentPage, totalPages, totalResults, clas
   const router = useRouter();
   const searchParams = useSearchParams();
   const { startTransition } = useMainCtx();
+  const { getCookie } = useCookies();
 
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
 
@@ -64,7 +66,8 @@ export default function Pagination({ currentPage, totalPages, totalResults, clas
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const resultsPerPage = 20;
+  const perParam = getCookie('perPage') ? Number(getCookie('perPage')) : 20;
+  const resultsPerPage = perParam;
   const startResult = (currentPage - 1) * resultsPerPage + 1;
   const endResult = Math.min(startResult + resultsPerPage - 1, totalResults);
 

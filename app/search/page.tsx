@@ -19,17 +19,18 @@ export async function generateMetadata({
   };
 }
 
-const Page = async ({ searchParams }: { searchParams: Promise<{ page: string; q: string }> }) => {
-  const { page, q } = (await searchParams) as {
+const Page = async ({ searchParams }: { searchParams: Promise<{ page: string; q: string; per?: string }> }) => {
+  const { page, q, per } = (await searchParams) as {
     page: string;
     q: keyof typeof MovieCategoryEnum;
+    per?: string;
   };
 
   const type = (await cookies()).get('t')?.value as ListType;
 
   return (
     <Suspense key={JSON.stringify({ q, page })} fallback={<PageLoader />}>
-      <SearchComponent q={q} page={page} type={type} />
+      <SearchComponent q={q} page={page} per={per} type={type} />
     </Suspense>
   );
 };

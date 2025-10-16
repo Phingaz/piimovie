@@ -1,8 +1,10 @@
 import ErrorPageComponent from '@/components/helpers/Error';
 import React from 'react';
-import { fetchDiscover } from '../_queries/queries';
+import { fetchDiscoverPerPage } from '../_queries/queries';
 import { ListType, FilterOption } from '../_types/utils';
 import SearchBar from '@/components/utils/SearchComponent';
+import { Movie } from '../_types/movies';
+import { Show } from '../_types/show';
 import ListingCard from '@/components/utils/ListingCard';
 import { movieGenres } from '@/lib/arrays';
 import Pagination from '@/components/utils/buttons/Pagination';
@@ -11,19 +13,22 @@ import PageTitle from '@/components/utils/texts/PageTitle';
 import { FilterSection } from '@/components/utils/Filter';
 import { MobileFilter } from '@/components/utils/FilterHelpers';
 import { SearchXIcon } from 'lucide-react';
-import { getQueryString } from '@/lib/utils';
 
 const ListingComponent = async ({ data, type }: { data: FilterOption; type: ListType }) => {
   try {
-    const params = getQueryString(data);
-    const result = await fetchDiscover({ type, params });
+    const requestedPage = Number(data.page) || 1;
 
-    if (!result.data) throw new Error(result.message);
+    const resp = (await fetchDiscoverPerPage({ type, baseParams: data, page: requestedPage, per: data.per })) as {
+      data: { page: number; results: Array<Movie | Show>; total_pages: number; total_results: number };
+      success?: boolean;
+      message?: string;
+    };
+    if (!resp || !resp.data) throw new Error(resp?.message ?? 'Failed to fetch');
 
-    const movies = result.data?.results;
-    const currentPage = result.data?.page;
-    const totalPages = result.data?.total_pages;
-    const totalResults = result.data?.total_results;
+    const movies: Array<Movie | Show> = resp.data.results || [];
+    const currentPage = resp.data.page || requestedPage;
+    const totalPages = resp.data.total_pages || 1;
+    const totalResults = resp.data.total_results || movies.length;
 
     return (
       <div className="container mx-auto mt-[100px] md-5 md:py-10 px-3 md:px-[2rem] relative">

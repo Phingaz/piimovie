@@ -9,6 +9,7 @@ import SignInBtn from './SignInBtn';
 import { UserDropDown } from './UserDropdown';
 import HamBurger from './HamBurger';
 import dynamic from 'next/dynamic';
+import useCookies from '@/app/_hooks/useCookies';
 
 const LinkSwitcher = dynamic(() => import('./LinkSwitcher'), { ssr: false });
 
@@ -18,6 +19,8 @@ const Header = () => {
   const [width, setWidth] = React.useState(0);
 
   const [mobileNav, toggleMobileNav] = useCycle(false, true);
+  const { getCookie } = useCookies();
+  const perPage = getCookie('perPage');
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -72,7 +75,7 @@ const Header = () => {
               <div className="items-center flex gap-3 flex-col md:flex-row">
                 <LinkSwitcher mobileNav={mobileNav} toggleMobileNav={toggleMobileNav} />
                 <Link
-                  href={`/listing`}
+                  href={`/listing?per=${perPage || 20}`}
                   onClick={() => {
                     if (mobileNav) toggleMobileNav();
 

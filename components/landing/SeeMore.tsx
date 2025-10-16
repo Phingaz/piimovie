@@ -1,4 +1,5 @@
 'use client';
+import useCookies from '@/app/_hooks/useCookies';
 import { MovieCategory } from '@/app/_types/movies';
 import { ShowCategory } from '@/app/_types/show';
 import { FilterOption, ListType } from '@/app/_types/utils';
@@ -10,6 +11,7 @@ import React from 'react';
 const SeeMore = ({ type, category }: { type: ListType; category: MovieCategory | ShowCategory }) => {
   const query = Queries(category, type)[category];
   const params = getQueryString(query as FilterOption);
+  const { getCookie } = useCookies();
 
   return (
     <Link
@@ -19,7 +21,7 @@ const SeeMore = ({ type, category }: { type: ListType; category: MovieCategory |
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }}
       className="text-sm font-[600] transition hover:text-blue-500 hover:scale-105"
-      href={`/listing?category=${category}&${params}`}
+      href={`/listing?category=${category}&${params}&per=${getCookie('perPage') || 20}`}
     >
       See more
     </Link>

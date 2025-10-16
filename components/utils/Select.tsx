@@ -54,17 +54,20 @@ const SelectComponentCategory = ({
 export const SelectComponent = ({
   setValue,
   options,
+  defaultValue,
+  value,
   className,
 }: {
   className?: string;
   value: string | null;
+  defaultValue?: string | null;
   setValue: React.Dispatch<React.SetStateAction<string | null>>;
   options: SelectOption[];
 }) => {
   const handleSelect = (el: string) => setValue(el);
 
   return (
-    <Select onValueChange={handleSelect}>
+    <Select onValueChange={handleSelect} defaultValue={defaultValue as string} value={value as string}>
       <SelectTrigger className={cn('w-fit', className)}>
         <SelectValue placeholder="Select an option" />
       </SelectTrigger>

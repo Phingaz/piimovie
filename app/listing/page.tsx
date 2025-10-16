@@ -21,8 +21,10 @@ export async function generateMetadata({
 const Page = async ({ searchParams }: { searchParams: Promise<{ page: string; category: string }> }) => {
   const data = (await searchParams) as FilterOption;
   const type = (await cookies()).get('t')?.value as ListType;
+  const p = (await cookies()).get('perPage')?.value;
 
   if (!data.page) data.page = '1';
+  if (!p) data.per = 20;
 
   return <ListingComponent data={data} type={type} />;
 };

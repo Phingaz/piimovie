@@ -13,6 +13,7 @@ import { DatePicker } from '../ui/date-picker';
 import useCookies from '@/app/_hooks/useCookies';
 import { ListType } from '@/app/_types/utils';
 import FilterModal from '../modals/FilterModal';
+import PerPageSelector from './PerPageSelector';
 
 export const FilterSection = ({ className }: { className?: string }) => {
   const router = useRouter();
@@ -82,6 +83,11 @@ export const FilterSection = ({ className }: { className?: string }) => {
             <DatePicker date={toDate} setDate={setToDate} />
           </div>
         </div>
+      </div>
+
+      <div>
+        <FilterTitle>Results Per Page</FilterTitle>
+        <PerPageSelector className="w-full" />
       </div>
 
       <div>
