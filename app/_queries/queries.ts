@@ -35,8 +35,7 @@ export const search = async <T extends ListType>({
   page: number;
   type: ListType;
 }) => {
-  const url = `${tmdbUrl}/search/${type}?query=${query}&page=${page}&include_adult=true&language=en-US
-`;
+const url = `${tmdbUrl}/search/${type}?query=${query}&page=${page}&include_adult=true&language=en-US`;
   return await fetchData<ListApiResponse<T extends 'movie' ? Movie : Show>>({
     url,
     message: `Successfully searched for ${type} with query ${query}`,
