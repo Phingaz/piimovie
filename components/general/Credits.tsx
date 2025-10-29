@@ -12,10 +12,12 @@ import { ListType } from '@/app/_types/utils';
 
 const Credits = async ({ id, type }: { id: number; type: ListType }) => {
   try {
+    return null;
+
     const response = await getCredits({ type, id });
 
     if (!response.data) throw new Error(response.message);
-    const credits = response.data.cast;
+    const credits = response.data?.cast ?? [];
 
     return (
       <div>
